@@ -47,16 +47,76 @@
             <h3>Me alegro!!!</h3>
             <p>Me alegro!!!</p>
         </a>
-        <a href="seccion4.html" class="card">
-            <span class="status-tag">seccion 04</span>
-            <h3>Título de la Sección</h3>
-            <p>Aquí pones la descripción corta y ligera de lo que habrá dentro.</p>
-        </a>
-            <a href="seccion5.html" class="card">
-            <span class="status-tag">seccion 05</span>
-            <h3>Título de la Sección</h3>
-            <p>Aquí pones la descripción corta y ligera de lo que habrá dentro.</p>
-        </a>
+
+        <div class="card card-proximamente">
+    <div class="card-content">
+        <span class="status-tag">Bloqueado</span>
+        <div class="lock-icon">🔒</div>
+        <h3>Próximamente</h3>
+        <p>vuelve otro dia...</p>
+        
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        <span class="percentage">Cargando 40%</span>
+    </div>
+</div>
+
+<style>
+    /* Estilos específicos para que la tarjeta se vea distinta y no sea clickable */
+    .card-proximamente {
+        cursor: not-allowed !important; /* Cambia el cursor para indicar que no hace nada */
+        opacity: 0.8;
+        border: 1px dashed rgba(128, 128, 128, 0.3) !important;
+        background: rgba(255, 255, 255, 0.02) !important;
+        pointer-events: none; /* Esto evita que el click funcione */
+    }
+
+    .card-proximamente:hover {
+        transform: none !important; /* Evita que salte como las otras */
+        box-shadow: 0 0 20px rgba(250, 22, 90, 0.1) !important;
+    }
+
+    .status-tag {
+        font-size: 0.6rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #fa165a;
+        border: 1px solid #fa165a;
+        padding: 2px 8px;
+        border-radius: 4px;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+
+    .lock-icon {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        filter: grayscale(1);
+    }
+
+    .progress-container {
+        width: 100%;
+        height: 4px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 10px;
+        margin: 20px 0 10px 0;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        width: 40%;
+        height: 100%;
+        background: #fa165a;
+        box-shadow: 0 0 10px #fa165a;
+    }
+
+    .percentage {
+        font-size: 0.6rem;
+        color: #444;
+        letter-spacing: 1px;
+    }
+</style>
     </main>
 
     <footer style="margin-top: auto; padding: 60px 0;">
