@@ -3,132 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecos | Sección 03</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"> <style>
-        /* Estilo específico para el Muro de Fotos Gracioso */
+    <title>Instantes | Saturación Responsiva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { overflow: hidden; position: relative; min-height: 100vh; background-color: #000; margin: 0; }
         
-        .meme-wall {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Columnas pequeñas y automáticas */
-            gap: 5px; /* Espacio mínimo para que parezca un collage */
-            width: 100%;
-            height: auto;
-            padding: 20px 0;
-            overflow: hidden;
+        /* CAPA SUPERIOR: TEXTO SIEMPRE ARRIBA */
+        header { 
+            position: relative; 
+            z-index: 10000; 
+            pointer-events: none; 
+            margin-top: 15vh; 
+            text-align: center;
+            padding: 0 20px;
         }
 
-        .meme-item {
-            width: 100%;
-            height: 100px; /* Altura fija para que sean cuadradas */
+        h1 { 
+            font-weight: 600; 
+            letter-spacing: -1px; 
+            font-size: 2.2rem; /* Un poco más grande para destacar */
+            color: #fff;
+            text-shadow: 0 0 20px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,0.5); 
+        }
+
+        .subtitle { 
+            color: var(--text-dim); 
+            font-size: 0.7rem; 
+            letter-spacing: 3px; 
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        .caos-container { position: absolute; width: 100vw; height: 100vh; top: 0; left: 0; z-index: 1; }
+        
+        .foto-flotante {
+            position: absolute; 
+            object-fit: cover; 
+            border-radius: 6px; 
+            border: 1px solid var(--border-glass); 
             background-color: var(--glass);
-            border: 1px solid var(--border-glass);
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animación "bouncy" */
-            border-radius: 8px;
+            backdrop-filter: blur(4px); 
+            transition: transform 0.3s ease-out, box-shadow 0.3s, border-color 0.3s;
+            cursor: grab; 
+            opacity: 0; 
+            animation: aparecer 1.5s ease-out forwards;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .meme-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* La foto llena el cuadro sin deformarse */
-            filter: grayscale(100%); /* Efecto inicial en blanco y negro para dar contraste */
-            transition: var(--transition);
+        .foto-flotante:hover { 
+            transform: scale(1.2) rotate(0deg) !important; 
+            z-index: 9500 !important; 
+            border-color: var(--accent);
+            box-shadow: 0 0 50px var(--accent-muted);
         }
 
-        /* --- EFECTOS DE INTERACCIÓN (La parte graciosa) --- */
+        @keyframes aparecer { to { opacity: 1; } }
+        
+        footer { position: fixed; bottom: 30px; left: 0; width: 100%; text-align: center; z-index: 10001; }
+        .btn-universal { pointer-events: auto; background: rgba(250, 22, 90, 0.6); padding: 8px 16px; border-radius: 20px; text-decoration: none; }
 
-        .meme-item:hover {
-            transform: scale(1.5) rotate(15deg); /* Se agranda y gira */
-            z-index: 10; /* Se pone al frente */
-            border-color: var(--accent); /* Cambia el borde al color de acento */
-            box-shadow: 0 10px 30px -10px var(--accent-muted);
-        }
-
-        .meme-item:hover img {
-            filter: grayscale(0%); /* La foto se pone a color al pasar el mouse */
-        }
-
-        /* Para el móvil: que no se agrande tanto */
+        /* AJUSTES PARA CELULAR */
         @media (max-width: 600px) {
-            .meme-wall { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
-            .meme-item { height: 80px; }
-            .meme-item:hover { transform: scale(1.3) rotate(-10deg); }
+            h1 { font-size: 1.6rem; }
+            .subtitle { font-size: 0.6rem; }
+            header { margin-top: 20vh; }
         }
     </style>
 </head>
 <body class="fade-in">
-
-    <header style="margin-top: 80px; text-align: center; padding: 0 20px;">
-        <h1 style="font-size: 2.5rem; font-weight: 600;">Ecos</h1>
-        <p style="margin-top: 15px; color: var(--text-dim); font-weight: 300; max-width: 450px; margin: 0 auto;">
-            Un registro visual intensivo de las canciones... o de algo más.
-        </p>
+    <header>
+        <h1>Me alegro!!!</h1>
+        <p class="subtitle">Me alegro!!!</p>
     </header>
 
-    <main style="width: 90%; max-width: 1100px; margin: 50px auto;">
-        
-        <div class="meme-wall">
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
-        </div>
+    <div id="caos-container" class="caos-container"></div>
 
-    </main>
-
-    <footer style="margin: 80px 0; text-align: center;">
-        <a href="biblioteca.html" class="btn-universal" style="font-size: 0.8rem; border: 1px solid var(--border-glass);">← Volver al Índice</a>
+    <footer>
+        <a href="index.html" class="btn-universal" style="font-size: 0.75rem; letter-spacing: 2px;">← REGRESAR</a>
     </footer>
 
+    <script>
+        const misFotos = ['graciosa.jpeg'];
+        const totalFotos = 60; 
+        const container = document.getElementById('caos-container');
+        let zIndexGlobal = 10;
+
+        function crearCaos() {
+            const isMobile = window.innerWidth <= 600;
+
+            for (let i = 0; i < totalFotos; i++) {
+                const img = document.createElement('img');
+                img.src = misFotos[0];
+                img.className = 'foto-flotante';
+
+                // --- TAMAÑOS MÁS GRANDES Y RESPONSIVOS ---
+                // Si es PC: 120px a 220px. Si es móvil: 70px a 130px.
+                const minAncho = isMobile ? 70 : 120;
+                const maxExtra = isMobile ? 60 : 100;
+                
+                const anchoAleatorio = minAncho + Math.random() * maxExtra; 
+                const ratio = 384 / 725;
+                const altoAleatorio = anchoAleatorio * ratio;
+
+                img.style.width = `${anchoAleatorio}px`;
+                img.style.height = `${altoAleatorio}px`;
+
+                // Dispersión usando porcentajes para que funcione en cualquier pantalla
+                const posX = (Math.random() * 110) - 10; // -10% a 100% para cubrir bordes
+                const posY = (Math.random() * 110) - 10;
+                const rot = (Math.random() - 0.5) * 40; 
+
+                img.style.left = `${posX}%`;
+                img.style.top = `${posY}%`;
+                img.style.setProperty('--rot-inicial', `${rot}deg`);
+                img.style.transform = `rotate(${rot}deg)`;
+                
+                img.addEventListener('mouseenter', () => {
+                    img.style.zIndex = Math.min(zIndexGlobal++, 9999);
+                });
+
+                // Movimiento lento
+                const duracion = 25 + Math.random() * 20; 
+                img.style.animation += `, flotar ${duracion}s ease-in-out infinite alternate`;
+                img.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(img);
+            }
+        }
+
+        window.onload = crearCaos;
+
+        const style = document.createElement('style');
+        style.innerHTML = `
+        @keyframes flotar {
+            0% { transform: translate(0, 0) rotate(var(--rot-inicial)); }
+            100% { transform: translate(20px, 20px) rotate(calc(var(--rot-inicial) + 5deg)); }
+        }`;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
