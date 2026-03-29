@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para Victoria</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --transDur: 0.3s; 
+            --accent: #ff4d6d;
+            --soft-shadow: 0 15px 35px rgba(255, 77, 109, 0.2);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffdee9 100%);
+            overflow: hidden;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* --- ANIMACIONES --- */
+        .entrada-suave {
+            opacity: 0;
+            animation: aparecerSubiendo 0.8s ease-out forwards;
+        }
+
+        @keyframes aparecerSubiendo {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+
+        /* --- PANTALLA DE BIENVENIDA --- */
+        #pantalla-inicio {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            z-index: 100;
+            transition: opacity 0.5s ease;
+            width: 100%;
+        }
+
+        .bienvenida-texto {
+            margin-top: 60px;
+            color: #555;
+            font-size: 1.1rem;
+            width: 100%;
+            max-width: 300px;
+            line-height: 1.6;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px dashed var(--accent);
+        }
+
+        /* --- BOTÓN CORAZÓN --- */
+        .love { margin-bottom: 20px; height: 50px; display: flex; justify-content: center; align-items: center; }
+        #switch { display: none; }
+        .love-heart, .love-heart::after {
+            border-color: hsl(231deg 28% 86%);
+            border: 1px solid;
+            border-top-left-radius: 100px;
+            border-top-right-radius: 100px;
+            width: 10px;
+            height: 8px;
+            border-bottom: 0;
+        }
+        .round {
+            position: absolute; z-index: 1; width: 8px; height: 8px;
+            background: hsl(0deg 0% 100%); box-shadow: rgb(0 0 0 / 24%) 0px 0px 4px 0px;
+            border-radius: 100%; left: 0px; bottom: -1px;
+            transition: all .5s ease; animation: check-animation2 .5s forwards;
+        }
+        input:checked + label .round { animation: check-animation .5s forwards; background-color: hsl(0deg 0% 100%); }
+        @keyframes check-animation { 0% { transform: translate(0px, 0px); } 50% { transform: translate(0px, 7px); } 100% { transform: translate(7px, 7px); } }
+        @keyframes check-animation2 { 0% { transform: translate(7px, 7px); } 50% { transform: translate(0px, 7px); } 100% { transform: translate(0px, 0px); } }
+        .love-heart {
+            box-sizing: border-box; position: relative;
+            transform: rotate(-45deg) scale(4);
+            display: block; border-color: hsl(231deg 28% 86%); cursor: pointer;
+        }
+        input:checked + .love-heart, input:checked + .love-heart::after, input:checked + .love-heart .bottom {
+            border-color: hsl(347deg 81% 61%);
+            box-shadow: inset 6px -5px 0px 2px hsl(347deg 99% 72%);
+        }
+        .love-heart::after, .love-heart .bottom { content: ""; display: block; box-sizing: border-box; position: absolute; border-color: hsl(231deg 28% 86%); }
+        .love-heart::after { right: -9px; transform: rotate(90deg); top: 7px; }
+        .love-heart .bottom { width: 11px; height: 11px; border-left: 1px solid; border-bottom: 1px solid; border-color: hsl(231deg 28% 86%); left: -1px; top: 5px; border-radius: 0px 0px 0px 5px; }
+
+        /* --- CONTENEDORES --- */
+        .container {
+            display: none;
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
+            padding: 30px 25px; border-radius: 30px; box-shadow: var(--soft-shadow);
+            width: 100%; max-width: 340px; text-align: center; z-index: 10;
+        }
+
+        .pregunta-principal {
+            font-size: 1.25rem;
+            line-height: 1.4;
+            color: #444;
+            margin: 20px 0;
+            font-weight: 700;
+        }
+
+        .floating-item {
+            position: absolute;
+            bottom: -20px;
+            opacity: 0;
+            pointer-events: none;
+            animation: floatUp linear infinite;
+            z-index: 1;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- BOTONES --- */
+        button, .btn-descarga { 
+            padding: 16px 28px; 
+            border-radius: 18px; 
+            font-weight: 700; 
+            transition: all 0.3s ease; 
+            border: none; cursor: pointer; font-size: 1rem; outline: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        #si { background: var(--accent); color: white; box-shadow: 0 8px 20px rgba(255, 77, 109, 0.3); }
+        #no { background: #f8f9fa; color: #888; position: relative; z-index: 1000; }
+
+        .btn-carta, .btn-juego { background: white; color: var(--accent); font-size: 0.9rem; padding: 12px 25px; border: 2px solid var(--accent); border-radius: 50px; margin-top: 10px; }
+
+        /* --- PANTALLA FINAL --- */
+        #pantalla-final { display: none; flex-direction: column; align-items: center; gap: 20px; z-index: 20; }
+        .celebration { font-size: 1.2rem; color: #4a4a4a; font-weight: 700; text-align: center; padding: 25px; background: white; border-radius: 30px; box-shadow: var(--soft-shadow); max-width: 320px; }
+        
+        #reloj { display: flex; justify-content: center; gap: 8px; font-size: 1.1rem; color: var(--accent); margin-top: 15px; }
+        .reloj-bloque { display: flex; flex-direction: column; align-items: center; min-width: 45px; }
+
+        #pantalla-juego { display: none; background: white; padding: 30px; border-radius: 30px; box-shadow: var(--soft-shadow); text-align: center; width: 100%; max-width: 340px; z-index: 30; }
+        .input-juego { width: 80px; padding: 10px; border: 2px solid #ffe5e9; border-radius: 10px; font-size: 1.5rem; text-align: center; margin: 20px 0; outline: none; color: var(--accent); }
+
+        .seccion-descargas { display: none; margin-top: 20px; animation: aparecerSubiendo 0.5s ease-out; }
+        .btn-descarga { background: var(--accent); color: white; width: 100%; box-shadow: 0 8px 20px rgba(255, 77, 109, 0.3); }
+
+        #modal-carta { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 240, 243, 0.95); z-index: 2000; justify-content: center; align-items: center; padding: 25px; }
+        .carta-contenido { background: white; padding: 40px 30px; border-radius: 20px; max-width: 340px; text-align: center; position: relative; }
+        .carta-texto { color: #555; line-height: 1.8; font-size: 1.05rem; text-align: left; }
+        .firma { font-family: 'Dancing Script', cursive; font-size: 2rem; color: var(--accent); margin-top: 20px; }
+        .cerrar-carta { position: absolute; top: 15px; right: 15px; font-size: 1.5rem; color: #ccc; cursor: pointer; }
+
+        .gif-container { width: 100%; max-width: 180px; margin: 0 auto 20px; border-radius: 20px; overflow: hidden; }
+    </style>
+</head>
+<body>
+
+    <div id="pantalla-inicio">
+        <div class="love">
+            <input id="switch" type="checkbox" onchange="comenzar()">
+            <label class="love-heart" for="switch">
+                <i class="left"></i><i class="right"></i><i class="bottom"></i>
+                <div class="round"></div>
+            </label>
+        </div>
+        <div class="bienvenida-texto">
+            <b>Hola Victoria...</b><br>
+            Tengo una pregunta muy importante para ti. Haz clic en el corazón para descubrirla.
+        </div>
+    </div>
+
+    <div class="container" id="pantalla-1">
+        <div class="gif-container entrada-suave delay-1">
+            <div class="tenor-gif-embed" data-postid="16710935253165168653" data-share-method="host" data-aspect-ratio="1" data-width="100%">
+                <a href="https://tenor.com/view/yellow-dragon-nailong-gif-16710935253165168653">Nailong GIF</a>
+            </div>
+        </div>
+        <h1 class="pregunta-principal entrada-suave delay-2">Valentine's is coming up wanna be my valentines? ❤️</h1>
+        <div class="btn-wrapper entrada-suave delay-3" style="position: relative; min-height: 80px;">
+            <button id="si" onclick="aceptar()">yes</button>
+            <button id="no" onclick="esquivar()" ontouchstart="esquivar()">No, stfu</button>
+        </div>
+    </div>
+
+    <div id="pantalla-final">
+        <div class="celebration entrada-suave delay-1">
+            Me encanta que aceptaras, haré que este día sea inolvidable. ❤️
+            <div id="countdown-container">
+                <div id="reloj">
+                    <div class="reloj-bloque"><span class="reloj-val" id="dias">00</span><span class="reloj-lab">días</span></div>
+                    <div class="reloj-bloque"><span class="reloj-val" id="horas">00</span><span class="reloj-lab">hrs</span></div>
+                    <div class="reloj-bloque"><span class="reloj-val" id="minutos">00</span><span class="reloj-lab">min</span></div>
+                    <div class="reloj-bloque"><span class="reloj-val" id="segundos">00</span><span class="reloj-lab">seg</span></div>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+            <button class="btn-carta entrada-suave delay-2" onclick="abrirCarta()">✉️ Leer nota especial</button>
+            <button class="btn-juego entrada-suave delay-3" onclick="abrirJuego()">🎮 Un reto para ti</button>
+        </div>
+    </div>
+
+    <div id="pantalla-juego" class="entrada-suave">
+        <h2 style="color: var(--accent);" id="titulo-juego">Adivina el número</h2>
+        <p id="pregunta-juego">¿Qué día te regalé por primera vez flores? 🌸</p>
+        
+        <div id="input-area">
+            <input type="number" id="respuesta-usuario" class="input-juego" placeholder="?">
+            <br>
+            <button id="si" onclick="verificarRespuesta()">Adivinar</button>
+        </div>
+
+        <div id="seccion-recompensa" class="seccion-descargas">
+            <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px; font-weight: 700;">🎁 ¡He preparado esto para ti!</p>
+            <div class="descargas-grid">
+                <a href="https://drive.google.com/drive/folders/1ihR5-wE9GCb0Xv4HzG6IlsS2XwgIutEB" target="_blank" class="btn-descarga">
+                   📂 Abrir carpeta de regalos
+                </a>
+            </div>
+        </div>
+
+        <p id="feedback-juego" style="margin-top: 15px; font-size: 0.9rem; color: #888;"></p>
+        <button class="btn-carta" onclick="volverFinal()" style="border:none; color:#ccc; font-size:0.7rem; margin-top:20px;">Volver</button>
+    </div>
+
+    <div id="modal-carta" onclick="cerrarCarta()">
+        <div class="carta-contenido" onclick="event.stopPropagation()">
+            <span class="cerrar-carta" onclick="cerrarCarta()">&times;</span>
+            <p id="texto-escritura" class="carta-texto"></p>
+            <div class="firma">isaac</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        let intentos = 0;
+        let escalaSi = 1;
+        const frases = ["Para...", "intenta otra vez", "OTRA VEZ", "this is amazing", "ok", "???"];
+        const cartaCompleta = "Dicen que uno siempre debe perseguir aquello que más quiere, y hoy sé que estoy persiguiendo lo correcto. Me encantas. Gracias por darme la oportunidad de celebrar contigo; eres la única persona con la que querría estar este 14.";
+
+        function lanzarConfetti() {
+            const duracion = 3 * 1000;
+            const fin = Date.now() + duracion;
+            (function frame() {
+                confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff4d6d', '#ffffff'] });
+                confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff4d6d', '#ffffff'] });
+                if (Date.now() < fin) requestAnimationFrame(frame);
+            }());
+        }
+
+        function createFloatingItems() {
+            const icons = ['❤️', '🌸', '✨', '💖'];
+            for (let i = 0; i < 15; i++) {
+                const item = document.createElement('div');
+                item.classList.add('floating-item');
+                item.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                item.style.left = Math.random() * 100 + 'vw';
+                item.style.fontSize = (Math.random() * 1 + 0.8) + 'rem';
+                item.style.animationDuration = (Math.random() * 8 + 6) + 's';
+                document.body.appendChild(item);
+            }
+        }
+        createFloatingItems();
+
+        function comenzar() {
+            document.getElementById('pantalla-inicio').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('pantalla-inicio').style.display = 'none';
+                document.getElementById('pantalla-1').style.display = 'block';
+            }, 500);
+        }
+
+        function esquivar() {
+            intentos++;
+            const btnNo = document.getElementById('no');
+            const btnSi = document.getElementById('si');
+            
+            // Margen de seguridad para que no toque los bordes del móvil
+            const padding = 60; 
+            const maxX = window.innerWidth - btnNo.offsetWidth - padding;
+            const maxY = window.innerHeight - btnNo.offsetHeight - padding;
+
+            // Calculamos posiciones aleatorias seguras
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+            btnNo.style.position = 'fixed';
+            btnNo.style.left = randomX + 'px';
+            btnNo.style.top = randomY + 'px';
+
+            escalaSi += 0.35; 
+            btnSi.style.transform = `scale(${escalaSi})`;
+            btnNo.innerText = frases[intentos % frases.length];
+        }
+
+        function aceptar() {
+            document.getElementById('pantalla-1').style.display = 'none';
+            document.getElementById('pantalla-final').style.display = 'flex';
+            lanzarConfetti();
+            iniciarReloj(); 
+        }
+
+        function abrirJuego() {
+            document.getElementById('pantalla-final').style.display = 'none';
+            document.getElementById('pantalla-juego').style.display = 'block';
+        }
+
+        function volverFinal() {
+            document.getElementById('pantalla-juego').style.display = 'none';
+            document.getElementById('pantalla-final').style.display = 'flex';
+        }
+
+        function verificarRespuesta() {
+            const respuesta = document.getElementById('respuesta-usuario').value;
+            if (respuesta == "21") {
+                document.getElementById('titulo-juego').innerText = "¡Correcto! ❤️";
+                document.getElementById('pregunta-juego').innerText = "Desde ese día supe que quería regalarte flores siempre.";
+                document.getElementById('input-area').style.display = "none";
+                document.getElementById('seccion-recompensa').style.display = "block";
+                lanzarConfetti();
+            } else {
+                document.getElementById('feedback-juego').innerText = "Nop... inténtalo de nuevo 💡";
+            }
+        }
+
+        function iniciarReloj() {
+            const fechaObjetivo = new Date('February 14, 2026 00:00:00').getTime();
+            setInterval(function() {
+                const d = fechaObjetivo - new Date().getTime();
+                if (d < 0) return;
+                document.getElementById("dias").innerHTML = Math.floor(d / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                document.getElementById("horas").innerHTML = Math.floor((d % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                document.getElementById("minutos").innerHTML = Math.floor((d % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                document.getElementById("segundos").innerHTML = Math.floor((d % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            }, 1000);
+        }
+
+        function abrirCarta() { 
+            document.getElementById('modal-carta').style.display = 'flex';
+            escribirTexto();
+        }
+
+        function escribirTexto() {
+            const elemento = document.getElementById('texto-escritura');
+            if(elemento.dataset.escribiendo === "true") return;
+            elemento.innerHTML = "";
+            elemento.dataset.escribiendo = "true";
+            let i = 0;
+            function type() {
+                if (i < cartaCompleta.length) {
+                    elemento.innerHTML += cartaCompleta.charAt(i);
+                    i++;
+                    setTimeout(type, 40);
+                } else { elemento.dataset.escribiendo = "false"; }
+            }
+            type();
+        }
+        function cerrarCarta() { document.getElementById('modal-carta').style.display = 'none'; }
+    </script>
+    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ecos | Sección 03</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> <style>
+        /* Estilo específico para el Muro de Fotos Gracioso */
+        
+        .meme-wall {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Columnas pequeñas y automáticas */
+            gap: 5px; /* Espacio mínimo para que parezca un collage */
+            width: 100%;
+            height: auto;
+            padding: 20px 0;
+            overflow: hidden;
+        }
+
+        .meme-item {
+            width: 100%;
+            height: 100px; /* Altura fija para que sean cuadradas */
+            background-color: var(--glass);
+            border: 1px solid var(--border-glass);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animación "bouncy" */
+            border-radius: 8px;
+        }
+
+        .meme-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* La foto llena el cuadro sin deformarse */
+            filter: grayscale(100%); /* Efecto inicial en blanco y negro para dar contraste */
+            transition: var(--transition);
+        }
+
+        /* --- EFECTOS DE INTERACCIÓN (La parte graciosa) --- */
+
+        .meme-item:hover {
+            transform: scale(1.5) rotate(15deg); /* Se agranda y gira */
+            z-index: 10; /* Se pone al frente */
+            border-color: var(--accent); /* Cambia el borde al color de acento */
+            box-shadow: 0 10px 30px -10px var(--accent-muted);
+        }
+
+        .meme-item:hover img {
+            filter: grayscale(0%); /* La foto se pone a color al pasar el mouse */
+        }
+
+        /* Para el móvil: que no se agrande tanto */
+        @media (max-width: 600px) {
+            .meme-wall { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+            .meme-item { height: 80px; }
+            .meme-item:hover { transform: scale(1.3) rotate(-10deg); }
+        }
+    </style>
+</head>
+<body class="fade-in">
+
+    <header style="margin-top: 80px; text-align: center; padding: 0 20px;">
+        <h1 style="font-size: 2.5rem; font-weight: 600;">Ecos</h1>
+        <p style="margin-top: 15px; color: var(--text-dim); font-weight: 300; max-width: 450px; margin: 0 auto;">
+            Un registro visual intensivo de las canciones... o de algo más.
+        </p>
+    </header>
+
+    <main style="width: 90%; max-width: 1100px; margin: 50px auto;">
+        
+        <div class="meme-wall">
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+            <div class="meme-item"><img src="graciosa.jpg" alt="Eco"></div>
+        </div>
+
+    </main>
+
+    <footer style="margin: 80px 0; text-align: center;">
+        <a href="biblioteca.html" class="btn-universal" style="font-size: 0.8rem; border: 1px solid var(--border-glass);">← Volver al Índice</a>
+    </footer>
+
+</body>
+</html>

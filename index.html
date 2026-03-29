@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archivo | Recuerdos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; width: 90%; max-width: 1100px; margin-top: 50px; }
+        .card { 
+            background: var(--glass); border: 1px solid var(--border-glass);
+            padding: 32px; border-radius: 16px; text-decoration: none; color: inherit;
+            transition: var(--transition); display: flex; flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+        .card:hover { border-color: var(--accent); background: rgba(255,255,255,0.04); transform: translateY(-4px); }
+        .card h3 { font-size: 1.25rem; margin-bottom: 8px; color: var(--text-main); font-weight: 600; }
+        .card p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.5; font-weight: 300; }
+        .status-tag { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 12px; }
+    </style>
+</head>
+<body class="fade-in">
+
+    <header style="margin-top: 80px; text-align: center;">
+        <h1 style="font-size: 2.5rem; margin-top: 10px;">Recuerdos</h1>
+        <p id="subtitulo" style="margin-top: 15px; color: var(--text-dim); font-weight: 300; max-width: 500px; margin-left: auto; margin-right: auto;">
+            Un espacio para volver a los detalles que el tiempo no tiene por qué llevarse.
+        </p>
+    </header>
+
+    <main class="grid">
+        <a href="seccion1.html" class="card">
+            <span class="status-tag">seccion 01</span>
+            <h3>27 / marzo / 2026</h3>
+            <p>La flor y las palabras que se quedaron aquí, esperando a ser recordadas con una sonrisa.</p>
+        </a>
+
+        <a href="seccion2.html" class="card">
+            <span class="status-tag">seccion 02</span>
+            <h3>San Valentin</h3>
+            <p>Un dia que siempre recordaré, cuando estuviste para mi cuando mas lo necesite.</p>
+        </a>
+
+        <a href="seccion3.html" class="card">
+            <span class="status-tag">seccion 03</span>
+            <h3>Me alegro!!!</h3>
+            <p>Me alegro!!!</p>
+        </a>
+        <a href="seccion4.html" class="card">
+            <span class="status-tag">seccion 04</span>
+            <h3>Título de la Sección</h3>
+            <p>Aquí pones la descripción corta y ligera de lo que habrá dentro.</p>
+        </a>
+            <a href="seccion5.html" class="card">
+            <span class="status-tag">seccion 05</span>
+            <h3>Título de la Sección</h3>
+            <p>Aquí pones la descripción corta y ligera de lo que habrá dentro.</p>
+        </a>
+    </main>
+
+    <footer style="margin-top: auto; padding: 60px 0;">
+        <p id="timestamp" style="font-size: 0.75rem; color: var(--text-dim); font-family: monospace; opacity: 0.5;"></p>
+    </footer>
+
+    <script>
+        const ahora = new Date();
+        const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('timestamp').innerHTML = `ÚLTIMA ACTUALIZACIÓN DEL ARCHIVO: ${ahora.toLocaleDateString('es-ES', opciones).toUpperCase()}`;
+    </script>
+</body>
+</html>
