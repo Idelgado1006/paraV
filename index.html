@@ -129,5 +129,45 @@
         document.getElementById('timestamp').innerHTML = `ÚLTIMA ACTUALIZACIÓN DEL ARCHIVO: ${ahora.toLocaleDateString('es-ES', opciones).toUpperCase()}`;
     </script>
 <script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
+<script>
+  // 1. Inicialización de Vercel
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+
+  // 2. Función para trackear eventos personalizados (Reutilizable)
+  function trackClick(nombreEvento) {
+    if (window.va) {
+      window.va('event', { name: nombreEvento });
+      console.log("Evento registrado: " + nombreEvento);
+    }
+  }
+// Función para obtener la ciudad y enviarla a Vercel
+async function trackUbicacion() {
+    try {
+        const respuesta = await fetch('https://ipapi.co/json/');
+        const datos = await respuesta.json();
+        
+        // Enviamos un evento con la ciudad y el proveedor de internet
+        window.va('event', { 
+            name: 'Ubicacion Apertura',
+            data: {
+                ciudad: datos.city,
+                isp: datos.org, // Esto te dice si es Tigo, +Móvil, etc.
+                red: datos.network
+            }
+        });
+        console.log("Ubicación recolectada: " + datos.city);
+    } catch (error) {
+        console.log("No se pudo obtener la ubicación");
+    }
+}
+
+// Llamamos a la función cuando cargue la página
+window.addEventListener('load', trackUbicacion);
+  // 3. Evento automático al abrir la página principal
+  window.addEventListener('load', () => {
+    trackClick('Abrió Index');
+  });
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
