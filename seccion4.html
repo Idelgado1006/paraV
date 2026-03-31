@@ -5,169 +5,185 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Sintonía Diaria • Victoria</title>
     <style>
+        /* --- ESTÉTICA INGENIERÍA EMOCIONAL --- */
         body {
             margin: 0; padding: 0; min-height: 100vh; width: 100%;
             background: radial-gradient(circle at center, #0d1a2d 0%, #080f1a 100%);
             display: flex; flex-direction: column; align-items: center;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             color: #fce4ec; overflow-x: hidden;
         }
 
         .header-title {
-            margin-top: 40px; color: #d52d58; font-weight: 300; font-size: 1.5rem;
-            letter-spacing: 5px; text-transform: uppercase; text-shadow: 0 0 15px rgba(213, 45, 88, 0.6);
+            margin-top: 40px; color: #d52d58; font-weight: 300; font-size: 1.4rem;
+            letter-spacing: 4px; text-transform: uppercase; 
+            text-shadow: 0 0 15px rgba(213, 45, 88, 0.6);
         }
 
-        /* TARJETA ESTILO VIDRIO (ADN DE LA ROSA) */
         .music-card {
-            margin-top: 30px; width: 85%; max-width: 350px;
-            background: rgba(18, 33, 57, 0.3); backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(213, 45, 88, 0.3); border-radius: 30px;
-            padding: 25px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            z-index: 1; position: relative;
+            margin-top: 25px; width: 88%; max-width: 360px;
+            background: rgba(18, 33, 57, 0.25); backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(213, 45, 88, 0.25); border-radius: 28px;
+            padding: 22px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            z-index: 2; position: relative;
         }
 
-        .day-message { font-style: italic; font-weight: 300; font-size: 0.95rem; margin-bottom: 20px; min-height: 45px; line-height: 1.6; }
-        .day-highlight { color: #d52d58; font-weight: 600; text-shadow: 0 0 8px rgba(213, 45, 88, 0.5); }
+        .day-message { 
+            font-style: italic; font-weight: 300; font-size: 0.92rem; 
+            margin-bottom: 18px; min-height: 50px; line-height: 1.5; 
+        }
 
-        /* PORTADA REDONDEADA */
+        .day-highlight { 
+            color: #ff3366; font-weight: 700; 
+            text-shadow: 0 0 10px rgba(255, 51, 102, 0.4); 
+        }
+
         .album-art-container {
-            width: 100%; aspect-ratio: 1/1; border-radius: 20px; overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8); margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1);
+            width: 100%; aspect-ratio: 1/1; border-radius: 18px; overflow: hidden;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.7); margin-bottom: 20px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
         }
-        .album-art-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
 
-        .song-info h2 { font-size: 1.2rem; margin: 10px 0 5px 0; color: #fff; letter-spacing: 1px; }
-        .song-info p { font-size: 0.9rem; color: rgba(252, 228, 236, 0.6); margin-bottom: 20px; }
+        .album-art-container img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            opacity: 0; transition: opacity 1s ease; 
+        }
 
-        /* REPRODUCTOR COMPACTO */
-        #player-container { border-radius: 15px; overflow: hidden; background: rgba(0,0,0,0.3); margin-bottom: 20px; min-height: 80px; }
+        /* CONTENEDOR DEL REPRODUCTOR */
+        #player-container { 
+            border-radius: 12px; overflow: hidden; 
+            margin-bottom: 18px; min-height: 152px; 
+            background: rgba(0,0,0,0.3); 
+        }
 
         .btn-spotify {
             display: inline-flex; align-items: center; justify-content: center;
             background: #1DB954; color: white; text-decoration: none;
-            padding: 12px 25px; border-radius: 25px; font-size: 0.85rem; font-weight: 600;
-            transition: 0.3s; width: 80%; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
+            padding: 12px 20px; border-radius: 30px; font-size: 0.82rem; 
+            font-weight: 700; transition: 0.3s; width: 85%;
+            box-shadow: 0 5px 15px rgba(29, 185, 84, 0.2);
         }
-        .btn-spotify:hover { background: #1ed760; transform: translateY(-2px); }
 
-        /* BARRA DE MÚSICA ANIMADA */
-        .visualizer {
-            display: flex; justify-content: center; align-items: flex-end;
-            gap: 4px; height: 25px; margin-top: 25px;
-        }
-        .bar {
-            width: 3px; background: #d52d58; border-radius: 2px;
-            animation: sound-wave 1s infinite ease-in-out;
-            box-shadow: 0 0 5px rgba(213, 45, 88, 0.4);
-        }
-        .bar:nth-child(odd) { animation-duration: 0.7s; }
-        .bar:nth-child(even) { animation-duration: 1.1s; }
-        @keyframes sound-wave { 0%, 100% { height: 5px; } 50% { height: 25px; } }
+        .btn-spotify:hover { transform: scale(1.03); background: #1ed760; }
 
-        /* PÉTALOS AMBIENTALES */
+        /* PÉTALOS */
         .falling-petal {
             position: fixed; background: #d52d58; border-radius: 0 80% 0 80%;
-            opacity: 0.15; z-index: 0; pointer-events: none; animation: fall linear infinite;
+            opacity: 0.12; z-index: 1; pointer-events: none; animation: fall linear infinite;
         }
-        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
+        @keyframes fall { 
+            0% { transform: translateY(-10vh) rotate(0deg); } 
+            100% { transform: translateY(110vh) rotate(360deg); } 
+        }
     </style>
 </head>
 <body>
 
-    <h1 class="header-title">Sintonía del día</h1>
+    <h1 class="header-title">La cancion del dia</h1>
 
     <div class="music-card">
-        <p class="day-message" id="msg-dia">Conectando con la base de datos...</p>
+        <p class="day-message" id="msg-dia">cargando mensaje diario...</p>
 
         <div class="album-art-container">
-            <img id="album-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Portada">
+            <img id="album-cover" src="" alt="Portada">
         </div>
 
-        <div class="song-info">
-            <h2 id="song-name">Buscando canción...</h2>
-            <p id="artist-name">Cargando artista</p>
-        </div>
-
-        <div id="player-container"></div>
+        <div id="player-container">
+            </div>
 
         <a id="spotify-link" href="#" target="_blank" class="btn-spotify">
-            Escuchar en Spotify
+            ABRIR EN SPOTIFY
         </a>
-
-        <div class="visualizer">
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
-        </div>
     </div>
 
     <script>
-        // CONFIGURACIÓN DE TU GOOGLE SHEET (YA INTEGRADO)
+        // CONFIGURACIÓN DE DATOS (NO TOCAR)
         const SHEET_ID = '1OkOYolMxeWx5AmxA9RydHrRjesdK5qnUPsQtS003k_w';
         const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Hoja%201`;
 
-        async function cargarDesdeExcel() {
+        async function initSintonia() {
             try {
-                const res = await fetch(URL);
-                const text = await res.text();
-                const json = JSON.parse(text.substr(47).slice(0, -2));
-                const filas = json.table.rows;
+                const response = await fetch(URL);
+                const text = await response.text();
+                const json = JSON.parse(text.substring(47).slice(0, -2));
+                const rows = json.table.rows;
 
-                // Fecha actual de Panamá
+                // OBTENER FECHA ACTUAL PANAMÁ (ISO FORMAT)
                 const hoy = new Intl.DateTimeFormat('en-CA', {
                     timeZone: 'America/Panama',
                     year: 'numeric', month: '2-digit', day: '2-digit'
                 }).format(new Date());
 
-                // Buscar la fila (Columna A = 0)
-                const filaHoy = filas.find(f => f.c[0] && f.c[0].v === hoy);
+                // BUSCAR FILA DEL DÍA
+                const diaEncontrado = rows.find(r => {
+                    if (!r.c[0] || !r.c[0].v) return false;
+                    const fechaExcel = r.c[0].v.toString().replace(/\//g, '-');
+                    return fechaExcel === hoy;
+                });
 
-                if (filaHoy) {
-                    const data = {
-                        dia: filaHoy.c[1] ? filaHoy.c[1].v : "",
-                        mensaje: filaHoy.c[2] ? filaHoy.c[2].v : "",
-                        trackId: filaHoy.c[3] ? filaHoy.c[3].v : "",
-                        cover: filaHoy.c[4] ? filaHoy.c[4].v : ""
-                    };
+                if (diaEncontrado) {
+                    // 1. Limpieza de Track ID (Extrae el ID si pegas el link entero)
+                    let rawId = diaEncontrado.c[3] ? diaEncontrado.c[3].v.toString().trim() : "";
+                    if (rawId.includes('track/')) {
+                        rawId = rawId.split('track/')[1].split('?')[0];
+                    }
 
-                    // Inyectar datos
-                    const regex = new RegExp(data.dia, "gi");
-                    document.getElementById('msg-dia').innerHTML = data.mensaje.replace(regex, `<span class="day-highlight">${data.dia}</span>`);
-                    document.getElementById('album-cover').src = data.cover;
-                    document.getElementById('spotify-link').href = `http://googleusercontent.com/open.spotify.com/track/${data.trackId}`;
-                    
-                    // Solo como referencia visual, el nombre real sale en el iframe
-                    document.getElementById('song-name').innerText = "Canción del día";
-                    document.getElementById('artist-name').innerText = "Seleccionada para ti";
+                    const diaNombre = diaEncontrado.c[1] ? diaEncontrado.c[1].v : "";
+                    const mensaje = diaEncontrado.c[2] ? diaEncontrado.c[2].v : "";
+                    const coverUrl = diaEncontrado.c[4] ? diaEncontrado.c[4].v : "";
 
-                    // Reproductor
-                    document.getElementById('player-container').innerHTML = `
-                        <iframe src="https://open.spotify.com/embed/track/OTRA_CANCION{data.trackId}?utm_source=generator&theme=0" 
-                        width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
-                    
-                    if (window.va) window.va('event', { name: `Sintonia_Vista_${hoy}` });
+                    // 2. Aplicar Mensaje con Neón
+                    const msgBox = document.getElementById('msg-dia');
+                    const regex = new RegExp(diaNombre, "gi");
+                    msgBox.innerHTML = mensaje.replace(regex, `<span class="day-highlight">${diaNombre}</span>`);
+
+                    // 3. Portada
+                    if (coverUrl) {
+                        const img = document.getElementById('album-cover');
+                        img.src = coverUrl;
+                        img.onload = () => img.style.opacity = "1";
+                    }
+
+                    // 4. Inyección del Reproductor (Fix ERR_BLOCKED_BY_CLIENT)
+                    if (rawId) {
+                        document.getElementById('spotify-link').href = `https://open.spotify.com/track/${rawId}`;
+                        
+                        // Usamos la URL de Embed Oficial con parámetros de privacidad
+                        document.getElementById('player-container').innerHTML = `
+                            <iframe 
+                                src="https://open.spotify.com/embed/track/${rawId}?utm_source=generator&theme=0" 
+                                width="100%" 
+                                height="152" 
+                                frameBorder="0" 
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                                loading="lazy"
+                                style="border-radius: 12px; border: none; background: transparent;">
+                            </iframe>`;
+                    }
                 } else {
-                    document.getElementById('msg-dia').innerText = "Vuelve mañana para descubrir una nueva canción...";
+                    document.getElementById('msg-dia').innerText = "Vuelve mañana para una nueva canción...";
                 }
-            } catch (e) {
-                console.error("Error:", e);
+            } catch (error) {
+                console.error("Debug:", error);
+                document.getElementById('msg-dia').innerText = "Revisa tu conexión o el formato del Excel.";
             }
         }
 
-        function createPetal() {
+        // LLUVIA DE PÉTALOS
+        function petals() {
             const p = document.createElement('div');
             p.className = 'falling-petal';
             p.style.left = Math.random() * 100 + 'vw';
-            p.style.width = p.style.height = (Math.random() * 7 + 4) + 'px';
-            p.style.animationDuration = (Math.random() * 6 + 5) + 's';
+            p.style.width = p.style.height = (Math.random() * 6 + 4) + 'px';
+            p.style.animationDuration = (Math.random() * 5 + 6) + 's';
             document.body.appendChild(p);
-            setTimeout(() => p.remove(), 9000);
+            setTimeout(() => p.remove(), 8000);
         }
 
         window.onload = () => {
-            cargarDesdeExcel();
-            setInterval(createPetal, 1000);
+            initSintonia();
+            setInterval(petals, 1000);
         };
     </script>
 </body>
