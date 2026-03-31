@@ -1,199 +1,174 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sintonía | El Detalle</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Playfair+Display:italic@400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>Sintonía Diaria • Victoria</title>
     <style>
-        :root {
-            --bg: #000;
-            --pearl-main: #fffdf5; /* Blanco perla crema */
-            --pearl-lustre: rgba(255, 255, 255, 0.85);
-            --accent-muted: rgba(250, 22, 90, 0.1); /* Tu color acento sutil para el aura */
+        body {
+            margin: 0; padding: 0; min-height: 100vh; width: 100%;
+            background: radial-gradient(circle at center, #0d1a2d 0%, #080f1a 100%);
+            display: flex; flex-direction: column; align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fce4ec; overflow-x: hidden;
         }
 
-        body { 
-            background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
-            color: #fff; 
-            font-family: 'Inter', sans-serif; 
-            margin: 0; 
-            height: 100vh; 
-            display: flex; 
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center;
-            overflow: hidden;
-            padding: 20px;
-            touch-action: none; /* Evita scroll accidental */
+        .header-title {
+            margin-top: 40px; color: #d52d58; font-weight: 300; font-size: 1.5rem;
+            letter-spacing: 5px; text-transform: uppercase; text-shadow: 0 0 15px rgba(213, 45, 88, 0.6);
         }
 
-        /* --- CONTENEDOR DEL COLLAR (RESPONSIVO) --- */
-        .necklace-container {
-            position: relative;
-            width: 80vw; /* Ancho relativo a la pantalla */
-            max-width: 320px; /* Ancho máximo en PC */
-            height: 60vh; /* Alto relativo */
-            max-height: 380px; /* Alto máximo */
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: center;
+        /* TARJETA ESTILO VIDRIO (ADN DE LA ROSA) */
+        .music-card {
+            margin-top: 30px; width: 85%; max-width: 350px;
+            background: rgba(18, 33, 57, 0.3); backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(213, 45, 88, 0.3); border-radius: 30px;
+            padding: 25px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            z-index: 1; position: relative;
         }
 
-        /* --- LA PERLA INDIVIDUAL (CSS ART) --- */
-        .pearl {
-            position: absolute;
-            border-radius: 50%;
-            background-color: var(--pearl-main);
-            
-            /* Gradiente de Nácar: Brillo especular y sombra de volumen */
-            background-image: 
-                radial-gradient(circle at 35% 35%, #fff 0%, transparent 40%),
-                radial-gradient(circle at 70% 70%, rgba(0,0,0,0.15) 0%, transparent 60%);
-            
-            /* Sombras complejas para efecto esférico real */
-            box-shadow: 
-                inset -2px -2px 6px rgba(0,0,0,0.1), /* Profundidad interna */
-                0 3px 8px rgba(0,0,0,0.3); /* Sombra proyectada sutil */
-            
-            /* Animación de brillo orgánico */
-            animation: pearlGlow 4s infinite ease-in-out;
-            will-change: transform, box-shadow;
-        }
+        .day-message { font-style: italic; font-weight: 300; font-size: 0.95rem; margin-bottom: 20px; min-height: 45px; line-height: 1.6; }
+        .day-highlight { color: #d52d58; font-weight: 600; text-shadow: 0 0 8px rgba(213, 45, 88, 0.5); }
 
-        /* --- LUZ DE FONDO (AURA) --- */
-        .aura {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 250px;
-            height: 300px;
-            background: radial-gradient(ellipse at center, var(--accent-muted) 0%, transparent 70%);
-            z-index: 0;
-            border-radius: 50%;
+        /* PORTADA REDONDEADA */
+        .album-art-container {
+            width: 100%; aspect-ratio: 1/1; border-radius: 20px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8); margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1);
         }
+        .album-art-container img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
 
-        /* --- TEXTO ROMÁNTICO --- */
-        .caption {
-            text-align: center;
-            z-index: 10;
-            max-width: 300px;
-            padding: 0 10px;
+        .song-info h2 { font-size: 1.2rem; margin: 10px 0 5px 0; color: #fff; letter-spacing: 1px; }
+        .song-info p { font-size: 0.9rem; color: rgba(252, 228, 236, 0.6); margin-bottom: 20px; }
+
+        /* REPRODUCTOR COMPACTO */
+        #player-container { border-radius: 15px; overflow: hidden; background: rgba(0,0,0,0.3); margin-bottom: 20px; min-height: 80px; }
+
+        .btn-spotify {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: #1DB954; color: white; text-decoration: none;
+            padding: 12px 25px; border-radius: 25px; font-size: 0.85rem; font-weight: 600;
+            transition: 0.3s; width: 80%; box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
         }
+        .btn-spotify:hover { background: #1ed760; transform: translateY(-2px); }
 
-        .caption h2 {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-weight: 400;
-            font-size: 1.5rem;
-            line-height: 1.3;
-            margin-bottom: 15px;
-            color: #efefef;
-            opacity: 0;
-            animation: fadeInTexto 2s forwards 1.5s;
+        /* BARRA DE MÚSICA ANIMADA */
+        .visualizer {
+            display: flex; justify-content: center; align-items: flex-end;
+            gap: 4px; height: 25px; margin-top: 25px;
         }
-
-        .caption p {
-            font-size: 0.65rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #555;
-            margin-top: 10px;
-            opacity: 0;
-            animation: fadeInTexto 2s forwards 2.8s;
+        .bar {
+            width: 3px; background: #d52d58; border-radius: 2px;
+            animation: sound-wave 1s infinite ease-in-out;
+            box-shadow: 0 0 5px rgba(213, 45, 88, 0.4);
         }
+        .bar:nth-child(odd) { animation-duration: 0.7s; }
+        .bar:nth-child(even) { animation-duration: 1.1s; }
+        @keyframes sound-wave { 0%, 100% { height: 5px; } 50% { height: 25px; } }
 
-        /* --- ANIMACIONES CSS --- */
-        @keyframes pearlGlow {
-            0%, 100% { box-shadow: 0 3px 8px rgba(0,0,0,0.3), inset -2px -2px 6px rgba(0,0,0,0.1); }
-            50% { box-shadow: 0 3px 20px var(--pearl-lustre), inset -3px -3px 10px rgba(255,255,255,0.4); transform: scale(1.03); }
+        /* PÉTALOS AMBIENTALES */
+        .falling-petal {
+            position: fixed; background: #d52d58; border-radius: 0 80% 0 80%;
+            opacity: 0.15; z-index: 0; pointer-events: none; animation: fall linear infinite;
         }
-
-        @keyframes fadeInTexto { to { opacity: 1; } }
-
-        /* --- BOTÓN DE REGRESAR --- */
-        footer {
-            position: fixed;
-            bottom: 40px;
-            width: 100%;
-            text-align: center;
-            z-index: 10001;
-        }
-
-        .btn-universal { 
-            pointer-events: auto; 
-            font-size: 0.75rem; 
-            letter-spacing: 2px;
-            opacity: 0.6;
-            transition: 0.3s;
-        }
-        .btn-universal:hover { opacity: 1; color: #fa165a; }
-
-        /* AJUSTES PARA CELULAR */
-        @media (max-width: 600px) {
-            .caption h2 { font-size: 1.3rem; }
-            .necklace-container { max-height: 320px; }
-        }
+        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
     </style>
 </head>
-<body class="fade-in">
+<body>
 
-    <div class="aura"></div>
+    <h1 class="header-title">Sintonía del día</h1>
 
-    <div class="necklace-container" id="necklace">
+    <div class="music-card">
+        <p class="day-message" id="msg-dia">Conectando con la base de datos...</p>
+
+        <div class="album-art-container">
+            <img id="album-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Portada">
         </div>
 
-    <div class="caption">
-        <h2>Un detalle para alguien inolvidable.</h2>
-        <div style="width: 40px; height: 1px; background: rgba(250, 22, 90, 0.4); margin: 20px auto;"></div>
-        <p>Próximamente • PH</p>
+        <div class="song-info">
+            <h2 id="song-name">Buscando canción...</h2>
+            <p id="artist-name">Cargando artista</p>
+        </div>
+
+        <div id="player-container"></div>
+
+        <a id="spotify-link" href="#" target="_blank" class="btn-spotify">
+            Escuchar en Spotify
+        </a>
+
+        <div class="visualizer">
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+        </div>
     </div>
 
-    <footer>
-        <a href="index.html" class="btn-universal">← REGRESAR AL INICIO</a>
-    </footer>
-
     <script>
-        const container = document.getElementById('necklace');
-        const totalPearls = 24; // Cantidad de perlas para una caída rica
-        
-        // Obtener dimensiones reales del contenedor para el cálculo responsivo
-        const containerWidth = container.offsetWidth;
-        const containerHeight = container.offsetHeight;
+        // CONFIGURACIÓN DE TU GOOGLE SHEET (YA INTEGRADO)
+        const SHEET_ID = '1OkOYolMxeWx5AmxA9RydHrRjesdK5qnUPsQtS003k_w';
+        const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Hoja%201`;
 
-        for (let i = 0; i < totalPearls; i++) {
-            const pearl = document.createElement('div');
-            pearl.className = 'pearl';
-            
-            // Lógica de caída en "U" profunda (Parábola Responsiva)
-            // t va de -1 a 1 para simular la simetría de la curva
-            const t = (i / (totalPearls - 1)) * 2 - 1;
-            
-            // Curva: x es lineal, y es cuadrática (t^2)
-            // Usamos un margen interno de seguridad (20px)
-            const x = (t * (containerWidth / 2 - 20)) + (containerWidth / 2);
-            const y = (t * t) * (containerHeight * 0.75) + 50; // La caída usa el 75% del alto disponible
-            
-            // Tamaño Responsivo y Perspectiva: 
-            // Las perlas centrales son un poco más grandes (perspectiva de cercanía)
-            const baseSize = window.innerWidth <= 600 ? 10 : 13; // Más pequeñas en móvil
-            const size = baseSize + (1 - Math.abs(t)) * 5; // Factor de perspectiva (+5px en el centro)
-            
-            pearl.style.width = `${size}px`;
-            pearl.style.height = `${size}px`;
-            
-            // Posicionamiento absoluto ajustado por el tamaño de la perla
-            pearl.style.left = `${x - size/2}px`;
-            pearl.style.top = `${y - size/2}px`;
-            
-            // Retraso de animación aleatorio masivo para el brillo orgánico
-            // Esto hace que parezca que "vibran" de forma independiente
-            pearl.style.animationDelay = `-${Math.random() * 5}s`;
-            
-            container.appendChild(pearl);
+        async function cargarDesdeExcel() {
+            try {
+                const res = await fetch(URL);
+                const text = await res.text();
+                const json = JSON.parse(text.substr(47).slice(0, -2));
+                const filas = json.table.rows;
+
+                // Fecha actual de Panamá
+                const hoy = new Intl.DateTimeFormat('en-CA', {
+                    timeZone: 'America/Panama',
+                    year: 'numeric', month: '2-digit', day: '2-digit'
+                }).format(new Date());
+
+                // Buscar la fila (Columna A = 0)
+                const filaHoy = filas.find(f => f.c[0] && f.c[0].v === hoy);
+
+                if (filaHoy) {
+                    const data = {
+                        dia: filaHoy.c[1] ? filaHoy.c[1].v : "",
+                        mensaje: filaHoy.c[2] ? filaHoy.c[2].v : "",
+                        trackId: filaHoy.c[3] ? filaHoy.c[3].v : "",
+                        cover: filaHoy.c[4] ? filaHoy.c[4].v : ""
+                    };
+
+                    // Inyectar datos
+                    const regex = new RegExp(data.dia, "gi");
+                    document.getElementById('msg-dia').innerHTML = data.mensaje.replace(regex, `<span class="day-highlight">${data.dia}</span>`);
+                    document.getElementById('album-cover').src = data.cover;
+                    document.getElementById('spotify-link').href = `http://googleusercontent.com/open.spotify.com/track/${data.trackId}`;
+                    
+                    // Solo como referencia visual, el nombre real sale en el iframe
+                    document.getElementById('song-name').innerText = "Canción del día";
+                    document.getElementById('artist-name').innerText = "Seleccionada para ti";
+
+                    // Reproductor
+                    document.getElementById('player-container').innerHTML = `
+                        <iframe src="https://open.spotify.com/embed/track/OTRA_CANCION{data.trackId}?utm_source=generator&theme=0" 
+                        width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
+                    
+                    if (window.va) window.va('event', { name: `Sintonia_Vista_${hoy}` });
+                } else {
+                    document.getElementById('msg-dia').innerText = "Vuelve mañana para descubrir una nueva canción...";
+                }
+            } catch (e) {
+                console.error("Error:", e);
+            }
         }
+
+        function createPetal() {
+            const p = document.createElement('div');
+            p.className = 'falling-petal';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.width = p.style.height = (Math.random() * 7 + 4) + 'px';
+            p.style.animationDuration = (Math.random() * 6 + 5) + 's';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 9000);
+        }
+
+        window.onload = () => {
+            cargarDesdeExcel();
+            setInterval(createPetal, 1000);
+        };
     </script>
 </body>
 </html>
