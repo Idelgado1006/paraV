@@ -1,48 +1,83 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Sintonía Diaria • Victoria</title>
+    <title>Archivo | Sintonía Diaria</title>
     <style>
-        /* --- ESTÉTICA INGENIERÍA EMOCIONAL --- */
-        body {
-            margin: 0; padding: 0; min-height: 100vh; width: 100%;
-            background: radial-gradient(circle at center, #0d1a2d 0%, #080f1a 100%);
-            display: flex; flex-direction: column; align-items: center;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            color: #fce4ec; overflow-x: hidden;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+        :root {
+            --bg-dark: #0a0f16;
+            --accent: #fa165a;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+
+        /* --- ANIMACIÓN DE ENTRADA --- */
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
+        @keyframes fadeIn { to { opacity: 1; } }
+
         .header-title {
-            margin-top: 40px; color: #d52d58; font-weight: 300; font-size: 1.4rem;
-            letter-spacing: 4px; text-transform: uppercase; 
-            text-shadow: 0 0 15px rgba(213, 45, 88, 0.6);
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            text-align: center;
         }
 
         .music-card {
-            margin-top: 25px; width: 88%; max-width: 360px;
-            background: rgba(18, 33, 57, 0.25); backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(213, 45, 88, 0.25); border-radius: 28px;
-            padding: 22px; text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-            z-index: 2; position: relative;
+            width: 100%;
+            max-width: 400px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 28px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
         }
 
         .day-message { 
-            font-style: italic; font-weight: 300; font-size: 0.92rem; 
-            margin-bottom: 18px; min-height: 50px; line-height: 1.5; 
+            font-weight: 300; 
+            font-size: 0.95rem; 
+            margin-bottom: 25px; 
+            line-height: 1.6; 
+            color: var(--text-dim);
         }
 
-        .day-highlight { 
-            color: #ff3366; font-weight: 700; 
-            text-shadow: 0 0 10px rgba(255, 51, 102, 0.4); 
-        }
+        .day-highlight { color: var(--accent); font-weight: 600; }
 
         .album-art-container {
-            width: 100%; aspect-ratio: 1/1; border-radius: 18px; overflow: hidden;
-            box-shadow: 0 12px 35px rgba(0,0,0,0.7); margin-bottom: 20px;
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-glass);
         }
 
         .album-art-container img { 
@@ -50,27 +85,83 @@
             opacity: 0; transition: opacity 1s ease; 
         }
 
-        /* CONTENEDOR DEL REPRODUCTOR */
         #player-container { 
-            border-radius: 12px; overflow: hidden; 
-            margin-bottom: 18px; min-height: 152px; 
-            background: rgba(0,0,0,0.3); 
+            border-radius: 16px; 
+            overflow: hidden; 
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.2);
         }
 
         .btn-spotify {
-            display: inline-flex; align-items: center; justify-content: center;
-            background: #1DB954; color: white; text-decoration: none;
-            padding: 12px 20px; border-radius: 30px; font-size: 0.82rem; 
-            font-weight: 700; transition: 0.3s; width: 85%;
-            box-shadow: 0 5px 15px rgba(29, 185, 84, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1DB954;
+            color: white;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 0.85rem; 
+            font-weight: 700;
+            transition: var(--transition);
+            letter-spacing: 1px;
         }
 
-        .btn-spotify:hover { transform: scale(1.03); background: #1ed760; }
+        .btn-spotify:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
-        /* PÉTALOS */
+        /* --- PISTA SECRETA --- */
+        .system-tip {
+            margin: 30px 0;
+            padding: 15px 20px;
+            border: 1px dashed var(--border-glass); 
+            border-radius: 16px;
+            max-width: 350px;
+            text-align: center;
+            background: rgba(250, 22, 90, 0.02);
+        }
+
+        /* --- HISTORIAL --- */
+        .history-section { width: 100%; max-width: 400px; padding-bottom: 60px; }
+
+        #btn-history {
+            background: transparent;
+            border: 1px solid var(--border-glass);
+            color: var(--text-dim);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            width: 100%;
+            transition: var(--transition);
+            text-transform: uppercase;
+        }
+        #btn-history:hover { border-color: var(--accent); color: var(--accent); }
+
+        #history-list { margin-top: 25px; display: none; }
+
+        .history-item {
+            background: var(--glass);
+            padding: 20px;
+            border-radius: 18px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--accent);
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .h-date { font-size: 0.65rem; color: var(--accent); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; display: block; }
+        .h-song { font-weight: 600; font-size: 0.9rem; color: var(--text-main); margin-bottom: 4px; display: block; }
+        .h-msg { font-size: 0.8rem; color: var(--text-dim); font-style: italic; line-height: 1.4; }
+
+        /* PÉTALOS (Sutiles) */
         .falling-petal {
-            position: fixed; background: #d52d58; border-radius: 0 80% 0 80%;
-            opacity: 0.12; z-index: 1; pointer-events: none; animation: fall linear infinite;
+            position: fixed; background: var(--accent); border-radius: 0 80% 0 80%;
+            opacity: 0.1; z-index: -1; pointer-events: none; animation: fall linear infinite;
         }
         @keyframes fall { 
             0% { transform: translateY(-10vh) rotate(0deg); } 
@@ -78,28 +169,32 @@
         }
     </style>
 </head>
-<body>
+<body class="fade-in">
 
-    <h1 class="header-title">La cancion del dia</h1>
+    <h1 class="header-title">Canción Diaria</h1>
     
     <div class="music-card">
-        <p class="day-message" id="msg-dia">cargando mensaje diario...</p>
-
+        <p class="day-message" id="msg-dia">Sincronizando con el servidor...</p>
         <div class="album-art-container">
             <img id="album-cover" src="" alt="Portada">
         </div>
+        <div id="player-container"></div>
+        <a id="spotify-link" href="#" target="_blank" class="btn-spotify">REPRODUCIR EN SPOTIFY</a>
+    </div>
 
-        <div id="player-container">
-            </div>
+    <div class="system-tip">
+        <p style="margin: 0; font-size: 0.7rem; color: var(--text-dim); letter-spacing: 0.5px; line-height: 1.5;">
+            <span style="color: var(--accent); font-weight: bold;">AVISO DEL SISTEMA:</span><br>
+            Las iniciales en el registro cronológico hasta el 11 de marzo forman la llave de acceso.
+        </p>
+    </div>
 
-        <a id="spotify-link" href="#" target="_blank" class="btn-spotify">
-            ABRIR EN SPOTIFY
-        </a>
-        
+    <div class="history-section">
+        <button id="btn-history" onclick="toggleHistory()">Ver registros anteriores</button>
+        <div id="history-list"></div>
     </div>
 
     <script>
-        // CONFIGURACIÓN DE DATOS (NO TOCAR)
         const SHEET_ID = '1OkOYolMxeWx5AmxA9RydHrRjesdK5qnUPsQtS003k_w';
         const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Hoja%201`;
 
@@ -110,81 +205,105 @@
                 const json = JSON.parse(text.substring(47).slice(0, -2));
                 const rows = json.table.rows;
 
-                // OBTENER FECHA ACTUAL PANAMÁ (ISO FORMAT)
                 const hoy = new Intl.DateTimeFormat('en-CA', {
                     timeZone: 'America/Panama',
                     year: 'numeric', month: '2-digit', day: '2-digit'
                 }).format(new Date());
 
-                // BUSCAR FILA DEL DÍA
                 const diaEncontrado = rows.find(r => {
                     if (!r.c[0] || !r.c[0].v) return false;
-                    const fechaExcel = r.c[0].v.toString().replace(/\//g, '-');
-                    return fechaExcel === hoy;
+                    return r.c[0].v.toString().replace(/\//g, '-') === hoy;
                 });
 
                 if (diaEncontrado) {
-                    // 1. Limpieza de Track ID (Extrae el ID si pegas el link entero)
-                    let rawId = diaEncontrado.c[3] ? diaEncontrado.c[3].v.toString().trim() : "";
-                    if (rawId.includes('track/')) {
-                        rawId = rawId.split('track/')[1].split('?')[0];
-                    }
-
-                    const diaNombre = diaEncontrado.c[1] ? diaEncontrado.c[1].v : "";
-                    const mensaje = diaEncontrado.c[2] ? diaEncontrado.c[2].v : "";
-                    const coverUrl = diaEncontrado.c[4] ? diaEncontrado.c[4].v : "";
-
-                    // 2. Aplicar Mensaje con Neón
-                    const msgBox = document.getElementById('msg-dia');
-                    const regex = new RegExp(diaNombre, "gi");
-                    msgBox.innerHTML = mensaje.replace(regex, `<span class="day-highlight">${diaNombre}</span>`);
-
-                    // 3. Portada
-                    if (coverUrl) {
-                        const img = document.getElementById('album-cover');
-                        img.src = coverUrl;
-                        img.onload = () => img.style.opacity = "1";
-                    }
-
-                    // 4. Inyección del Reproductor (Fix ERR_BLOCKED_BY_CLIENT)
-                    if (rawId) {
-                        document.getElementById('spotify-link').href = `https://open.spotify.com/track/${rawId}`;
-                        
-                        // Usamos la URL de Embed Oficial con parámetros de privacidad
-                        document.getElementById('player-container').innerHTML = `
-                            <iframe 
-                                src="https://open.spotify.com/embed/track/${rawId}?utm_source=generator&theme=0" 
-                                width="100%" 
-                                height="152" 
-                                frameBorder="0" 
-                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
-                                loading="lazy"
-                                style="border-radius: 12px; border: none; background: transparent;">
-                            </iframe>`;
-                    }
+                    renderMainCard(diaEncontrado);
                 } else {
-                    document.getElementById('msg-dia').innerText = "Vuelve mañana para una nueva canción...";
+                    document.getElementById('msg-dia').innerText = "Vuelve mañana para una nueva frecuencia.";
                 }
+
+                renderHistory(rows, hoy);
+
             } catch (error) {
-                console.error("Debug:", error);
-                document.getElementById('msg-dia').innerText = "Revisa tu conexión o el formato del Excel.";
+                document.getElementById('msg-dia').innerText = "Error de sincronización.";
             }
         }
 
-        // LLUVIA DE PÉTALOS
+        function renderMainCard(fila) {
+            let rawId = fila.c[3] ? fila.c[3].v.toString().trim() : "";
+            if (rawId.includes('track/')) rawId = rawId.split('track/')[1].split('?')[0];
+
+            const diaNombre = fila.c[1] ? fila.c[1].v : "";
+            const mensaje = fila.c[2] ? fila.c[2].v : "";
+            const coverUrl = fila.c[4] ? fila.c[4].v : "";
+
+            const msgBox = document.getElementById('msg-dia');
+            const regex = new RegExp(diaNombre, "gi");
+            msgBox.innerHTML = mensaje.replace(regex, `<span class="day-highlight">${diaNombre}</span>`);
+
+            if (coverUrl) {
+                const img = document.getElementById('album-cover');
+                img.src = coverUrl;
+                img.onload = () => img.style.opacity = "1";
+            }
+
+            if (rawId) {
+                document.getElementById('spotify-link').href = `https://open.spotify.com/track/${rawId}`;
+                document.getElementById('player-container').innerHTML = `
+                    <iframe src="https://open.spotify.com/embed/track/${rawId}?utm_source=generator&theme=0" 
+                        width="100%" height="152" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                        style="border-radius:12px; border:none;"></iframe>`;
+            }
+        }
+
+        function renderHistory(rows, hoy) {
+            const histList = document.getElementById('history-list');
+            const pasados = rows.filter(r => {
+                if (!r.c[0] || !r.c[0].v) return false;
+                const fExcel = r.c[0].v.toString().replace(/\//g, '-');
+                return fExcel < hoy;
+            });
+
+            histList.innerHTML = pasados.map(r => {
+                const fecha = r.c[0] ? r.c[0].v : "";
+                const msgOriginal = r.c[2] ? r.c[2].v : "";
+                const nombreCancion = r.c[5] ? r.c[5].v : "Unknown Track";
+                const artista = r.c[6] ? r.c[6].v : "Unknown Artist";
+
+                return `
+                    <div class="history-item">
+                        <span class="h-date">${fecha}</span>
+                        <span class="h-song">${nombreCancion} — ${artista}</span>
+                        <p class="h-msg">${msgOriginal}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleHistory() {
+            const list = document.getElementById('history-list');
+            const btn = document.getElementById('btn-history');
+            if (list.style.display === 'block') {
+                list.style.display = 'none';
+                btn.innerText = 'Ver registros anteriores';
+            } else {
+                list.style.display = 'block';
+                btn.innerText = 'Cerrar registros';
+            }
+        }
+
         function petals() {
             const p = document.createElement('div');
             p.className = 'falling-petal';
             p.style.left = Math.random() * 100 + 'vw';
-            p.style.width = p.style.height = (Math.random() * 6 + 4) + 'px';
-            p.style.animationDuration = (Math.random() * 5 + 6) + 's';
+            p.style.width = p.style.height = (Math.random() * 5 + 3) + 'px';
+            p.style.animationDuration = (Math.random() * 5 + 7) + 's';
             document.body.appendChild(p);
             setTimeout(() => p.remove(), 8000);
         }
 
         window.onload = () => {
             initSintonia();
-            setInterval(petals, 1000);
+            setInterval(petals, 1200);
         };
     </script>
 </body>

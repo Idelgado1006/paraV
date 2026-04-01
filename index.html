@@ -5,129 +5,185 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Archivo | Recuerdos</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <style>
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; width: 90%; max-width: 1100px; margin-top: 50px; }
-        .card { 
-            background: var(--glass); border: 1px solid var(--border-glass);
-            padding: 32px; border-radius: 16px; text-decoration: none; color: inherit;
-            transition: var(--transition); display: flex; flex-direction: column;
-            backdrop-filter: blur(10px);
+        :root {
+            --bg-dark: #0a0f16;
+            --accent: #fa165a;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .card:hover { border-color: var(--accent); background: rgba(255,255,255,0.04); transform: translateY(-4px); }
-        .card h3 { font-size: 1.25rem; margin-bottom: 8px; color: var(--text-main); font-weight: 600; }
-        .card p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.5; font-weight: 300; }
-        .status-tag { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 12px; }
+
+        body {
+            background-color: var(--bg-dark);
+            /* Patrón de puntos sutil para look de ingeniería */
+            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            margin-top: 80px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        h1 { font-size: 2.8rem; font-weight: 600; letter-spacing: -1px; margin: 0; }
+        #subtitulo { color: var(--text-dim); margin-top: 15px; font-weight: 300; max-width: 500px; line-height: 1.6; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            width: 90%;
+            max-width: 1100px;
+            margin-top: 60px;
+            padding-bottom: 100px;
+        }
+
+        .card {
+            background: var(--glass);
+            border: 1px solid var(--border-glass);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(250, 22, 90, 0.05), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .card:hover::before { transform: translateX(100%); }
+
+        .status-tag {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 4px 12px;
+            border-radius: 6px;
+            align-self: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .card h3 { font-size: 1.4rem; margin-bottom: 12px; font-weight: 600; }
+        .card p { font-size: 0.95rem; color: var(--text-dim); line-height: 1.6; margin: 0; }
+
+        /* Estilo especial para la SECCIÓN 05 (El Refugio) */
+        .card-refugio {
+            border: 1px solid rgba(250, 22, 90, 0.3);
+            background: linear-gradient(135deg, rgba(250, 22, 90, 0.05) 0%, transparent 100%);
+        }
+
+        /* Estilos Proximamente */
+        .card-proximamente {
+            cursor: not-allowed;
+            opacity: 0.6;
+            border: 1px dashed var(--border-glass);
+            pointer-events: none;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            margin: 25px 0 10px 0;
+        }
+
+        .progress-bar {
+            width: 15%; /* Simulación de carga */
+            height: 100%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            border-radius: 10px;
+        }
+
+        footer { margin-top: auto; padding: 40px 0; text-align: center; width: 100%; }
+        #timestamp { font-size: 0.7rem; color: var(--text-dim); font-family: monospace; opacity: 0.6; letter-spacing: 1px; }
+
     </style>
 </head>
-<body class="fade-in">
+<body>
 
-    <header style="margin-top: 80px; text-align: center;">
-        <h1 style="font-size: 2.5rem; margin-top: 10px;">Recuerdos</h1>
-        <p id="subtitulo" style="margin-top: 15px; color: var(--text-dim); font-weight: 300; max-width: 500px; margin-left: auto; margin-right: auto;">
-            Un espacio para volver a los detalles que el tiempo no tiene por qué llevarse.
-        </p>
+    <header>
+        <h1>Recuerdos</h1>
+        <p id="subtitulo">Un espacio para volver a los detalles que el tiempo no tiene por qué llevarse.</p>
     </header>
 
     <main class="grid">
         <a href="seccion1.html" class="card">
-            <span class="status-tag">seccion 01</span>
-            <h3>27 / marzo / 2026</h3>
-            <p>La flor y las palabras que se quedaron aquí, esperando a ser recordadas con una sonrisa</p>
+            <span class="status-tag">Sección 01</span>
+            <h3>27 / Marzo / 2026</h3>
+            <p>La flor y las palabras que se quedaron aquí, esperando a ser recordadas con una sonrisa.</p>
         </a>
 
         <a href="seccion2.html" class="card">
-            <span class="status-tag">seccion 02</span>
-            <h3>San Valentin</h3>
-            <p> siempre recordaré cuando estuviste para mi cuando mas lo necesitaba cerca de estas fechas</p>
+            <span class="status-tag">Sección 02</span>
+            <h3>San Valentín</h3>
+            <p>Siempre recordaré cuando estuviste para mí cuando más lo necesitaba cerca de estas fechas.</p>
         </a>
 
         <a href="seccion3.html" class="card">
-            <span class="status-tag">seccion 03</span>
+            <span class="status-tag">Sección 03</span>
             <h3>Me alegro!!!</h3>
-            <p>Me alegro!!!</p>
+            <p>Un pequeño espacio dedicado a las buenas noticias y a verte bien.</p>
         </a>
         
         <a href="seccion4.html" class="card">
-            <span class="status-tag">seccion 04</span>
+            <span class="status-tag">Sección 04</span>
             <h3>La canción del día</h3>
-            <p>BANGERSSS</p> <br>
-            <p><p>esta seccion se actualiza de manera diaria, vuelve cada dia para encontrar una nueva canción</p></p>
+            <p>Bangers seleccionados. Se actualiza de manera diaria para encontrar algo nuevo.</p>
+        </a>
+
+        <a href="seccion5.html" class="card card-refugio">
+            <span class="status-tag" style="background: var(--accent); color: white;">Privado</span>
+            <h3>Ábreme</h3>
+            <p>Este espacio es una constante. Entra cuando el ruido de afuera sea demasiado fuerte.</p>
         </a>
 
         <div class="card card-proximamente">
-    <div class="card-content">
-        <span class="status-tag">Bloqueado</span>
-        <div class="lock-icon">🔒</div>
-        <h3>Próximamente</h3>
-        <p>vuelve otro dia...</p>
-        
-        <div class="progress-container">
-            <div class="progress-bar"></div>
+            <span class="status-tag" style="color: grey; border-color: grey;">Bloqueado</span>
+            <h3>Próximamente</h3>
+            <p>El archivo sigue procesando nuevos datos...</p>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+            <span style="font-size: 0.6rem; color: var(--text-dim);">CARGANDO PROTOCOLOS... 15%</span>
         </div>
-        <span class="percentage">Cargando 10%</span>
-    </div>
-</div>
-
-<style>
-    /* Estilos específicos para que la tarjeta se vea distinta y no sea clickable */
-    .card-proximamente {
-        cursor: not-allowed !important; /* Cambia el cursor para indicar que no hace nada */
-        opacity: 0.8;
-        border: 1px dashed rgba(128, 128, 128, 0.3) !important;
-        background: rgba(255, 255, 255, 0.02) !important;
-        pointer-events: none; /* Esto evita que el click funcione */
-    }
-
-    .card-proximamente:hover {
-        transform: none !important; /* Evita que salte como las otras */
-        box-shadow: 0 0 20px rgba(250, 22, 90, 0.1) !important;
-    }
-
-    .status-tag {
-        font-size: 0.6rem;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        color: #fa165a;
-        border: 1px solid #fa165a;
-        padding: 2px 8px;
-        border-radius: 4px;
-        display: inline-block;
-        margin-bottom: 15px;
-    }
-
-    .lock-icon {
-        font-size: 1.5rem;
-        margin-bottom: 15px;
-        filter: grayscale(1);
-    }
-
-    .progress-container {
-        width: 100%;
-        height: 4px;
-        background: rgba(255,255,255,0.1);
-        border-radius: 10px;
-        margin: 20px 0 10px 0;
-        overflow: hidden;
-    }
-
-    .progress-bar {
-        width: 10%;
-        height: 100%;
-        background: #fa165a;
-        box-shadow: 0 0 10px #fa165a;
-    }
-
-    .percentage {
-        font-size: 0.6rem;
-        color: #444;
-        letter-spacing: 1px;
-    }
-</style>
     </main>
 
-    <footer style="margin-top: auto; padding: 60px 0;">
-        <p id="timestamp" style="font-size: 0.75rem; color: var(--text-dim); font-family: monospace; opacity: 0.5;"></p>
+    <footer>
+        <p id="timestamp"></p>
     </footer>
 
     <script>
@@ -135,47 +191,26 @@
         const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById('timestamp').innerHTML = `ÚLTIMA ACTUALIZACIÓN DEL ARCHIVO: ${ahora.toLocaleDateString('es-ES', opciones).toUpperCase()}`;
     </script>
-<script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
-<script>
-  // 1. Inicialización de Vercel
-  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
 
-  // 2. Función para trackear eventos personalizados (Reutilizable)
-  function trackClick(nombreEvento) {
-    if (window.va) {
-      window.va('event', { name: nombreEvento });
-      console.log("Evento registrado: " + nombreEvento);
-    }
-  }
-// Función para obtener la ciudad y enviarla a Vercel
-async function trackUbicacion() {
-    try {
-        const respuesta = await fetch('https://ipapi.co/json/');
-        const datos = await respuesta.json();
+    <script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
         
-        // Enviamos un evento con la ciudad y el proveedor de internet
-        window.va('event', { 
-            name: 'Ubicacion Apertura',
-            data: {
-                ciudad: datos.city,
-                isp: datos.org, // Esto te dice si es Tigo, +Móvil, etc.
-                red: datos.network
-            }
-        });
-        console.log("Ubicación recolectada: " + datos.city);
-    } catch (error) {
-        console.log("No se pudo obtener la ubicación");
-    }
-}
+        async function trackUbicacion() {
+            try {
+                const respuesta = await fetch('https://ipapi.co/json/');
+                const datos = await respuesta.json();
+                window.va('event', { 
+                    name: 'Ubicacion Apertura',
+                    data: { ciudad: datos.city, isp: datos.org, red: datos.network }
+                });
+            } catch (error) { console.log("Error de tracking"); }
+        }
 
-// Llamamos a la función cuando cargue la página
-window.addEventListener('load', trackUbicacion);
-  // 3. Evento automático al abrir la página principal
-  window.addEventListener('load', () => {
-    trackClick('Abrió Index');
-  });
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
+        window.addEventListener('load', () => {
+            trackUbicacion();
+            if (window.va) window.va('event', { name: 'Abrió Index' });
+        });
+    </script>
 </body>
 </html>
- 
