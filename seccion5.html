@@ -263,11 +263,11 @@
 
         async function confirmarLectura() {
             const btn = document.getElementById('btn-ping');
-            btn.innerText = "Enviando señal...";
+            btn.innerText = "Enviando...";
             btn.disabled = true;
             try {
                 await fetch(WEB_APP_URL, { mode: 'no-cors' });
-                btn.innerText = "✓ Te escucho. Estaré ahí.";
+                btn.innerText = "✓ Siempre estaré para ti..";
                 btn.classList.add('success');
             } catch (e) {
                 btn.innerText = "Reintentar envío";
