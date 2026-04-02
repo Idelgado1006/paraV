@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Archivo | Conexión Segura</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
@@ -20,6 +20,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* --- FIX DE SCROLL: Permitir desplazamiento vertical en móviles --- */
         body {
             background-color: var(--bg-dark);
             background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
@@ -28,13 +29,16 @@
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: center; /* Centra verticalmente si cabe */
             justify-content: center;
-            padding: 20px;
-            overflow: hidden; /* Evita scroll durante animaciones */
+            padding: 40px 20px; /* Espacio para que no pegue a los bordes */
+            overflow-y: auto;    /* Permite scroll si el contenido es largo */
+            overflow-x: hidden;
         }
 
-        /* --- ANIMACIÓN DE ENTRADA (FADE-IN UP) --- */
+        /* Ocultar barra de scroll para estética premium */
+        body::-webkit-scrollbar { display: none; }
+
         .fade-in-up {
             animation: fadeInUp 0.8s ease-out forwards;
             opacity: 0;
@@ -57,6 +61,7 @@
             text-align: center;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             transition: var(--transition);
+            margin: auto; /* Clave para el centrado en scroll */
         }
 
         h1 { font-weight: 600; font-size: 1.6rem; margin-bottom: 8px; letter-spacing: -0.02em; }
@@ -67,10 +72,9 @@
             margin-bottom: 30px; 
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            transition: color 0.3s ease;
         }
 
-        /* Estilos Input y Botón de Entrada */
+        /* Inputs y Botones */
         .pass-input {
             width: 100%;
             background: rgba(0, 0, 0, 0.4);
@@ -85,7 +89,7 @@
             transition: var(--transition);
         }
         .pass-input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-muted); }
-        .pass-input:disabled { opacity: 0.3; cursor: not-allowed; }
+        .pass-input:disabled { opacity: 0.3; }
         
         .hint { font-size: 0.7rem; color: var(--text-dim); margin-bottom: 25px; display: block; opacity: 0.6; }
 
@@ -97,22 +101,12 @@
             border-radius: 14px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.95rem;
             width: 100%;
             transition: var(--transition);
         }
-        .btn-universal:hover:not(:disabled) { background: #fa165aef; transform: translateY(-2px); box-shadow: 0 10px 20px -5px rgba(250, 22, 90, 0.3); }
-        .btn-universal:disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-universal:disabled { opacity: 0.3; }
 
-        /* --- ANIMACIÓN SHAKE (ERROR) --- */
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-6px); }
-            40%, 80% { transform: translateX(6px); }
-        }
-        .shake { animation: shake 0.4s ease-in-out; }
-
-        /* Estilos Contenido Revelado (INICIAL) */
+        /* Contenido Revelado */
         #secret-content { display: none; opacity: 0; transform: translateY(20px); filter: blur(10px); }
 
         .message-box {
@@ -130,7 +124,6 @@
         .highlight { color: var(--text-main); font-weight: 600; }
         .accent-text { color: var(--accent); font-weight: 600; }
 
-        /* --- BOTÓN DE PÁNICO (ANIMADO Y CON PULSO) --- */
         .btn-panic {
             background: transparent;
             border: 1px solid var(--accent);
@@ -141,17 +134,9 @@
             font-size: 0.85rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
             cursor: pointer;
-            transition: var(--transition);
             animation: pulse-beacon 2.5s infinite;
-        }
-
-        .btn-panic:hover:not(:disabled) {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 10px 25px -5px rgba(250, 22, 90, 0.4);
-            transform: translateY(-2px);
+            transition: var(--transition);
         }
 
         @keyframes pulse-beacon {
@@ -166,12 +151,19 @@
             background: rgba(16, 185, 129, 0.05);
             animation: none;
         }
+
+        /* Ajustes para pantallas pequeñas */
+        @media (max-width: 480px) {
+            .auth-container { padding: 30px 20px; }
+            h1 { font-size: 1.4rem; }
+            .message-box { font-size: 0.9rem; padding: 20px; }
+        }
     </style>
 </head>
 <body class="fade-in-up">
 
     <div class="auth-container" id="main-card">
-        <div id="lock-screen" style="transition: var(--transition);">
+        <div id="lock-screen">
             <h1>Solo para ti</h1>
             <p class="status-text" id="status-label">Sincronizando protocolos...</p>
             
@@ -190,12 +182,13 @@
             <div class="message-box">
                 <p>Victoria,</p>
                 <br>
-                <p>Si estás leyendo esto es porque, a pesar de todo, tal y como la palabra clave dice, <span class="highlight">no ha pasado un solo día en que no haya pensado en ti.</span></p>
+                <p>Si estás leyendo esto es porque, a pesar de todo, tal y como la palabra clave dice, <span class="highlight">no ha pasado un solo día en que no haya pensado en ti.</span> se que esto aun te importa, no estarias aqui si no fuese asi, yo nunca he dejado de creer en ti.</p>
                 <br>
                 <p>He dejado este espacio como una constante: un lugar que no se mueve, que no juzga y que no exige nada.</p>
                 <br>
-                <p>Afuera el ruido puede ser demasiado fuerte y a veces cansa resolverlo todo sola. Si alguna vez te sientes así, este es tu <span class="accent-text">botón de pánico</span>. No busques palabras, no des explicaciones. Solo presiónalo; te aseguro que aquí me vas a encontrar, y yo te buscare.</p>
+                <p>Afuera el mundo puede ser demasiado fuerte y a veces cansa resolverlo todo sola. Si alguna vez te sientes así, este es tu <span class="accent-text">botón de pánico</span>. No busques palabras, no des explicaciones. Solo presiona el botón; te aseguro que aquí me vas a encontrar, y yo te buscaré.</p>
                 <br>
+                
                 <p style="font-size: 0.7rem; opacity: 0.3; border-top: 1px solid var(--border-glass); padding-top: 15px; font-family: monospace;">
                     SERVER_VICTORIA // SESIÓN PERSISTENTE
                 </p>
@@ -211,7 +204,7 @@
     </div>
 
     <script>
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbw67ExAI2TtRrNglR0Bv8uatVuiCHL3Bc0xVr1ZIiqILoPCYmST0hrtiMpQvdtciB2G/exec'; 
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwWTk1OfGvxRtQG-kdbw7EDiUMaW4OxhdtO6Fcar4NRJrMdHlgeV9zggt485xeM_wYZiQ/exec'; 
         const SHEET_ID = '1OkOYolMxeWx5AmxA9RydHrRjesdK5qnUPsQtS003k_w';
         const DATA_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Hoja%201`;
         
@@ -219,7 +212,6 @@
         const inputField = document.getElementById('passwordField');
         const statusLabel = document.getElementById('status-label');
 
-        // Limitar a letras y espacios
         inputField.addEventListener('input', (e) => {
             e.target.value = e.target.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
         });
@@ -228,83 +220,57 @@
             try {
                 const response = await fetch(DATA_URL);
                 const text = await response.text();
-                // Parsear JSON de Google Sheets
                 const json = JSON.parse(text.substring(47).slice(0, -2));
                 const rows = json.table.rows;
 
                 if (rows[0] && rows[0].c[9]) {
-                    // Columna J (índice 9)
                     CLAVE_MAESTRA = rows[0].c[9].v.toString().trim().toUpperCase();
                     statusLabel.innerText = "Listo para acceso";
-                    statusLabel.style.color = "var(--text-dim)";
                     inputField.disabled = false;
                     document.getElementById('btn-check').disabled = false;
-                    inputField.focus(); // Auto-focus para PC
                 }
             } catch (e) {
-                statusLabel.innerText = "Fallo en la conexión del servidor.";
-                statusLabel.style.color = "var(--accent)";
+                statusLabel.innerText = "Error de conexión.";
             }
         }
 
         function checkPass() {
             const inputUser = inputField.value.trim().toUpperCase();
-            
             if (inputUser === CLAVE_MAESTRA && CLAVE_MAESTRA !== "") {
-                // --- ANIMACIÓN DE TRANSICIÓN (BLUR + FADE) ---
                 const lock = document.getElementById('lock-screen');
                 const secret = document.getElementById('secret-content');
                 
                 lock.style.opacity = "0";
                 lock.style.filter = "blur(10px)";
-                lock.style.transform = "scale(0.95)";
 
                 setTimeout(() => {
                     lock.style.display = "none";
                     secret.style.display = "block";
-                    // Pequeño delay para que el navegador renderice el block antes del fade
+                    // Asegura que el scroll suba al inicio del mensaje
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+
                     setTimeout(() => {
                         secret.style.opacity = "1";
-                        secret.style.transform = "translateY(0) scale(1)";
+                        secret.style.transform = "translateY(0)";
                         secret.style.filter = "blur(0px)";
-                        secret.style.transition = "all 0.8s cubic-bezier(0.4, 0, 0.2, 1)";
                     }, 50);
-                }, 500); // Mismo tiempo que la transición CSS
+                }, 500);
             } else {
-                // --- ANIMACIÓN SHAKE EN ERROR ---
-                inputField.classList.add('shake');
-                inputField.style.borderColor = "var(--accent)";
                 statusLabel.innerText = "Palabra incorrecta.";
                 statusLabel.style.color = "var(--accent)";
-                
-                setTimeout(() => {
-                    inputField.classList.remove('shake');
-                    inputField.style.borderColor = "var(--border-glass)";
-                }, 400); // Tiempo de la animación de shake
-                
-                inputField.value = "";
-                inputField.focus();
             }
         }
 
-        // Ejecutar checkPass al presionar Enter
-        inputField.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter' && !document.getElementById('btn-check').disabled) {
-                checkPass();
-            }
-        });
-
         async function confirmarLectura() {
             const btn = document.getElementById('btn-ping');
-            btn.innerText = "Sincronizando...";
+            btn.innerText = "Enviando señal...";
             btn.disabled = true;
             try {
-                // Petición silenciosa a Google Apps Script
                 await fetch(WEB_APP_URL, { mode: 'no-cors' });
-                btn.innerText = "✓ Señal enviada con éxito";
+                btn.innerText = "✓ Te escucho. Estaré ahí.";
                 btn.classList.add('success');
             } catch (e) {
-                btn.innerText = "Error al avisar. Reintentar.";
+                btn.innerText = "Reintentar envío";
                 btn.disabled = false;
             }
         }
