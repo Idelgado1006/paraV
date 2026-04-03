@@ -173,9 +173,9 @@
 
         .popup-mensaje {
             position: fixed; bottom: -150px; left: 50%; transform: translateX(-50%) translateZ(0);
-            width: 92%; max-width: 400px; background: rgba(10, 15, 22, 0.9);
+            width: 92%; max-width: 420px; background: rgba(10, 15, 22, 0.92);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--accent); border-radius: 22px; padding: 15px 18px;
+            border: 1px solid var(--accent); border-radius: 22px; padding: 16px 20px;
             display: flex; align-items: center; justify-content: space-between;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5); z-index: 10001;
             transition: bottom 0.6s var(--spring-eas);
@@ -196,9 +196,9 @@
             <a href="index.html" class="nav-home">🏠</a>
             <div class="system-status">
                 <div class="status-dot-wrapper">
-                    <span class="dot"></span> SISTEMA_ACTIVO 
+                    <span class="dot"></span> SISTEMA_ACTIVO
                 </div>
-                <div style="font-size: 0.5rem; color: var(--text-dim); font-family: monospace; margin-left: 11px;">v2.4.0 / BETA</div>
+                <div style="font-size: 0.5rem; color: var(--text-dim); font-family: monospace; margin-left: 11px;">v2.4.0 / 7 ENTRADAS</div>
             </div>
         </div>
 
@@ -268,10 +268,13 @@
 
     <div id="miPopup" class="popup-mensaje">
         <div class="popup-content">
-            <span style="font-size: 0.6rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: block;">Mensaje del Sistema</span>
-            <span id="popup-txt" style="font-size: 0.85rem; color: var(--text-main); font-weight: 400; line-height: 1.3;">tip: toca los botones de la barra de navegación, hay un link a un proyecto externo.</span>
+            <span style="font-size: 0.6rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">Mensaje del Sistema</span>
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+                <span style="font-size: 0.82rem; color: var(--text-main); font-weight: 400; line-height: 1.3;">• tip: toca los botones de la barra de navegación, recomendado verlo en PC</span>
+                <span style="font-size: 0.82rem; color: var(--text-main); font-weight: 400; line-height: 1.3;">• el enlace anclado es un proyecto personal en etapas tempranas de desarrollo</span>
+            </div>
         </div>
-        <button onclick="cerrarPopup()" style="background: rgba(var(--accent-rgb), 0.1); border: none; color: var(--text-main); width: 28px; height: 28px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer;">&times;</button>
+        <button onclick="cerrarPopup()" style="background: rgba(var(--accent-rgb), 0.1); border: none; color: var(--text-main); min-width: 28px; height: 28px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-left: 15px;">&times;</button>
     </div>
 
     <footer><p id="timestamp"></p></footer>
@@ -280,7 +283,6 @@
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyGd90x5g34cjsFvojvHPyRqJG0PpboUWVDj0SJNQ50BKHYhKRASKNIm06ul9eyK1AE/exec';
 
         function registrarEntrada(nombre, urlDestino) {
-            // navigator.sendBeacon es más eficiente para cerrar la página sin bloquear
             const data = JSON.stringify({ tarjeta: nombre, url: urlDestino });
             if (navigator.sendBeacon) {
                 navigator.sendBeacon(WEB_APP_URL, data);
@@ -298,16 +300,14 @@
             currentTheme = (currentTheme + 1) % themes.length;
             document.body.classList.add(themes[currentTheme]);
             document.getElementById('themeBtn').innerText = icons[currentTheme];
-            if(navigator.vibrate) navigator.vibrate(8); // Feedback táctil corto
+            if(navigator.vibrate) navigator.vibrate(8); 
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Revelar Header
             setTimeout(() => {
                 document.getElementById('mainHeader').classList.add('reveal');
             }, 100);
 
-            // Observer para revelación progresiva de tarjetas (ahorra CPU al inicio)
             const cards = document.querySelectorAll('.card');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry, index) => {
@@ -326,15 +326,13 @@
                     const titulo = this.querySelector('h3')?.innerText || "Tarjeta";
                     const destino = this.getAttribute('href');
                     if(destino) registrarEntrada(titulo, destino);
-                    if(navigator.vibrate) navigator.vibrate(5); // Tactile click
+                    if(navigator.vibrate) navigator.vibrate(5); 
                 });
             });
 
-            // Animación de barra
             const bar = document.getElementById('p-bar');
             if(bar) setTimeout(() => { bar.style.width = '84%'; }, 600);
 
-            // Popup con delay
             setTimeout(() => {
                 const popup = document.getElementById('miPopup');
                 if(popup) {
