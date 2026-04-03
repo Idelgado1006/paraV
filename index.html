@@ -8,7 +8,7 @@
     <style>
         :root {
             /* 1. TEMA DARK */
-            --bg-dark: #070b10;
+            --bg-dark: #06090e; /* Fondo ligeramente más oscuro */
             --accent: #fa165a;
             --text-main: #f8fafc;
             --text-dim: #94a3b8;
@@ -19,8 +19,11 @@
             --accent-rgb: 250, 22, 90;
             --tape: transparent;
             --btn-bg: rgba(255, 255, 255, 0.06);
-            --dot-size: 20px; 
-            --dot-opacity: 0.4px;
+            
+            /* Ajuste del patrón de puntos: muy oscuros y sutiles */
+            --dot-color: rgba(250, 22, 90, 0.06); /* Solo 6% de opacidad, casi negro */
+            --dot-size: 24px;
+            --dot-radius: 0.4px;
         }
 
         /* 2. TEMA MIDNIGHT */
@@ -33,6 +36,7 @@
             --border-glass: rgba(253, 224, 71, 0.25);
             --accent-rgb: 253, 224, 71;
             --btn-bg: rgba(253, 224, 71, 0.08);
+            --dot-color: rgba(253, 224, 71, 0.04);
         }
 
         /* 3. TEMA LIGHT */
@@ -46,14 +50,15 @@
             --accent-rgb: 245, 158, 11;
             --tape: rgba(245, 158, 11, 0.2);
             --btn-bg: rgba(245, 158, 11, 0.08);
+            /* En modo claro no usamos puntos */
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 
         body {
             background-color: var(--bg-dark);
-            /* Patrón de puntos refinado: menos opacidad y tamaño adaptable */
-            background-image: radial-gradient(rgba(var(--accent-rgb), 0.15) var(--dot-opacity), transparent var(--dot-opacity));
+            /* Aplicación del patrón ultra-sutil */
+            background-image: radial-gradient(var(--dot-color) var(--dot-radius), transparent var(--dot-radius));
             background-size: var(--dot-size) var(--dot-size);
             background-attachment: fixed;
             color: var(--text-main);
@@ -64,18 +69,15 @@
             transition: background-color 0.6s ease;
         }
 
-        /* Puntos más grandes en Desktop para mejor estética */
-        @media (min-width: 768px) {
-            :root {
-                --dot-size: 32px;
-                --dot-opacity: 0.6px;
-            }
-        }
-
+        /* Cuadrícula sutil solo para modo Light */
         body.theme-light::after {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: linear-gradient(var(--border-glass) 1px, transparent 1px), linear-gradient(90deg, var(--border-glass) 1px, transparent 1px);
             background-size: 25px 25px; z-index: -1; pointer-events: none;
+        }
+
+        body.theme-light {
+            background-image: none;
         }
 
         /* --- NAVBAR --- */
@@ -112,7 +114,7 @@
         h1 { font-size: clamp(2.2rem, 10vw, 2.8rem); font-weight: 600; letter-spacing: -1.5px; margin: 0; }
         #subtitulo { color: var(--text-dim); margin-top: 6px; font-weight: 300; font-size: 0.85rem; line-height: 1.4; }
 
-        /* --- GRID --- */
+        /* --- GRID RESPONSIVO --- */
         .grid {
             display: grid; grid-template-columns: 1fr; gap: 15px; width: 90%; max-width: 600px;
             margin-top: 25px; padding: 0 0 100px 0;
@@ -270,6 +272,7 @@
     <footer><p id="timestamp"></p></footer>
 
     <script>
+        // URL de tu Google Apps Script
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyGd90x5g34cjsFvojvHPyRqJG0PpboUWVDj0SJNQ50BKHYhKRASKNIm06ul9eyK1AE/exec';
 
         function registrarEntrada(nombre, urlDestino) {
