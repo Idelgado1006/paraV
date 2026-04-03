@@ -49,20 +49,49 @@
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             margin: 0;
-            /* Padding lateral aumentado (40px) para dejar pasillos de scroll libres */
-            padding: 100px 40px 60px; 
+            padding: 100px 20px 100px; /* Padding inferior extra para el botón */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow-y: auto; 
-            /* Evita que la página se refresque al deslizar hacia abajo */
-            overscroll-behavior-y: contain;
             background-image: radial-gradient(rgba(var(--accent-rgb), 0.05) 1px, transparent 1px);
             background-size: 30px 30px;
             background-attachment: fixed;
             position: relative;
             transition: background-color 0.6s ease;
+            scroll-behavior: smooth;
+        }
+
+        /* --- BOTÓN DE SCROLL FLOTANTE --- */
+        .scroll-assist-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 55px;
+            height: 55px;
+            background: var(--btn-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 20000;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4), var(--glow);
+            transition: all 0.3s var(--spring-eas);
+            animation: bounceBtn 3s infinite ease-in-out;
+        }
+
+        .scroll-assist-btn:active { transform: scale(0.9); opacity: 0.8; }
+
+        @keyframes bounceBtn {
+            0%, 100% { transform: translateY(0); box-shadow: 0 10px 20px rgba(0,0,0,0.4), var(--glow); }
+            50% { transform: translateY(-8px); box-shadow: 0 15px 25px rgba(0,0,0,0.5), var(--glow); }
         }
 
         /* --- NAVBAR --- */
@@ -101,17 +130,15 @@
             border: 1px solid var(--border-glass);
             border-radius: 32px;
             width: 100%;
-            /* Ancho máximo reducido para asegurar los pasillos de scroll laterales */
-            max-width: 380px; 
+            max-width: 440px;
             box-shadow: 0 30px 60px rgba(0,0,0,0.6);
             z-index: 10;
             height: fit-content;
             overflow: hidden;
-            touch-action: pan-y; /* Permite scroll vertical incluso tocando el contenedor */
         }
 
         .message-layer {
-            padding: 50px 35px;
+            padding: 50px 40px;
             text-align: left;
             user-select: none;
             position: relative;
@@ -119,46 +146,87 @@
         }
 
         .status-header {
-            display: flex; align-items: center; gap: 12px; margin-bottom: 30px;
-            border-bottom: 1px solid var(--border-glass); padding-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-glass);
+            padding-bottom: 20px;
         }
 
         .pulse-dot {
-            width: 8px; height: 8px; background: var(--accent); border-radius: 50%;
-            box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.6); animation: pulse-ring 2s infinite;
+            width: 8px; height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.6);
+            animation: pulse-ring 2s infinite;
         }
 
         .status-text {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
-            letter-spacing: 4px; color: var(--accent); text-transform: uppercase;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            color: var(--accent);
+            text-transform: uppercase;
         }
 
-        .log-content { font-size: 1rem; line-height: 1.9; font-weight: 300; color: rgba(248, 250, 252, 0.95); }
+        .log-content {
+            font-size: 1rem;
+            line-height: 1.9;
+            font-weight: 300;
+            color: rgba(248, 250, 252, 0.95);
+        }
+
         .log-content p { margin-bottom: 25px; }
-        .log-content span.highlight { color: var(--accent); font-weight: 600; }
+        .log-content span.highlight { 
+            color: var(--accent); 
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.2);
+        }
 
         .log-footer {
-            margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-glass);
-            display: flex; justify-content: space-between; align-items: center;
-            font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text-dim);
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-glass);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            letter-spacing: 1px;
         }
 
         #fogCanvas {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            cursor: crosshair;
             z-index: 5;
-            /* Importante: permite que el scroll pase a través si no se está raspando */
-            touch-action: none; 
+            touch-action: none;
         }
 
         .interaction-overlay {
-            position: absolute; top: 180px; left: 0; width: 100%;
+            position: absolute;
+            top: 180px; left: 0; width: 100%;
             display: flex; flex-direction: column; align-items: center;
-            z-index: 12; pointer-events: none; transition: opacity 0.8s ease;
+            z-index: 12; pointer-events: none;
+            transition: opacity 0.8s ease;
         }
 
         .interaction-overlay.hidden { opacity: 0; }
-        .hand-icon { font-size: 2.8rem; margin-bottom: 15px; animation: handMove 3s infinite ease-in-out; }
-        .instruction-tag { font-size: 0.7rem; letter-spacing: 3px; color: var(--accent); text-transform: uppercase; font-weight: 600; }
+
+        .hand-icon {
+            font-size: 2.8rem; margin-bottom: 15px;
+            filter: drop-shadow(0 0 10px var(--accent));
+            animation: handMove 3s infinite ease-in-out;
+        }
+
+        .instruction-tag {
+            font-size: 0.7rem; letter-spacing: 3px;
+            color: var(--accent); text-transform: uppercase;
+            font-weight: 600; text-shadow: var(--glow);
+        }
 
         .particle {
             position: fixed; background: var(--accent); border-radius: 50%;
@@ -166,20 +234,21 @@
         }
 
         @keyframes handMove {
-            0%, 100% { transform: translateX(-20px); opacity: 0.4; }
-            50% { transform: translateX(20px); opacity: 0.8; }
+            0%, 100% { transform: translateX(-20px) rotate(-10deg); opacity: 0.4; }
+            50% { transform: translateX(20px) rotate(10deg); opacity: 0.8; }
         }
 
         @keyframes pulse-ring {
             0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.8); opacity: 0; }
+            50% { transform: scale(1.8); opacity: 0.3; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         @media (max-width: 480px) {
-            body { padding: 90px 25px 40px; }
-            .log-container { max-width: 100%; }
-            .message-layer { padding: 40px 25px; }
+            .message-layer { padding: 40px 30px; }
             .log-content { font-size: 0.95rem; }
+            body { padding-top: 90px; }
+            .scroll-assist-btn { bottom: 20px; right: 20px; width: 50px; height: 50px; }
         }
     </style>
 </head>
@@ -189,17 +258,23 @@
         <div class="nav-left">
             <a href="index.html" class="nav-home">🏠</a>
             <div class="system-status">
-                <div class="status-dot-wrapper"><span class="dot"></span> ARCHIVE_LINK</div>
+                <div class="status-dot-wrapper">
+                    <span class="dot"></span> ARCHIVE_LINK
+                </div>
+                <div style="font-size: 0.5rem; color: var(--text-dim); font-family: monospace; margin-left: 13px;">ENC_LEVEL / MAX</div>
             </div>
         </div>
+
         <div class="nav-right">
-            <a href="seccion4.html" class="nav-music-btn">🎵</a>
-            <a href="https://idelgado1006.github.io/CALKI/" class="nav-extra-btn" target="_blank">🔗</a>
-            <a href="seccion5.html" class="nav-heart-btn">❤️</a>
+            <a href="seccion4.html" class="nav-music-btn" title="Música">🎵</a>
+            <a href="https://idelgado1006.github.io/CALKI/" class="nav-extra-btn" title="CALKI" target="_blank">🔗</a>
+            <a href="seccion5.html" class="nav-heart-btn" title="Refugio">❤️</a>
             <div class="nav-divider"></div>
             <button class="theme-btn" onclick="cycleTheme()" id="themeBtn">💖</button>
         </div>
     </nav>
+
+    <div class="scroll-assist-btn" id="scrollBtn" onclick="smartScroll()">↓</div>
 
     <div class="log-container" id="mainContainer">
         <div class="message-layer">
@@ -231,6 +306,36 @@
     </div>
 
     <script>
+        // Lógica de Scroll Inteligente
+        function smartScroll() {
+            const btn = document.getElementById('scrollBtn');
+            const scrollStep = 220; // Cuánto baja por clic
+            const currentScroll = window.scrollY + window.innerHeight;
+            const maxScroll = document.documentElement.scrollHeight;
+
+            if (currentScroll >= maxScroll - 10) {
+                // Si llegamos abajo, subimos al inicio
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                btn.innerText = "↓";
+            } else {
+                // Si no, seguimos bajando
+                window.scrollBy({ top: scrollStep, behavior: 'smooth' });
+            }
+
+            if(navigator.vibrate) navigator.vibrate(5);
+        }
+
+        // Actualizar icono del botón según posición
+        window.onscroll = function() {
+            const btn = document.getElementById('scrollBtn');
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
+                btn.innerText = "↑";
+            } else {
+                btn.innerText = "↓";
+            }
+        };
+
+        // SISTEMA DE TEMAS
         let currentTheme = 0; 
         const themes = ['theme-dark', 'theme-midnight', 'theme-light'];
         const icons = ['💖', '🌙', '☀️'];
@@ -240,6 +345,7 @@
             currentTheme = (currentTheme + 1) % themes.length;
             document.body.classList.add(themes[currentTheme]);
             document.getElementById('themeBtn').innerText = icons[currentTheme];
+            if(navigator.vibrate) navigator.vibrate(10);
             init(); 
         }
 
@@ -254,12 +360,17 @@
             canvas.height = container.offsetHeight;
             
             const colorFog = getComputedStyle(document.body).getPropertyValue('--bg-dark');
+            const gradientBg = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradientBg.addColorStop(0, colorFog + 'ee');
+            gradientBg.addColorStop(0.3, colorFog); 
+            gradientBg.addColorStop(1, colorFog);
+            
             ctx.globalCompositeOperation = 'source-over';
-            ctx.fillStyle = colorFog;
+            ctx.fillStyle = gradientBg;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            for(let i=0; i<5000; i++) {
-                ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.01})`;
+            for(let i=0; i<6000; i++) {
+                ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.015})`;
                 ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 1, 1);
             }
             updatePanamaTime();
@@ -267,11 +378,8 @@
 
         function rasp(e) {
             if (!isRasping && e.type !== 'touchmove') return;
-            
-            // Si es un toque, evitamos que el navegador haga otras cosas
-            if(e.cancelable) e.preventDefault(); 
-            
             overlay.classList.add('hidden');
+            
             const rect = canvas.getBoundingClientRect();
             const clientX = e.clientX || (e.touches && e.touches[0].clientX);
             const clientY = e.clientY || (e.touches && e.touches[0].clientY);
@@ -279,26 +387,41 @@
             const y = clientY - rect.top;
 
             ctx.globalCompositeOperation = 'destination-out';
+            ctx.globalAlpha = 0.6; 
             ctx.beginPath();
-            const raspSize = 55; 
+            const raspSize = 65; 
             const gradient = ctx.createRadialGradient(x, y, 0, x, y, raspSize);
             gradient.addColorStop(0, 'rgba(0, 0, 0, 1)');
+            gradient.addColorStop(0.4, 'rgba(0, 0, 0, 0.8)');
             gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            
             ctx.fillStyle = gradient;
             ctx.arc(x, y, raspSize, 0, Math.PI * 2);
             ctx.fill();
+            ctx.globalAlpha = 1.0;
 
-            if(Math.random() > 0.6) createParticles(clientX, clientY);
+            if(Math.random() > 0.4) createParticles(clientX, clientY);
         }
 
         function createParticles(clientX, clientY) {
             const p = document.createElement('div');
             p.classList.add('particle');
-            p.style.width = '3px'; p.style.height = '3px';
-            p.style.left = clientX + 'px'; p.style.top = clientY + 'px';
+            const size = Math.random() * 4 + 2;
+            p.style.width = size + 'px'; 
+            p.style.height = size + 'px';
+            p.style.left = clientX + 'px'; 
+            p.style.top = clientY + 'px';
             document.body.appendChild(p);
-            p.animate([{ opacity: 1 }, { opacity: 0, transform: 'scale(0)' }], { duration: 800 });
-            setTimeout(() => p.remove(), 800);
+            const dX = (Math.random() - 0.5) * 50;
+            const dY = (Math.random() - 0.5) * 50;
+
+            p.animate([
+                { opacity: 0, transform: 'translate(0,0)' },
+                { opacity: 1.0, offset: 0.15 },
+                { opacity: 0, transform: `translate(${dX}px, ${dY}px)` }
+            ], { duration: 1100, easing: 'ease-out' });
+
+            setTimeout(() => p.remove(), 1100);
         }
 
         function updatePanamaTime() {
@@ -310,22 +433,11 @@
         }
 
         setInterval(updatePanamaTime, 1000);
-        
-        // Mouse Events
         canvas.addEventListener('mousedown', (e) => { isRasping = true; rasp(e); });
         window.addEventListener('mouseup', () => isRasping = false);
         canvas.addEventListener('mousemove', rasp);
-
-        // Touch Events mejorados
-        canvas.addEventListener('touchstart', (e) => { 
-            isRasping = true; 
-            rasp(e); 
-        }, { passive: false });
-        
-        canvas.addEventListener('touchmove', (e) => { 
-            if(isRasping) rasp(e); 
-        }, { passive: false });
-        
+        canvas.addEventListener('touchstart', (e) => { isRasping = true; rasp(e); }, { passive: true });
+        canvas.addEventListener('touchmove', (e) => { rasp(e); }, { passive: true });
         window.addEventListener('touchend', () => isRasping = false);
 
         window.onload = init;
