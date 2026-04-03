@@ -2,19 +2,95 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Instantes | Saturación Responsiva</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body { overflow: hidden; position: relative; min-height: 100vh; background-color: #000; margin: 0; }
+        :root {
+            --bg-dark: #0a0f16;
+            --accent: #fa165a;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.04);
+            --border-glass: rgba(255, 255, 255, 0.15);
+            --spring-eas: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+            --accent-rgb: 250, 22, 90;
+            --btn-bg: rgba(255, 255, 255, 0.08);
+        }
+
+        /* TEMAS NAVBAR */
+        body.theme-midnight {
+            --bg-dark: #000000;
+            --accent: #fde047;
+            --text-main: #ffffff;
+            --text-dim: #71717a;
+            --border-glass: rgba(253, 224, 71, 0.3);
+            --accent-rgb: 253, 224, 71;
+            --btn-bg: rgba(253, 224, 71, 0.1);
+        }
+
+        body.theme-light {
+            --bg-dark: #fcfaf7;
+            --accent: #f59e0b;
+            --text-main: #1e293b;
+            --text-dim: #64748b;
+            --border-glass: rgba(245, 158, 11, 0.3);
+            --accent-rgb: 245, 158, 11;
+            --btn-bg: rgba(245, 158, 11, 0.1);
+        }
+
+        body { 
+            overflow: hidden; 
+            position: relative; 
+            min-height: 100vh; 
+            background-color: var(--bg-dark); 
+            margin: 0; 
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.6s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
         
+        /* --- ESTILOS NAVBAR --- */
+        .navbar {
+            position: fixed; top: 15px; width: calc(100% - 30px); max-width: 500px; height: 65px;
+            background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass); border-radius: 22px; z-index: 10000;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 12px;
+            box-shadow: var(--shadow); animation: slideDown 0.8s var(--spring-eas);
+        }
+
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-home, .nav-extra-btn, .nav-heart-btn, .theme-btn {
+            text-decoration: none; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
+            border-radius: 14px; background: var(--btn-bg); border: 1px solid var(--border-glass);
+            transition: all 0.2s var(--spring-eas); cursor: pointer; color: var(--text-main); font-size: 1.1rem;
+        }
+
+        .nav-home:active, .nav-extra-btn:active, .nav-heart-btn:active, .theme-btn:active {
+            transform: scale(0.9) translateY(2px); background: rgba(var(--accent-rgb), 0.2);
+        }
+
+        .system-status { display: flex; flex-direction: column; justify-content: center; pointer-events: none; }
+        .status-dot-wrapper { display: flex; align-items: center; gap: 6px; font-family: monospace; font-size: 0.55rem; font-weight: 700; color: var(--text-main); }
+        .dot { width: 7px; height: 7px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e; animation: pulse 2s infinite; }
+        
+        .nav-right { display: flex; align-items: center; gap: 8px; }
+        .heart-icon { animation: heartBeat 1.5s infinite; display: inline-block; }
+        .nav-divider { width: 1px; height: 24px; background: var(--border-glass); margin: 0 2px; }
+
+        @keyframes slideDown { from { transform: translateY(-100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes heartBeat { 0%, 70%, 100% { transform: scale(1); } 14% { transform: scale(1.2); } 42% { transform: scale(1.2); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
         /* CAPA SUPERIOR: TEXTO SIEMPRE ARRIBA */
         header { 
             position: relative; 
-            z-index: 10000; 
+            z-index: 9000; 
             pointer-events: none; 
-            margin-top: 15vh; 
+            margin-top: 120px; 
             text-align: center;
             padding: 0 20px;
         }
@@ -22,7 +98,7 @@
         h1 { 
             font-weight: 600; 
             letter-spacing: -1px; 
-            font-size: 2.2rem; /* Un poco más grande para destacar */
+            font-size: 2.2rem; 
             color: #fff;
             text-shadow: 0 0 20px rgba(0,0,0,1), 0 0 5px rgba(0,0,0,0.5); 
         }
@@ -55,26 +131,45 @@
             transform: scale(1.2) rotate(0deg) !important; 
             z-index: 9500 !important; 
             border-color: var(--accent);
-            box-shadow: 0 0 50px var(--accent-muted);
+            box-shadow: 0 0 50px rgba(var(--accent-rgb), 0.3);
         }
 
         @keyframes aparecer { to { opacity: 1; } }
         
         footer { position: fixed; bottom: 30px; left: 0; width: 100%; text-align: center; z-index: 10001; }
-        .btn-universal { pointer-events: auto; background: rgba(250, 22, 90, 0.6); padding: 8px 16px; border-radius: 20px; text-decoration: none; }
+        .btn-universal { pointer-events: auto; background: rgba(var(--accent-rgb), 0.6); padding: 8px 16px; border-radius: 20px; text-decoration: none; color: white; font-weight: 600; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(10px); }
 
-        /* AJUSTES PARA CELULAR */
         @media (max-width: 600px) {
             h1 { font-size: 1.6rem; }
             .subtitle { font-size: 0.6rem; }
-            header { margin-top: 20vh; }
+            header { margin-top: 130px; }
         }
     </style>
 </head>
-<body class="fade-in">
+<body class="theme-dark">
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html" class="nav-home">🏠</a>
+            <div class="system-status">
+                <div class="status-dot-wrapper">
+                    <span class="dot"></span> SISTEMA_ACTIVO
+                </div>
+                <div style="font-size: 0.5rem; color: var(--text-dim); font-family: monospace; margin-left: 13px;">v2.4.0 / INSTANTES</div>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <a href="https://idelgado1006.github.io/CALKI/" class="nav-extra-btn" title="Extra">🔗</a>
+            <a href="seccion5.html" class="nav-heart-btn" title="Refugio"><span class="heart-icon">❤️</span></a>
+            <div class="nav-divider"></div>
+            <button class="theme-btn" onclick="cycleTheme()" id="themeBtn">💖</button>
+        </div>
+    </nav>
+
     <header>
         <h1>Me alegro!!!</h1>
-        <p class="subtitle">Me alegro!!!</p>
+        <p class="subtitle">Instantes capturados</p>
     </header>
 
     <div id="caos-container" class="caos-container"></div>
@@ -84,6 +179,19 @@
     </footer>
 
     <script>
+        // LOGICA DE TEMAS NAVBAR
+        let currentTheme = 0; 
+        const themes = ['theme-dark', 'theme-midnight', 'theme-light'];
+        const icons = ['💖', '🌙', '☀️'];
+
+        function cycleTheme() {
+            document.body.classList.remove(themes[currentTheme]);
+            currentTheme = (currentTheme + 1) % themes.length;
+            document.body.classList.add(themes[currentTheme]);
+            document.getElementById('themeBtn').innerText = icons[currentTheme];
+            if(navigator.vibrate) navigator.vibrate(10);
+        }
+
         const misFotos = ['graciosa.jpeg'];
         const totalFotos = 60; 
         const container = document.getElementById('caos-container');
@@ -97,8 +205,6 @@
                 img.src = misFotos[0];
                 img.className = 'foto-flotante';
 
-                // --- TAMAÑOS MÁS GRANDES Y RESPONSIVOS ---
-                // Si es PC: 120px a 220px. Si es móvil: 70px a 130px.
                 const minAncho = isMobile ? 70 : 120;
                 const maxExtra = isMobile ? 60 : 100;
                 
@@ -109,8 +215,7 @@
                 img.style.width = `${anchoAleatorio}px`;
                 img.style.height = `${altoAleatorio}px`;
 
-                // Dispersión usando porcentajes para que funcione en cualquier pantalla
-                const posX = (Math.random() * 110) - 10; // -10% a 100% para cubrir bordes
+                const posX = (Math.random() * 110) - 10; 
                 const posY = (Math.random() * 110) - 10;
                 const rot = (Math.random() - 0.5) * 40; 
 
@@ -123,7 +228,6 @@
                     img.style.zIndex = Math.min(zIndexGlobal++, 9999);
                 });
 
-                // Movimiento lento
                 const duracion = 25 + Math.random() * 20; 
                 img.style.animation += `, flotar ${duracion}s ease-in-out infinite alternate`;
                 img.style.animationDelay = `${Math.random() * 5}s`;

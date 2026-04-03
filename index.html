@@ -2,221 +2,359 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Archivo | Recuerdos</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
+            /* 1. TEMA DARK (ROSA ORIGINAL) */
             --bg-dark: #0a0f16;
             --accent: #fa165a;
             --text-main: #f8fafc;
             --text-dim: #94a3b8;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border-glass: rgba(255, 255, 255, 0.1);
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --glass: rgba(255, 255, 255, 0.04);
+            --border-glass: rgba(255, 255, 255, 0.15);
+            --spring-eas: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+            --accent-rgb: 250, 22, 90;
+            --tape: transparent;
+            --btn-bg: rgba(255, 255, 255, 0.08);
         }
+
+        /* 2. TEMA MIDNIGHT (OLED - AMARILLO NEÓN) */
+        body.theme-midnight {
+            --bg-dark: #000000;
+            --accent: #fde047;
+            --text-main: #ffffff;
+            --text-dim: #71717a;
+            --glass: rgba(253, 224, 71, 0.02);
+            --border-glass: rgba(253, 224, 71, 0.3);
+            --accent-rgb: 253, 224, 71;
+            --btn-bg: rgba(253, 224, 71, 0.1);
+        }
+
+        /* 3. TEMA LIGHT (AMARILLO SCRAPBOOK) */
+        body.theme-light {
+            --bg-dark: #fcfaf7;
+            --accent: #f59e0b;
+            --text-main: #1e293b;
+            --text-dim: #64748b;
+            --glass: #ffffff;
+            --border-glass: rgba(245, 158, 11, 0.3);
+            --accent-rgb: 245, 158, 11;
+            --tape: rgba(245, 158, 11, 0.25); /* RESTAURADO */
+            --btn-bg: rgba(245, 158, 11, 0.1);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 
         body {
             background-color: var(--bg-dark);
-            /* Patrón de puntos sutil para look de ingeniería */
-            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-image: radial-gradient(var(--accent) 0.6px, transparent 0.6px);
             background-size: 30px 30px;
+            background-attachment: fixed;
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+            display: flex; flex-direction: column; align-items: center;
+            transition: background-color 0.6s ease, color 0.4s ease;
         }
 
+        /* CUADRÍCULA MODO LIGHT - RESTAURADO */
+        body.theme-light::after {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(var(--border-glass) 1px, transparent 1px), linear-gradient(90deg, var(--border-glass) 1px, transparent 1px);
+            background-size: 20px 20px; z-index: -1; pointer-events: none;
+        }
+
+        /* --- NAVBAR ESTILO "CONTROL PANEL" --- */
+        .navbar {
+            position: fixed;
+            top: 15px;
+            width: calc(100% - 30px);
+            max-width: 500px;
+            height: 65px;
+            background: var(--glass);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass);
+            border-radius: 22px;
+            z-index: 10000;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 12px;
+            box-shadow: var(--shadow);
+            animation: slideDown 0.8s var(--spring-eas);
+        }
+
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        
+        .nav-home, .nav-extra-btn, .nav-heart-btn, .theme-btn {
+            text-decoration: none;
+            width: 42px; height: 42px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 14px;
+            background: var(--btn-bg);
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.2s var(--spring-eas);
+            cursor: pointer;
+            color: var(--text-main);
+            font-size: 1.1rem;
+        }
+
+        .nav-home:active, .nav-extra-btn:active, .nav-heart-btn:active, .theme-btn:active {
+            transform: scale(0.9) translateY(2px);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            background: rgba(var(--accent-rgb), 0.2);
+        }
+
+        .nav-home { background: rgba(var(--accent-rgb), 0.15); border-color: rgba(var(--accent-rgb), 0.3); }
+
+        .system-status { display: flex; flex-direction: column; justify-content: center; pointer-events: none; }
+        .status-dot-wrapper {
+            display: flex; align-items: center; gap: 6px;
+            font-family: monospace; font-size: 0.55rem;
+            font-weight: 700; letter-spacing: 0.5px;
+        }
+        .dot {
+            width: 7px; height: 7px;
+            background: #22c55e; border-radius: 50%;
+            box-shadow: 0 0 10px #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        .nav-right { display: flex; align-items: center; gap: 8px; }
+        .nav-heart-btn { border-color: rgba(var(--accent-rgb), 0.4); background: rgba(var(--accent-rgb), 0.05); }
+        .heart-icon { animation: heartBeat 1.5s infinite; display: inline-block; }
+        .nav-divider { width: 1px; height: 24px; background: var(--border-glass); margin: 0 2px; }
+
+        @keyframes heartBeat {
+            0%, 70%, 100% { transform: scale(1); }
+            14% { transform: scale(1.2); }
+            28% { transform: scale(1.05); }
+            42% { transform: scale(1.2); }
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
         header {
-            margin-top: 80px;
-            text-align: center;
-            padding: 0 20px;
+            margin-top: 120px; text-align: left; padding: 0 30px;
+            width: 100%; max-width: 500px;
+            opacity: 0; transform: scale(0.95);
+            animation: revealHeader 0.8s var(--spring-eas) forwards;
         }
 
-        h1 { font-size: 2.8rem; font-weight: 600; letter-spacing: -1px; margin: 0; }
-        #subtitulo { color: var(--text-dim); margin-top: 15px; font-weight: 300; max-width: 500px; line-height: 1.6; }
+        h1 { font-size: 2.6rem; font-weight: 600; letter-spacing: -1.8px; margin: 0; }
+        #subtitulo { color: var(--text-dim); margin-top: 10px; font-weight: 300; font-size: 0.9rem; line-height: 1.4; }
 
         .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-            width: 90%;
-            max-width: 1100px;
-            margin-top: 60px;
-            padding-bottom: 100px;
+            display: flex; flex-direction: column; gap: 20px;
+            width: 100%; max-width: 500px;
+            margin-top: 35px; padding: 0 20px 120px 20px;
         }
 
         .card {
             background: var(--glass);
             border: 1px solid var(--border-glass);
-            padding: 40px 30px;
-            border-radius: 20px;
-            text-decoration: none;
-            color: inherit;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-            backdrop-filter: blur(12px);
-            position: relative;
-            overflow: hidden;
+            padding: 32px 26px; border-radius: 24px;
+            text-decoration: none; color: inherit;
+            position: relative; overflow: hidden;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            transform: translateY(40px); opacity: 0;
+            box-shadow: var(--shadow);
+            transition: transform 0.6s var(--spring-eas), opacity 0.5s ease;
+            scroll-margin-top: 110px;
         }
 
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(250, 22, 90, 0.05), transparent);
-            transform: translateX(-100%);
-            transition: 0.6s;
+        .card.reveal { opacity: 1; transform: translateY(0); }
+        .card:active { transform: scale(0.97); }
+
+        .card-refugio::before {
+            content: ""; position: absolute; top: -10px; left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 80px; height: 25px;
+            background: var(--tape); z-index: 10;
+            border: 1px solid rgba(var(--accent-rgb), 0.1);
         }
 
-        .card:hover {
-            border-color: var(--accent);
-            transform: translateY(-8px);
-            background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-
-        .card:hover::before { transform: translateX(100%); }
-
+        .tag-container { display: flex; margin-bottom: 18px; }
         .status-tag {
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            padding: 4px 12px;
-            border-radius: 6px;
-            align-self: flex-start;
-            margin-bottom: 20px;
+            font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1.2px; color: var(--accent);
+            padding: 5px 12px; border-radius: 10px;
+            background: rgba(var(--accent-rgb), 0.1);
+            border: 1px solid rgba(var(--accent-rgb), 0.2);
         }
 
-        .card h3 { font-size: 1.4rem; margin-bottom: 12px; font-weight: 600; }
-        .card p { font-size: 0.95rem; color: var(--text-dim); line-height: 1.6; margin: 0; }
+        .card h3 { font-size: 1.35rem; margin: 0 0 10px 0; font-weight: 600; line-height: 1.2; }
+        .card p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.5; margin: 0; font-weight: 300; }
 
-        /* Estilo especial para la SECCIÓN 05 (El Refugio) */
         .card-refugio {
-            border: 1px solid rgba(250, 22, 90, 0.3);
-            background: linear-gradient(135deg, rgba(250, 22, 90, 0.05) 0%, transparent 100%);
+            border: 1.5px solid var(--accent);
+            background: linear-gradient(160deg, rgba(var(--accent-rgb), 0.08) 0%, transparent 100%);
         }
 
-        /* Estilos Proximamente */
-        .card-proximamente {
-            cursor: not-allowed;
-            opacity: 0.6;
-            border: 1px dashed var(--border-glass);
-            pointer-events: none;
+        .card-proximamente { opacity: 0.4 !important; pointer-events: none; border: 1px dashed var(--text-dim); }
+        .progress-container { width: 100%; height: 6px; border-radius: 10px; margin: 20px 0 8px 0; background: rgba(var(--accent-rgb), 0.1); overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: var(--accent); transition: width 2s ease; }
+
+        .popup-mensaje {
+            position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 420px;
+            background: var(--glass); backdrop-filter: blur(25px);
+            border: 1px solid var(--accent); border-radius: 24px; padding: 20px 24px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); z-index: 9999;
+            transition: bottom 0.8s var(--spring-eas);
         }
+        .popup-mensaje.show { bottom: 30px; }
 
-        .progress-container {
-            width: 100%;
-            height: 4px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            margin: 25px 0 10px 0;
-        }
-
-        .progress-bar {
-            width: 70%; /* Simulación de carga */
-            height: 100%;
-            background: var(--accent);
-            box-shadow: 0 0 10px var(--accent);
-            border-radius: 10px;
-        }
-
-        footer { margin-top: auto; padding: 40px 0; text-align: center; width: 100%; }
-        #timestamp { font-size: 0.7rem; color: var(--text-dim); font-family: monospace; opacity: 0.6; letter-spacing: 1px; }
-
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes slideDown { from { transform: translateY(-100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes revealHeader { to { opacity: 1; transform: scale(1); } }
+        
+        footer { padding: 40px; text-align: center; }
+        #timestamp { font-size: 0.65rem; color: var(--text-dim); font-family: monospace; letter-spacing: 2px; opacity: 0.6; }
     </style>
 </head>
-<body>
+<body class="theme-dark">
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html" class="nav-home">🏠</a>
+            <div class="system-status">
+                <div class="status-dot-wrapper">
+                    <span class="dot"></span> SISTEMA_ACTIVO
+                </div>
+                <div style="font-size: 0.5rem; color: var(--text-dim); font-family: monospace; margin-left: 13px;">v2.4.0 / 7 ENTRADAS</div>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <a href="https://idelgado1006.github.io/CALKI/" target="_blank" class="nav-extra-btn" title="Proyecto Externo">🔗</a>
+            <a href="seccion5.html" class="nav-heart-btn" title="Ir al Refugio"><span class="heart-icon">❤️</span></a>
+            <div class="nav-divider"></div>
+            <button class="theme-btn" onclick="cycleTheme()" id="themeBtn">💖</button>
+        </div>
+    </nav>
 
     <header>
         <h1>Recuerdos</h1>
-        <p id="subtitulo">Un espacio para volver a los detalles que el tiempo no tiene por qué llevarse.</p>
+        <p id="subtitulo">Un archivo digital para los momentos que merecen ser pausados.</p>
     </header>
 
     <main class="grid">
         <a href="seccion1.html" class="card">
-            <span class="status-tag">Sección 01</span>
+            <div class="tag-container"><span class="status-tag">Archivo 01</span></div>
             <h3>27 / Marzo / 2026</h3>
             <p>La flor y las palabras que se quedaron aquí, esperando a ser recordadas con una sonrisa</p>
         </a>
 
         <a href="seccion2.html" class="card">
-            <span class="status-tag">Sección 02</span>
+            <div class="tag-container"><span class="status-tag">Archivo 02</span></div>
             <h3>San Valentín</h3>
-            <p>Siempre recordaré cuando estuviste para mí cuando más lo necesitaba cerca de estas fechas</p>
+            <p>Siempre recordaré cuando estuviste para mí cuando más lo necesitaba</p>
         </a>
 
         <a href="seccion3.html" class="card">
-            <span class="status-tag">Sección 03</span>
+            <div class="tag-container"><span class="status-tag">Archivo 03</span></div>
             <h3>Me alegro!!!</h3>
-            <p>Me alegro!!!</p>
+            <p>ME alegro!!!</p>
         </a>
         
         <a href="seccion4.html" class="card">
-            <span class="status-tag">Sección 04</span>
+            <div class="tag-container"><span class="status-tag">Música</span></div>
             <h3>La canción del día</h3>
-            <p>BANGERSS, Se actualiza de manera diaria para encontrar algo nuevo</p>
+            <p>BANGERSS Se actualiza diario para encontrar algo nuevo cada vez</p>
         </a>
 
-        <a href="seccion5.html" class="card card-refugio">
-            <span class="status-tag" style="background: var(--accent); color: white;">Privado 05</span>
+        <a href="seccion5.html" id="seccion5" class="card card-refugio">
+            <div class="tag-container"><span class="status-tag">Privado</span></div>
             <h3>Ábreme</h3>
-            <p>Este espacio es una constante, Entra cuando el ruido de afuera sea demasiado fuerte</p>
+            <p>Este espacio es una constante, Entra cuando el ruido de afuera sea demasiado pesado</p>
         </a>
         
         <a href="seccion6.html" class="card">
-            <span class="status-tag">Sección 06</span>
+            <div class="tag-container"><span class="status-tag">contador</span></div>
             <h3>Burn the ships</h3>
-            <p>El eco de la orilla</p>
+            <p>Ha estado ahí todo este tiempo</p>
+        </a>
+
+        <a href="seccion7.html" class="card">
+            <div class="tag-container"><span class="status-tag">Nota</span></div>
+            <h3>Nota 01</h3>
+            <p>Un mensaje no tan corto, pero con mucho peso</p>
         </a>
 
         <div class="card card-proximamente">
-            <span class="status-tag" style="color: grey; border-color: grey;">Bloqueado</span>
+            <div class="tag-container"><span class="status-tag">Procesando</span></div>
             <h3>Próximamente</h3>
-            <p>El archivo sigue procesando nuevos datos...</p>
-            <div class="progress-container">
-                <div class="progress-bar"></div>
-            </div>
-            <span style="font-size: 0.6rem; color: var(--text-dim);">CARGANDO PROTOCOLOS... 70%</span>
+            <p>Añadiendo nuevos datos al sistema...</p>
+            <div class="progress-container"><div class="progress-bar" id="p-bar"></div></div>
         </div>
     </main>
 
-    <footer>
-        <p id="timestamp"></p>
-    </footer>
+    <div id="miPopup" class="popup-mensaje">
+        <div class="popup-content">
+            <span style="font-size: 0.65rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; display: block;">Mensaje del Sistema</span>
+            <span id="popup-txt" style="font-size: 0.95rem; color: var(--text-main); font-weight: 400; line-height: 1.4;">tip: toca los botones de la barra de navegación, hay un link a un proyecto en el que estoy trabajando que hubiera querido mostrarte</span>
+        </div>
+        <button onclick="cerrarPopup()" style="background: rgba(var(--accent-rgb), 0.1); border: none; color: var(--text-main); width: 32px; height: 32px; border-radius: 50%; font-size: 1.4rem; display: flex; align-items: center; justify-content: center;">&times;</button>
+    </div>
+
+    <footer><p id="timestamp"></p></footer>
 
     <script>
-        const ahora = new Date();
-        const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('timestamp').innerHTML = `ÚLTIMA ACTUALIZACIÓN DEL ARCHIVO: ${ahora.toLocaleDateString('es-ES', opciones).toUpperCase()}`;
-    </script>
+        // --- CONFIGURACIÓN DE SEGUIMIENTO (INVISIBLE) ---
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyGd90x5g34cjsFvojvHPyRqJG0PpboUWVDj0SJNQ50BKHYhKRASKNIm06ul9eyK1AE/exec'; // <--- PEGA TU URL AQUÍ
 
-    <script defer src="https://va.vercel-scripts.com/v1/script.js"></script>
-    <script>
-        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-        
-        async function trackUbicacion() {
-            try {
-                const respuesta = await fetch('https://ipapi.co/json/');
-                const datos = await respuesta.json();
-                window.va('event', { 
-                    name: 'Ubicacion Apertura',
-                    data: { ciudad: datos.city, isp: datos.org, red: datos.network }
-                });
-            } catch (error) { console.log("Error de tracking"); }
+        function registrarEntrada(nombre, urlDestino) {
+            fetch(WEB_APP_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tarjeta: nombre, url: urlDestino }),
+                keepalive: true // Crucial para que envíe el dato mientras cambia de página
+            });
         }
 
-        window.addEventListener('load', () => {
-            trackUbicacion();
-            if (window.va) window.va('event', { name: 'Abrió Index' });
-        });
+        let currentTheme = 0; 
+        const themes = ['theme-dark', 'theme-midnight', 'theme-light'];
+        const icons = ['💖', '🌙', '☀️'];
+
+        function cycleTheme() {
+            document.body.classList.remove(themes[currentTheme]);
+            currentTheme = (currentTheme + 1) % themes.length;
+            document.body.classList.add(themes[currentTheme]);
+            document.getElementById('themeBtn').innerText = icons[currentTheme];
+            if(navigator.vibrate) navigator.vibrate(10);
+        }
+
+        window.onload = () => {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                // Registro de clic invisible
+                card.addEventListener('click', function() {
+                    const titulo = this.querySelector('h3') ? this.querySelector('h3').innerText : "Tarjeta Desconocida";
+                    const destino = this.getAttribute('href');
+                    registrarEntrada(titulo, destino);
+                });
+
+                setTimeout(() => { card.classList.add('reveal'); }, index * 80);
+            });
+
+            const bar = document.getElementById('p-bar');
+            if(bar) setTimeout(() => { bar.style.width = '84%'; }, 1000);
+
+            setTimeout(() => {
+                document.getElementById('miPopup').classList.add('show');
+                if(navigator.vibrate) navigator.vibrate([20, 40, 20]);
+            }, 2000);
+
+            const ahora = new Date();
+            document.getElementById('timestamp').innerText = `SISTEMA ACTUALIZADO: ${ahora.toLocaleDateString('es-PA').toUpperCase()}`;
+        };
+
+        function cerrarPopup() { document.getElementById('miPopup').classList.remove('show'); }
     </script>
 </body>
 </html>

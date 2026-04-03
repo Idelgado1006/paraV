@@ -15,9 +15,34 @@
             --glass: rgba(255, 255, 255, 0.03);
             --border-glass: rgba(255, 255, 255, 0.1);
             --transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            --spring-eas: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --accent-rgb: 250, 22, 90;
+            --btn-bg: rgba(255, 255, 255, 0.08);
+            --shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* CONFIGURACIÓN DE TEMAS PARA NAVBAR */
+        body.theme-midnight {
+            --bg-dark: #000000;
+            --accent: #fde047;
+            --text-main: #ffffff;
+            --text-dim: #71717a;
+            --border-glass: rgba(253, 224, 71, 0.3);
+            --accent-rgb: 253, 224, 71;
+            --btn-bg: rgba(253, 224, 71, 0.1);
+        }
+
+        body.theme-light {
+            --bg-dark: #fcfaf7;
+            --accent: #f59e0b;
+            --text-main: #1e293b;
+            --text-dim: #64748b;
+            --border-glass: rgba(245, 158, 11, 0.3);
+            --accent-rgb: 245, 158, 11;
+            --btn-bg: rgba(245, 158, 11, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             background-color: var(--bg-dark);
@@ -30,14 +55,48 @@
             flex-direction: column;
             align-items: center;
             overflow-x: hidden;
+            transition: background-color 0.6s ease, color 0.4s ease;
         }
+
+        /* --- ESTILOS NAVBAR --- */
+        .navbar {
+            position: fixed; top: 15px; width: calc(100% - 30px); max-width: 500px; height: 65px;
+            background: rgba(255, 255, 255, 0.04); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass); border-radius: 22px; z-index: 10000;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 12px;
+            box-shadow: var(--shadow); animation: slideDown 0.8s var(--spring-eas);
+        }
+
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-home, .nav-extra-btn, .nav-heart-btn, .theme-btn {
+            text-decoration: none; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
+            border-radius: 14px; background: var(--btn-bg); border: 1px solid var(--border-glass);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: all 0.2s var(--spring-eas);
+            cursor: pointer; color: var(--text-main); font-size: 1.1rem;
+        }
+
+        .nav-home:active, .nav-extra-btn:active, .nav-heart-btn:active, .theme-btn:active {
+            transform: scale(0.9) translateY(2px); box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); background: rgba(var(--accent-rgb), 0.2);
+        }
+
+        .system-status { display: flex; flex-direction: column; justify-content: center; pointer-events: none; }
+        .status-dot-wrapper { display: flex; align-items: center; gap: 6px; font-family: monospace; font-size: 0.55rem; font-weight: 700; }
+        .dot { width: 7px; height: 7px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e; animation: pulse 2s infinite; }
+        
+        .nav-right { display: flex; align-items: center; gap: 8px; }
+        .heart-icon { animation: heartBeat 1.5s infinite; display: inline-block; }
+        .nav-divider { width: 1px; height: 24px; background: var(--border-glass); margin: 0 2px; }
+
+        @keyframes slideDown { from { transform: translateY(-100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes heartBeat { 0%, 70%, 100% { transform: scale(1); } 14% { transform: scale(1.2); } 42% { transform: scale(1.2); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
         /* --- LOGIN SCREEN (SaaS Style) --- */
         #login-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg-dark);
             display: flex; justify-content: center; align-items: center;
-            z-index: 1000; transition: var(--transition);
+            z-index: 1001; transition: var(--transition);
         }
         #login-screen.hidden { opacity: 0; visibility: hidden; transform: scale(1.1); }
 
@@ -68,7 +127,7 @@
 
         /* --- CONTENEDOR DE LA FLOR --- */
         .flower-wrapper { 
-            margin-top: 20px; width: 100%; height: 450px; 
+            margin-top: 80px; width: 100%; height: 450px; 
             display: flex; justify-content: center; align-items: center; 
             z-index: 1; opacity: 0; transition: opacity 2s ease;
         }
@@ -143,7 +202,26 @@
     </style>
 </head>
 
-<body>
+<body class="theme-dark">
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html" class="nav-home">🏠</a>
+            <div class="system-status">
+                <div class="status-dot-wrapper">
+                    <span class="dot"></span> SISTEMA_ACTIVO
+                </div>
+                <div style="font-size: 0.5rem; color: var(--text-dim); font-family: monospace; margin-left: 13px;">v2.4.0 / REFUGIO</div>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <a href="https://idelgado1006.github.io/CALKI/" class="nav-extra-btn" title="calculadora">🔗</a>
+            <a href="seccion5.html" class="nav-heart-btn" title="Volver"><span class="heart-icon">❤️</span></a>
+            <div class="nav-divider"></div>
+            <button class="theme-btn" onclick="cycleTheme()" id="themeBtn">💖</button>
+        </div>
+    </nav>
+
     <div id="login-screen">
         <div class="login-card" id="login-container">
             <h2 id="login-msg">Para que algo florezca,<br>necesita...</h2>
@@ -172,6 +250,19 @@
     </div>
 
     <script>
+        // LOGICA DE TEMAS NAVBAR
+        let currentTheme = 0; 
+        const themes = ['theme-dark', 'theme-midnight', 'theme-light'];
+        const icons = ['💖', '🌙', '☀️'];
+
+        function cycleTheme() {
+            document.body.classList.remove(themes[currentTheme]);
+            currentTheme = (currentTheme + 1) % themes.length;
+            document.body.classList.add(themes[currentTheme]);
+            document.getElementById('themeBtn').innerText = icons[currentTheme];
+            if(navigator.vibrate) navigator.vibrate(10);
+        }
+
         function checkPassword() {
             const pass = document.getElementById("password").value.toLowerCase().trim();
             const validPasswords = ["tiempo", "paciencia", "paz"];
@@ -232,7 +323,6 @@
             setTimeout(() => {
                 msg.innerHTML = "Lo que florece con paciencia, dura para siempre.";
                 msg.style.opacity = 1;
-                // Explosión de corazones
                 for(let j=0; j<25; j++) {
                     setTimeout(() => {
                         const heart = document.createElement('div');
@@ -248,7 +338,6 @@
             }, 800);
         }
 
-        // Enter para entrar
         document.getElementById("password").addEventListener("keypress", (e) => {
             if(e.key === "Enter") checkPassword();
         });

@@ -16,26 +16,81 @@
             --glass: rgba(255, 255, 255, 0.03);
             --border-glass: rgba(255, 255, 255, 0.1);
             --glow: 0 0 20px rgba(250, 22, 90, 0.4);
+            --spring-eas: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --btn-bg: rgba(255, 255, 255, 0.08);
+            --accent-rgb: 250, 22, 90;
+        }
+
+        /* TEMAS NAVBAR */
+        body.theme-midnight {
+            --bg-dark: #000000;
+            --accent: #fde047;
+            --text-main: #ffffff;
+            --text-dim: #71717a;
+            --border-glass: rgba(253, 224, 71, 0.3);
+            --accent-rgb: 253, 224, 71;
+            --btn-bg: rgba(253, 224, 71, 0.1);
+            --glow: 0 0 20px rgba(253, 224, 71, 0.4);
+        }
+
+        body.theme-light {
+            --bg-dark: #fcfaf7;
+            --accent: #f59e0b;
+            --text-main: #1e293b;
+            --text-dim: #64748b;
+            --border-glass: rgba(245, 158, 11, 0.3);
+            --accent-rgb: 245, 158, 11;
+            --btn-bg: rgba(245, 158, 11, 0.1);
+            --glow: 0 0 20px rgba(245, 158, 11, 0.4);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body {
             background-color: var(--bg-dark);
-            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-image: radial-gradient(rgba(var(--accent-rgb), 0.05) 1px, transparent 1px);
             background-size: 30px 30px;
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             margin: 0;
             padding: 20px;
             overflow: hidden;
-            position: relative; /* Importante para las luciérnagas */
+            position: relative;
+            transition: background-color 0.6s ease;
         }
 
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed; top: 15px; width: calc(100% - 30px); max-width: 500px; height: 65px;
+            background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass); border-radius: 22px; z-index: 10000;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: slideDown 0.8s var(--spring-eas);
+        }
+
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-home, .nav-extra-btn, .nav-music-btn, .theme-btn, .nav-heart-btn {
+            text-decoration: none; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
+            border-radius: 14px; background: var(--btn-bg); border: 1px solid var(--border-glass);
+            transition: all 0.2s var(--spring-eas); cursor: pointer; color: var(--text-main); font-size: 1.1rem;
+        }
+
+        .system-status { display: flex; flex-direction: column; justify-content: center; pointer-events: none; }
+        .status-dot-wrapper { display: flex; align-items: center; gap: 6px; font-family: monospace; font-size: 0.55rem; font-weight: 700; color: var(--text-main); }
+        .dot { width: 7px; height: 7px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e; animation: pulse 2s infinite; }
+        
+        .nav-right { display: flex; align-items: center; gap: 8px; }
+        .nav-divider { width: 1px; height: 24px; background: var(--border-glass); margin: 0 2px; }
+
+        @keyframes slideDown { from { transform: translateY(-100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* --- CONTENEDOR CONTADOR --- */
         .counter-container {
             background: var(--glass);
             backdrop-filter: blur(25px);
@@ -49,12 +104,13 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             transition: all 0.5s ease;
             position: relative;
-            z-index: 10; /* Por encima de las luciérnagas iniciales */
+            z-index: 10;
+            margin-top: 60px; /* Espacio para la navbar */
         }
 
         .counter-container.pulse-active {
             border-color: var(--accent);
-            box-shadow: 0 0 40px rgba(250, 22, 90, 0.2);
+            box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.2);
         }
 
         .counter-label {
@@ -100,6 +156,7 @@
             color: var(--text-dim);
             margin-top: 12px;
             letter-spacing: 1.5px;
+            display: block;
         }
 
         .presence-btn {
@@ -134,7 +191,6 @@
             50% { transform: scale(1.05); }
         }
 
-        /* --- SECCIÓN DE RECOMPENSA (Sutil e integrada) --- */
         .milestone-box {
             margin-top: 30px;
             padding-top: 20px;
@@ -157,25 +213,44 @@
             opacity: 0.6;
         }
 
-        /* --- ESTILOS DE LAS LUCIÉRNAGAS (EFECTO MÁGICO) --- */
         .firefly {
             position: absolute;
             background-color: var(--accent);
             border-radius: 50%;
             pointer-events: none;
-            box-shadow: 0 0 10px 2px rgba(250, 22, 90, 0.5);
+            box-shadow: 0 0 10px 2px rgba(var(--accent-rgb), 0.5);
             opacity: 0;
-            z-index: 1; /* Por detrás del contenedor */
+            z-index: 1;
         }
 
         @media (max-width: 480px) {
             .time-unit span { font-size: 2.2rem; }
             .time-separator { font-size: 1.5rem; margin-top: -18px; }
-            .counter-container { padding: 40px 15px; }
+            .counter-container { padding: 40px 15px; width: 95%; }
         }
     </style>
 </head>
 <body>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html" class="nav-home">🏠</a>
+            <div class="system-status">
+                <div class="status-dot-wrapper">
+                    <span class="dot"></span> TIME_LOG
+                </div>
+                <div style="font-size: 0.5rem; color: var(--text-dim); font-family: monospace; margin-left: 13px;">SYNC_V2 / ACTIVE</div>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <a href="seccion4.html" class="nav-music-btn" title="Música">🎵</a>
+            <a href="https://idelgado1006.github.io/CALKI/" class="nav-extra-btn" title="CALKI" target="_blank">🔗</a>
+            <a href="seccion5.html" class="nav-heart-btn" title="Refugio">❤️</a>
+            <div class="nav-divider"></div>
+            <button class="theme-btn" onclick="cycleTheme()" id="themeBtn">💖</button>
+        </div>
+    </nav>
 
     <div class="counter-container" id="main-frame">
         <p class="counter-label">BURN THE SHIPS</p>
@@ -203,7 +278,20 @@
     </div>
 
     <script>
-        // CONFIGURACIÓN (Tus datos originales)
+        // CONFIGURACIÓN DE TEMAS
+        let currentTheme = 0; 
+        const themes = ['theme-dark', 'theme-midnight', 'theme-light'];
+        const icons = ['💖', '🌙', '☀️'];
+
+        function cycleTheme() {
+            document.body.classList.remove(themes[currentTheme]);
+            currentTheme = (currentTheme + 1) % themes.length;
+            document.body.classList.add(themes[currentTheme]);
+            document.getElementById('themeBtn').innerText = icons[currentTheme];
+            if(navigator.vibrate) navigator.vibrate(10);
+        }
+
+        // CONFIGURACIÓN CONTADOR
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbylhcRb3qWKynJyU-ggE4asJ2_6bRSUEBxO2eo6yHlQbz2sJ4P8sePOrYEPrb9Zzsv_/exec'; 
         const SHEET_ID = '1OkOYolMxeWx5AmxA9RydHrRjesdK5qnUPsQtS003k_w';
         const DATA_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Hoja%201`;
@@ -211,14 +299,12 @@
         let startPoint = null;
         let count = parseInt(localStorage.getItem('v_presences')) || 0;
 
-        // MOTOR DE HITOS (Edita los textos si quieres!)
         const hitos = {
-            1:  { icon: '', text: "Presiona este botón siempre que estes aquí, lo entenderás más adelante" },
-
+            1: { icon: '✨', text: "Presiona este botón siempre que estés aquí, lo entenderás más adelante" },
         };
 
         async function init() {
-            actualizarHito(count); // Cargar hito guardado
+            actualizarHito(count);
             try {
                 const response = await fetch(DATA_URL);
                 const text = await response.text();
@@ -228,10 +314,8 @@
                 if (val) {
                     const n = val.toString().match(/\d+/g).map(Number);
                     if (val.toString().includes('Date')) {
-                        // Mes nativo Google (0-11)
                         startPoint = new Date(n[0], n[1], n[2], n[3]||0, n[4]||0, n[5]||0);
                     } else {
-                        // Mes texto (1-12), ajustamos a 0-11
                         startPoint = new Date(n[0], n[1]-1, n[2], n[3]||0, n[4]||0, n[5]||0);
                     }
                     setInterval(updateClock, 1000);
@@ -257,28 +341,24 @@
             btn.disabled = true;
             btn.innerText = "Enviando...";
             frame.classList.add('pulse-active');
-
-            // --- EFECTO MÁGICO: Crear Luciérnagas ---
             crearParticulasLuciérnaga(8);
 
             try {
-                // Notificación silenciosa
                 await fetch(`${WEB_APP_URL}?quien=Victoria&tipo=Pulso&t=${new Date().getTime()}`, { mode: 'no-cors' });
                 
-                // Aumentar contador y guardar
                 count++;
                 localStorage.setItem('v_presences', count);
                 actualizarHito(count);
 
-                // Feedback visual exitoso
                 btn.innerText = "Registrada";
                 btn.classList.add('sent');
+                if(navigator.vibrate) navigator.vibrate(30);
                 
                 setTimeout(() => {
                     frame.classList.remove('pulse-active');
                     setTimeout(() => {
                         btn.disabled = false;
-                        btn.innerText = "Hacerte presente";
+                        btn.innerText = "PULSAR";
                         btn.classList.remove('sent');
                     }, 3000);
                 }, 2000);
@@ -302,7 +382,6 @@
             }
         }
 
-        // --- FUNCION VISUAL: Crear y Animar Luciérnagas ---
         function crearParticulasLuciérnaga(cantidad) {
             const container = document.body;
             const frame = document.getElementById('main-frame');
@@ -311,37 +390,25 @@
             for (let i = 0; i < cantidad; i++) {
                 const firefly = document.createElement('div');
                 firefly.classList.add('firefly');
-                
-                // Tamaño aleatorio sutil
                 const size = Math.random() * 4 + 2;
                 firefly.style.width = `${size}px`;
                 firefly.style.height = `${size}px`;
-
-                // Posición inicial (centro del contador)
                 const startX = rect.left + rect.width / 2;
                 const startY = rect.top + rect.height / 2;
                 firefly.style.left = `${startX}px`;
                 firefly.style.top = `${startY}px`;
-
                 container.appendChild(firefly);
 
-                // Animación hacia afuera y arriba (como si salieran volando del cristal)
-                const destinationX = startX + (Math.random() - 0.5) * 400; // Dispersión horizontal
-                const destinationY = startY - Math.random() * 300 - 150;    // Subida vertical
-                const duration = Math.random() * 2000 + 2000;              // Duración lenta
+                const destinationX = startX + (Math.random() - 0.5) * 400;
+                const destinationY = startY - Math.random() * 300 - 150;
+                const duration = Math.random() * 2000 + 2000;
 
                 firefly.animate([
                     { opacity: 0, transform: 'translate(0, 0) scale(1)' },
                     { opacity: 1, transform: `translate(${(destinationX - startX) * 0.1}px, ${(destinationY - startY) * 0.1}px) scale(1.2)`, offset: 0.1 },
-                    { opacity: 0.8, transform: `translate(${(destinationX - startX) * 0.8}px, ${(destinationY - startY) * 0.8}px) scale(1)`, offset: 0.8 },
                     { opacity: 0, transform: `translate(${destinationX - startX}px, ${destinationY - startY}px) scale(0.5)` }
-                ], {
-                    duration: duration,
-                    easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)', // Suave
-                    fill: 'forwards'
-                });
+                ], { duration: duration, easing: 'ease-out', fill: 'forwards' });
 
-                // Limpiar elemento
                 setTimeout(() => firefly.remove(), duration);
             }
         }

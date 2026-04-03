@@ -4,24 +4,48 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Archivo | Sintonía Diaria</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
-
         :root {
             --bg-dark: #0a0f16;
             --accent: #fa165a;
             --text-main: #f8fafc;
             --text-dim: #94a3b8;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border-glass: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.04);
+            --border-glass: rgba(255, 255, 255, 0.15);
+            --spring-eas: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --shadow: 0 10px 30px rgba(0,0,0,0.3);
+            --accent-rgb: 250, 22, 90;
+            --btn-bg: rgba(255, 255, 255, 0.08);
             --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* TEMAS NAVBAR */
+        body.theme-midnight {
+            --bg-dark: #000000;
+            --accent: #fde047;
+            --text-main: #ffffff;
+            --text-dim: #71717a;
+            --border-glass: rgba(253, 224, 71, 0.3);
+            --accent-rgb: 253, 224, 71;
+            --btn-bg: rgba(253, 224, 71, 0.1);
+        }
+
+        body.theme-light {
+            --bg-dark: #fcfaf7;
+            --accent: #f59e0b;
+            --text-main: #1e293b;
+            --text-dim: #64748b;
+            --border-glass: rgba(245, 158, 11, 0.3);
+            --accent-rgb: 245, 158, 11;
+            --btn-bg: rgba(245, 158, 11, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg-dark);
-            background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-image: radial-gradient(rgba(var(--accent-rgb), 0.05) 1px, transparent 1px);
             background-size: 30px 30px;
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
@@ -29,14 +53,46 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
+            padding: 20px;
             overflow-x: hidden;
+            transition: background-color 0.6s ease;
         }
 
-        .fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
-        @keyframes fadeIn { to { opacity: 1; } }
+        /* --- ESTILOS NAVBAR --- */
+        .navbar {
+            position: fixed; top: 15px; width: calc(100% - 30px); max-width: 500px; height: 65px;
+            background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glass); border-radius: 22px; z-index: 10000;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 12px;
+            box-shadow: var(--shadow); animation: slideDown 0.8s var(--spring-eas);
+        }
 
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-home, .nav-extra-btn, .nav-heart-btn, .theme-btn {
+            text-decoration: none; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
+            border-radius: 14px; background: var(--btn-bg); border: 1px solid var(--border-glass);
+            transition: all 0.2s var(--spring-eas); cursor: pointer; color: var(--text-main); font-size: 1.1rem;
+        }
+
+        .nav-home:active, .nav-extra-btn:active, .nav-heart-btn:active, .theme-btn:active {
+            transform: scale(0.9) translateY(2px); background: rgba(var(--accent-rgb), 0.2);
+        }
+
+        .system-status { display: flex; flex-direction: column; justify-content: center; pointer-events: none; }
+        .status-dot-wrapper { display: flex; align-items: center; gap: 6px; font-family: monospace; font-size: 0.55rem; font-weight: 700; color: var(--text-main); }
+        .dot { width: 7px; height: 7px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e; animation: pulse 2s infinite; }
+        
+        .nav-right { display: flex; align-items: center; gap: 8px; }
+        .heart-icon { animation: heartBeat 1.5s infinite; display: inline-block; }
+        .nav-divider { width: 1px; height: 24px; background: var(--border-glass); margin: 0 2px; }
+
+        @keyframes slideDown { from { transform: translateY(-100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes heartBeat { 0%, 70%, 100% { transform: scale(1); } 14% { transform: scale(1.2); } 42% { transform: scale(1.2); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* --- CONTENIDO PRINCIPAL --- */
         .header-title {
+            margin-top: 100px;
             color: var(--text-main);
             font-weight: 600;
             font-size: 1.2rem;
@@ -57,6 +113,7 @@
             padding: 30px;
             text-align: center;
             box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+            z-index: 10;
         }
 
         .day-message { 
@@ -92,18 +149,10 @@
         }
 
         .btn-spotify {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #1DB954;
-            color: white;
-            text-decoration: none;
-            padding: 16px;
-            border-radius: 14px;
-            font-size: 0.85rem; 
-            font-weight: 700;
-            transition: var(--transition);
-            letter-spacing: 1px;
+            display: flex; align-items: center; justify-content: center;
+            background: #1DB954; color: white; text-decoration: none;
+            padding: 16px; border-radius: 14px; font-size: 0.85rem; 
+            font-weight: 700; transition: var(--transition); letter-spacing: 1px;
         }
 
         .btn-spotify:hover { transform: translateY(-2px); filter: brightness(1.1); }
@@ -115,13 +164,13 @@
             border-radius: 16px;
             max-width: 350px;
             text-align: center;
-            background: rgba(250, 22, 90, 0.02);
+            background: rgba(var(--accent-rgb), 0.05);
         }
 
-        .history-section { width: 100%; max-width: 400px; padding-bottom: 60px; }
+        .history-section { width: 100%; max-width: 400px; padding-bottom: 60px; z-index: 10; }
 
         #btn-history {
-            background: transparent;
+            background: var(--btn-bg);
             border: 1px solid var(--border-glass);
             color: var(--text-dim);
             padding: 12px 24px;
@@ -133,7 +182,7 @@
             transition: var(--transition);
             text-transform: uppercase;
         }
-        #btn-history:hover { border-color: var(--accent); color: var(--accent); }
+        #btn-history:hover { border-color: var(--accent); color: var(--text-main); background: rgba(var(--accent-rgb), 0.1); }
 
         #history-list { margin-top: 25px; display: none; }
 
@@ -157,15 +206,37 @@
 
         .falling-petal {
             position: fixed; background: var(--accent); border-radius: 0 80% 0 80%;
-            opacity: 0.1; z-index: -1; pointer-events: none; animation: fall linear infinite;
+            opacity: 0.15; z-index: 1; pointer-events: none; animation: fall linear infinite;
         }
         @keyframes fall { 
             0% { transform: translateY(-10vh) rotate(0deg); } 
             100% { transform: translateY(110vh) rotate(360deg); } 
         }
+
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; }
+        @keyframes fadeIn { to { opacity: 1; } }
     </style>
 </head>
-<body class="fade-in">
+<body class="theme-dark fade-in">
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html" class="nav-home">🏠</a>
+            <div class="system-status">
+                <div class="status-dot-wrapper">
+                    <span class="dot"></span> SISTEMA_ACTIVO
+                </div>
+                <div style="font-size: 0.5rem; color: var(--text-dim); font-family: monospace; margin-left: 13px;">v2.4.0 / ARCHIVO</div>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <a href="https://idelgado1006.github.io/CALKI/" class="nav-extra-btn" title="Extra">🔗</a>
+            <a href="seccion5.html" class="nav-heart-btn" title="Refugio"><span class="heart-icon">❤️</span></a>
+            <div class="nav-divider"></div>
+            <button class="theme-btn" onclick="cycleTheme()" id="themeBtn">💖</button>
+        </div>
+    </nav>
 
     <h1 class="header-title">Canción Diaria</h1>
     
@@ -186,11 +257,25 @@
     </div>
 
     <div class="history-section">
-        <button id="btn-history" onclick="toggleHistory()">Ver registros de canciones</button>
+        <button id="btn-history" onclick="toggleHistory()">Ver registros anteriores</button>
         <div id="history-list"></div>
     </div>
 
     <script>
+        // LÓGICA DE TEMAS
+        let currentTheme = 0; 
+        const themes = ['theme-dark', 'theme-midnight', 'theme-light'];
+        const icons = ['💖', '🌙', '☀️'];
+
+        function cycleTheme() {
+            document.body.classList.remove(themes[currentTheme]);
+            currentTheme = (currentTheme + 1) % themes.length;
+            document.body.classList.add(themes[currentTheme]);
+            document.getElementById('themeBtn').innerText = icons[currentTheme];
+            if(navigator.vibrate) navigator.vibrate(10);
+        }
+
+        // LÓGICA DE GOOGLE SHEETS
         const SHEET_ID = '1OkOYolMxeWx5AmxA9RydHrRjesdK5qnUPsQtS003k_w';
         const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Hoja%201`;
 
@@ -253,11 +338,13 @@
 
         function renderHistory(rows, hoy) {
             const histList = document.getElementById('history-list');
-            // Filtrar para incluir todas las canciones hasta hoy (inclusive)
+            
+            // Filtramos las canciones que ya han pasado o son de hoy
+            // Al quitar el .reverse(), mantenemos el orden cronológico del Sheets
             const pasadosYHoy = rows.filter(r => {
                 if (!r.c[0] || !r.c[0].v) return false;
                 const fExcel = r.c[0].v.toString().replace(/\//g, '-');
-                return fExcel <= hoy; // Cambiado de < a <=
+                return fExcel <= hoy;
             });
 
             histList.innerHTML = pasadosYHoy.map(r => {
