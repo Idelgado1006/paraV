@@ -42,7 +42,7 @@
             --glass: #ffffff;
             --border-glass: rgba(245, 158, 11, 0.3);
             --accent-rgb: 245, 158, 11;
-            --tape: rgba(245, 158, 11, 0.25); /* RESTAURADO */
+            --tape: rgba(245, 158, 11, 0.25);
             --btn-bg: rgba(245, 158, 11, 0.1);
         }
 
@@ -61,19 +61,18 @@
             transition: background-color 0.6s ease, color 0.4s ease;
         }
 
-        /* CUADRÍCULA MODO LIGHT - RESTAURADO */
         body.theme-light::after {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: linear-gradient(var(--border-glass) 1px, transparent 1px), linear-gradient(90deg, var(--border-glass) 1px, transparent 1px);
             background-size: 20px 20px; z-index: -1; pointer-events: none;
         }
 
-        /* --- NAVBAR ESTILO "CONTROL PANEL" --- */
+        /* --- NAVBAR RESPONSIVA --- */
         .navbar {
             position: fixed;
             top: 15px;
-            width: calc(100% - 30px);
-            max-width: 500px;
+            width: 92%;
+            max-width: 800px;
             height: 65px;
             background: var(--glass);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -86,87 +85,78 @@
             animation: slideDown 0.8s var(--spring-eas);
         }
 
-        .nav-left { display: flex; align-items: center; gap: 10px; }
-        
+        .nav-left { display: flex; align-items: center; gap: 8px; }
         .nav-home, .nav-extra-btn, .nav-heart-btn, .theme-btn {
             text-decoration: none;
-            width: 42px; height: 42px;
+            width: 40px; height: 40px;
             display: flex; align-items: center; justify-content: center;
-            border-radius: 14px;
+            border-radius: 12px;
             background: var(--btn-bg);
             border: 1px solid var(--border-glass);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             transition: all 0.2s var(--spring-eas);
             cursor: pointer;
             color: var(--text-main);
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .nav-home:active, .nav-extra-btn:active, .nav-heart-btn:active, .theme-btn:active {
-            transform: scale(0.9) translateY(2px);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            transform: scale(0.9);
             background: rgba(var(--accent-rgb), 0.2);
         }
 
-        .nav-home { background: rgba(var(--accent-rgb), 0.15); border-color: rgba(var(--accent-rgb), 0.3); }
-
-        .system-status { display: flex; flex-direction: column; justify-content: center; pointer-events: none; }
+        .system-status { display: flex; flex-direction: column; justify-content: center; }
         .status-dot-wrapper {
             display: flex; align-items: center; gap: 6px;
-            font-family: monospace; font-size: 0.55rem;
-            font-weight: 700; letter-spacing: 0.5px;
+            font-family: monospace; font-size: 0.55rem; font-weight: 700;
         }
-        .dot {
-            width: 7px; height: 7px;
-            background: #22c55e; border-radius: 50%;
-            box-shadow: 0 0 10px #22c55e;
-            animation: pulse 2s infinite;
-        }
+        .dot { width: 7px; height: 7px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 10px #22c55e; animation: pulse 2s infinite; }
 
-        .nav-right { display: flex; align-items: center; gap: 8px; }
-        .nav-heart-btn { border-color: rgba(var(--accent-rgb), 0.4); background: rgba(var(--accent-rgb), 0.05); }
+        .nav-right { display: flex; align-items: center; gap: 6px; }
+        .nav-divider { width: 1px; height: 20px; background: var(--border-glass); margin: 0 4px; }
         .heart-icon { animation: heartBeat 1.5s infinite; display: inline-block; }
-        .nav-divider { width: 1px; height: 24px; background: var(--border-glass); margin: 0 2px; }
 
-        @keyframes heartBeat {
-            0%, 70%, 100% { transform: scale(1); }
-            14% { transform: scale(1.2); }
-            28% { transform: scale(1.05); }
-            42% { transform: scale(1.2); }
-        }
-
-        /* --- CONTENIDO PRINCIPAL --- */
+        /* --- HEADER ADAPTADO --- */
         header {
-            margin-top: 120px; text-align: left; padding: 0 30px;
-            width: 100%; max-width: 500px;
+            margin-top: 110px; text-align: left; padding: 0 20px;
+            width: 90%; max-width: 800px;
             opacity: 0; transform: scale(0.95);
             animation: revealHeader 0.8s var(--spring-eas) forwards;
         }
 
-        h1 { font-size: 2.6rem; font-weight: 600; letter-spacing: -1.8px; margin: 0; }
-        #subtitulo { color: var(--text-dim); margin-top: 10px; font-weight: 300; font-size: 0.9rem; line-height: 1.4; }
+        h1 { font-size: clamp(2rem, 8vw, 3rem); font-weight: 600; letter-spacing: -1.5px; margin: 0; }
+        #subtitulo { color: var(--text-dim); margin-top: 8px; font-weight: 300; font-size: 0.9rem; max-width: 400px; }
 
+        /* --- GRID DINÁMICO (LA CLAVE) --- */
         .grid {
-            display: flex; flex-direction: column; gap: 20px;
-            width: 100%; max-width: 500px;
-            margin-top: 35px; padding: 0 20px 120px 20px;
+            display: grid;
+            grid-template-columns: 1fr; /* Una columna por defecto (móvil) */
+            gap: 16px;
+            width: 90%;
+            max-width: 800px;
+            margin-top: 30px;
+            padding: 0 0 120px 0;
+        }
+
+        /* Cambio a 2 columnas en pantallas más grandes */
+        @media (min-width: 600px) {
+            .grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+            .card-refugio, .card-proximamente { grid-column: span 2; } /* Estas resaltan ocupando todo el ancho */
         }
 
         .card {
             background: var(--glass);
             border: 1px solid var(--border-glass);
-            padding: 32px 26px; border-radius: 24px;
+            padding: 24px; border-radius: 22px;
             text-decoration: none; color: inherit;
             position: relative; overflow: hidden;
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            transform: translateY(40px); opacity: 0;
+            transform: translateY(30px); opacity: 0;
             box-shadow: var(--shadow);
-            transition: transform 0.6s var(--spring-eas), opacity 0.5s ease;
-            scroll-margin-top: 110px;
+            transition: transform 0.4s var(--spring-eas), opacity 0.4s ease, border-color 0.3s ease;
         }
 
         .card.reveal { opacity: 1; transform: translateY(0); }
-        .card:active { transform: scale(0.97); }
+        .card:active { transform: scale(0.98); }
 
         .card-refugio::before {
             content: ""; position: absolute; top: -10px; left: 50%;
@@ -176,44 +166,46 @@
             border: 1px solid rgba(var(--accent-rgb), 0.1);
         }
 
-        .tag-container { display: flex; margin-bottom: 18px; }
+        .tag-container { display: flex; margin-bottom: 12px; }
         .status-tag {
             font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 1.2px; color: var(--accent);
-            padding: 5px 12px; border-radius: 10px;
+            letter-spacing: 1px; color: var(--accent);
+            padding: 4px 10px; border-radius: 8px;
             background: rgba(var(--accent-rgb), 0.1);
-            border: 1px solid rgba(var(--accent-rgb), 0.2);
+            border: 1px solid rgba(var(--accent-rgb), 0.15);
         }
 
-        .card h3 { font-size: 1.35rem; margin: 0 0 10px 0; font-weight: 600; line-height: 1.2; }
-        .card p { font-size: 0.9rem; color: var(--text-dim); line-height: 1.5; margin: 0; font-weight: 300; }
+        .card h3 { font-size: 1.2rem; margin: 0 0 8px 0; font-weight: 600; }
+        .card p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.4; margin: 0; }
 
         .card-refugio {
-            border: 1.5px solid var(--accent);
+            border: 1px solid var(--accent);
             background: linear-gradient(160deg, rgba(var(--accent-rgb), 0.08) 0%, transparent 100%);
         }
 
-        .card-proximamente { opacity: 0.4 !important; pointer-events: none; border: 1px dashed var(--text-dim); }
-        .progress-container { width: 100%; height: 6px; border-radius: 10px; margin: 20px 0 8px 0; background: rgba(var(--accent-rgb), 0.1); overflow: hidden; }
+        .card-proximamente { opacity: 0.5 !important; pointer-events: none; border: 1px dashed var(--text-dim); }
+        .progress-container { width: 100%; height: 5px; border-radius: 10px; margin: 15px 0 5px 0; background: rgba(var(--accent-rgb), 0.1); overflow: hidden; }
         .progress-bar { width: 0%; height: 100%; background: var(--accent); transition: width 2s ease; }
 
+        /* --- POPUP --- */
         .popup-mensaje {
-            position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 420px;
+            position: fixed; bottom: -150px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px;
             background: var(--glass); backdrop-filter: blur(25px);
-            border: 1px solid var(--accent); border-radius: 24px; padding: 20px 24px;
+            border: 1px solid var(--accent); border-radius: 20px; padding: 16px 20px;
             display: flex; align-items: center; justify-content: space-between;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2); z-index: 9999;
-            transition: bottom 0.8s var(--spring-eas);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4); z-index: 9999;
+            transition: bottom 0.6s var(--spring-eas);
         }
-        .popup-mensaje.show { bottom: 30px; }
+        .popup-mensaje.show { bottom: 20px; }
 
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
         @keyframes slideDown { from { transform: translateY(-100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes revealHeader { to { opacity: 1; transform: scale(1); } }
-        
+        @keyframes heartBeat { 0%, 70%, 100% { transform: scale(1); } 14% { transform: scale(1.15); } 28% { transform: scale(1.05); } 42% { transform: scale(1.15); } }
+
         footer { padding: 40px; text-align: center; }
-        #timestamp { font-size: 0.65rem; color: var(--text-dim); font-family: monospace; letter-spacing: 2px; opacity: 0.6; }
+        #timestamp { font-size: 0.6rem; color: var(--text-dim); font-family: monospace; letter-spacing: 1px; opacity: 0.5; }
     </style>
 </head>
 <body class="theme-dark">
@@ -295,17 +287,16 @@
 
     <div id="miPopup" class="popup-mensaje">
         <div class="popup-content">
-            <span style="font-size: 0.65rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; display: block;">Mensaje del Sistema</span>
-            <span id="popup-txt" style="font-size: 0.95rem; color: var(--text-main); font-weight: 400; line-height: 1.4;">tip: toca los botones de la barra de navegación, hay un link a un proyecto en el que estoy trabajando que hubiera querido mostrarte</span>
+            <span style="font-size: 0.6rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: block;">Mensaje del Sistema</span>
+            <span id="popup-txt" style="font-size: 0.85rem; color: var(--text-main); font-weight: 400; line-height: 1.3;">tip: toca los botones de la barra de navegación, hay un link a un proyecto externo.</span>
         </div>
-        <button onclick="cerrarPopup()" style="background: rgba(var(--accent-rgb), 0.1); border: none; color: var(--text-main); width: 32px; height: 32px; border-radius: 50%; font-size: 1.4rem; display: flex; align-items: center; justify-content: center;">&times;</button>
+        <button onclick="cerrarPopup()" style="background: rgba(var(--accent-rgb), 0.1); border: none; color: var(--text-main); width: 28px; height: 28px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer;">&times;</button>
     </div>
 
     <footer><p id="timestamp"></p></footer>
 
     <script>
-        // --- CONFIGURACIÓN DE SEGUIMIENTO (INVISIBLE) ---
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyGd90x5g34cjsFvojvHPyRqJG0PpboUWVDj0SJNQ50BKHYhKRASKNIm06ul9eyK1AE/exec'; // <--- PEGA TU URL AQUÍ
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyGd90x5g34cjsFvojvHPyRqJG0PpboUWVDj0SJNQ50BKHYhKRASKNIm06ul9eyK1AE/exec';
 
         function registrarEntrada(nombre, urlDestino) {
             fetch(WEB_APP_URL, {
@@ -313,7 +304,7 @@
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ tarjeta: nombre, url: urlDestino }),
-                keepalive: true // Crucial para que envíe el dato mientras cambia de página
+                keepalive: true 
             });
         }
 
@@ -332,23 +323,21 @@
         window.onload = () => {
             const cards = document.querySelectorAll('.card');
             cards.forEach((card, index) => {
-                // Registro de clic invisible
                 card.addEventListener('click', function() {
                     const titulo = this.querySelector('h3') ? this.querySelector('h3').innerText : "Tarjeta Desconocida";
                     const destino = this.getAttribute('href');
-                    registrarEntrada(titulo, destino);
+                    if(destino) registrarEntrada(titulo, destino);
                 });
-
-                setTimeout(() => { card.classList.add('reveal'); }, index * 80);
+                setTimeout(() => { card.classList.add('reveal'); }, index * 60);
             });
 
             const bar = document.getElementById('p-bar');
-            if(bar) setTimeout(() => { bar.style.width = '84%'; }, 1000);
+            if(bar) setTimeout(() => { bar.style.width = '84%'; }, 800);
 
             setTimeout(() => {
                 document.getElementById('miPopup').classList.add('show');
                 if(navigator.vibrate) navigator.vibrate([20, 40, 20]);
-            }, 2000);
+            }, 1500);
 
             const ahora = new Date();
             document.getElementById('timestamp').innerText = `SISTEMA ACTUALIZADO: ${ahora.toLocaleDateString('es-PA').toUpperCase()}`;
