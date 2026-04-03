@@ -20,7 +20,6 @@
             --accent-rgb: 250, 22, 90;
         }
 
-        /* TEMAS NAVBAR */
         body.theme-midnight {
             --bg-dark: #000000;
             --accent: #fde047;
@@ -50,7 +49,7 @@
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 100px 20px 40px; 
+            padding: 100px 20px 40px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -103,9 +102,8 @@
             box-shadow: 0 30px 60px rgba(0,0,0,0.6);
             z-index: 10;
             height: fit-content;
-            overflow: hidden;
-            /* CAMBIO CLAVE: Permitir scroll vertical táctil nativo */
-            touch-action: pan-y;
+            overflow: visible; /* Cambiado para permitir que el canvas respire */
+            touch-action: pan-y; /* Permite scroll vertical nativo */
         }
 
         .message-layer {
@@ -113,122 +111,57 @@
             text-align: left;
             user-select: none;
             position: relative;
-            z-index: 1;
+            z-index: 10; /* Encima del canvas */
+            pointer-events: auto; /* Permite que el texto reciba el toque */
         }
 
         .status-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 30px;
-            border-bottom: 1px solid var(--border-glass);
-            padding-bottom: 20px;
+            display: flex; align-items: center; gap: 12px; margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-glass); padding-bottom: 20px;
         }
 
         .pulse-dot {
-            width: 8px; height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.6);
-            animation: pulse-ring 2s infinite;
+            width: 8px; height: 8px; background: var(--accent); border-radius: 50%;
+            box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.6); animation: pulse-ring 2s infinite;
         }
 
         .status-text {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
-            letter-spacing: 4px;
-            color: var(--accent);
-            text-transform: uppercase;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            letter-spacing: 4px; color: var(--accent); text-transform: uppercase;
         }
 
-        .log-content {
-            font-size: 1rem;
-            line-height: 1.9;
-            font-weight: 300;
-            color: rgba(248, 250, 252, 0.95);
-        }
-
+        .log-content { font-size: 1rem; line-height: 1.9; font-weight: 300; color: rgba(248, 250, 252, 0.95); }
         .log-content p { margin-bottom: 25px; }
-        .log-content span.highlight { 
-            color: var(--accent); 
-            font-weight: 600;
-            text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.2);
-        }
+        .log-content span.highlight { color: var(--accent); font-weight: 600; text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.2); }
 
         .log-footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-glass);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.6rem;
-            color: var(--text-dim);
-            letter-spacing: 1px;
+            margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-glass);
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; color: var(--text-dim); letter-spacing: 1px;
         }
 
         #fogCanvas {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            cursor: crosshair;
-            z-index: 5;
-            /* CAMBIO CLAVE: Permitir que el navegador maneje el scroll si no estamos raspando activamente */
-            touch-action: pan-y;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 15; /* Sigue arriba para el efecto visual */
+            pointer-events: none; /* CLAVE: El canvas ignora los toques, pasan al contenedor */
+            border-radius: 32px;
         }
 
         .interaction-overlay {
-            position: absolute;
-            top: 180px; 
-            left: 0; width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 12;
-            pointer-events: none;
-            transition: opacity 0.8s ease;
+            position: absolute; top: 180px; left: 0; width: 100%;
+            display: flex; flex-direction: column; align-items: center;
+            z-index: 20; pointer-events: none; transition: opacity 0.8s ease;
         }
 
         .interaction-overlay.hidden { opacity: 0; }
+        .hand-icon { font-size: 2.8rem; margin-bottom: 15px; filter: drop-shadow(0 0 10px var(--accent)); animation: handMove 3s infinite ease-in-out; }
+        .instruction-tag { font-size: 0.7rem; letter-spacing: 3px; color: var(--accent); text-transform: uppercase; font-weight: 600; text-shadow: var(--glow); }
 
-        .hand-icon {
-            font-size: 2.8rem;
-            margin-bottom: 15px;
-            filter: drop-shadow(0 0 10px var(--accent));
-            animation: handMove 3s infinite ease-in-out;
-        }
+        .particle { position: fixed; background: var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999; opacity: 0; }
 
-        .instruction-tag {
-            font-size: 0.7rem;
-            letter-spacing: 3px;
-            color: var(--accent);
-            text-transform: uppercase;
-            font-weight: 600;
-            text-shadow: var(--glow);
-        }
-
-        .particle {
-            position: fixed;
-            background: var(--accent);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0;
-        }
-
-        @keyframes handMove {
-            0%, 100% { transform: translateX(-20px) rotate(-10deg); opacity: 0.4; }
-            50% { transform: translateX(20px) rotate(10deg); opacity: 0.8; }
-        }
-
-        @keyframes pulse-ring {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.8); opacity: 0.3; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+        @keyframes handMove { 0%, 100% { transform: translateX(-20px) rotate(-10deg); opacity: 0.4; } 50% { transform: translateX(20px) rotate(10deg); opacity: 0.8; } }
+        @keyframes pulse-ring { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.8); opacity: 0.3; } 100% { transform: scale(1); opacity: 1; } }
 
         @media (max-width: 480px) {
             .message-layer { padding: 40px 30px; }
@@ -249,23 +182,21 @@
                 <div style="font-size: 0.5rem; color: var(--text-dim); font-family: monospace; margin-left: 13px;">ENC_LEVEL / MAX</div>
             </div>
         </div>
-
         <div class="nav-right">
-            <a href="seccion4.html" class="nav-music-btn" title="Música">🎵</a>
-            <a href="https://idelgado1006.github.io/CALKI/" class="nav-extra-btn" title="CALKI" target="_blank">🔗</a>
-            <a href="seccion5.html" class="nav-heart-btn" title="Refugio">❤️</a>
+            <a href="seccion4.html" class="nav-music-btn">🎵</a>
+            <a href="https://idelgado1006.github.io/CALKI/" class="nav-extra-btn" target="_blank">🔗</a>
+            <a href="seccion5.html" class="nav-heart-btn">❤️</a>
             <div class="nav-divider"></div>
             <button class="theme-btn" onclick="cycleTheme()" id="themeBtn">💖</button>
         </div>
     </nav>
 
     <div class="log-container" id="mainContainer">
-        <div class="message-layer">
+        <div class="message-layer" id="touchLayer">
             <div class="status-header">
                 <div class="pulse-dot"></div>
                 <span class="status-text">Archivo: V // Protocolo_001</span>
             </div>
-
             <div class="log-content">
                 <p>¿Recuerdas la sección anterior? Sé las conclusiones que habrás sacado cuando viste ese tiempo corriendo; es evidente cuándo empezó a contar y es fácil quedarse en la lógica de los días que han pasado, pero esos números no están ahí para eso.</p>
                 <p>Hemos estado en silencio, pero para mí el silencio es imposible cuando alguien sigue ocupando <span class="highlight">el mismo lugar</span> en cada uno de mis pensamientos. El contador muestra el tiempo desde que te hice una promesa y desde que mi decisión ha permanecido intacta; no es algo que el tiempo pueda desgastar.</p>
@@ -273,15 +204,12 @@
                 <p>Quiero pedirte perdón, porque cuando todo esto pasó, fui egoísta y cometí un error. Quise enfocarlo todo en mí y lo que yo sentía, sin detenerme un segundo a pensar en lo que estabas pasando tú. Sé que, a pesar de ser la persona más abierta y comunicativa <span class="highlight">(yapper)</span> que conozco, eres también la más reservada cuando se trata de ti misma. No quisiste decir lo que tú estabas pasando, lo que tú sentías o lo que estabas viviendo en ese momento, y me arrepiento tanto de no habértelo preguntado.</p>
                 <p>Hubiera querido estar para ti, decirte que no importara qué fuera, todo iba a estar bien, que pasara lo que pasara yo iba a seguirte y no te iba a soltar... pero ahora no puedo decírtelo de frente y solo puedo dejártelo aquí con la esperanza de que un día lo leas.</p>
             </div>
-
             <div class="log-footer">
                 <span>CONEXIÓN CIFRADA</span>
                 <span id="panama-time">[ SYNC... ]</span>
             </div>
         </div>
-        
         <canvas id="fogCanvas"></canvas>
-
         <div class="interaction-overlay" id="overlay">
             <span class="hand-icon">🌫️</span>
             <span class="instruction-tag">Despeja la niebla</span>
@@ -289,7 +217,6 @@
     </div>
 
     <script>
-        // SISTEMA DE TEMAS
         let currentTheme = 0; 
         const themes = ['theme-dark', 'theme-midnight', 'theme-light'];
         const icons = ['💖', '🌙', '☀️'];
@@ -299,136 +226,93 @@
             currentTheme = (currentTheme + 1) % themes.length;
             document.body.classList.add(themes[currentTheme]);
             document.getElementById('themeBtn').innerText = icons[currentTheme];
-            if(navigator.vibrate) navigator.vibrate(10);
             init(); 
         }
 
         const canvas = document.getElementById('fogCanvas');
         const ctx = canvas.getContext('2d');
         const container = document.getElementById('mainContainer');
+        const touchLayer = document.getElementById('touchLayer');
         const overlay = document.getElementById('overlay');
         let isRasping = false;
 
-        // Variables para detectar intención de scroll vs raspado
-        let touchStartX = 0;
-        let touchStartY = 0;
-
         function init() {
+            // Ajustamos el canvas al tamaño real del contenedor de texto
             canvas.width = container.offsetWidth;
             canvas.height = container.offsetHeight;
             
             const colorFog = getComputedStyle(document.body).getPropertyValue('--bg-dark');
-            const gradientBg = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradientBg.addColorStop(0, colorFog + 'ee');
-            gradientBg.addColorStop(0.3, colorFog); 
-            gradientBg.addColorStop(1, colorFog);
-            
             ctx.globalCompositeOperation = 'source-over';
-            ctx.fillStyle = gradientBg;
+            ctx.fillStyle = colorFog;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            for(let i=0; i<6000; i++) {
-                ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.015})`;
+            // Efecto de ruido/partículas estáticas
+            for(let i=0; i<4000; i++) {
+                ctx.fillStyle = `rgba(255,255,255,${Math.random() * 0.02})`;
                 ctx.fillRect(Math.random()*canvas.width, Math.random()*canvas.height, 1, 1);
             }
-
             updatePanamaTime();
         }
 
-        function rasp(e) {
-            // Si no estamos raspando, no hacemos nada
+        function handleMove(e) {
             if (!isRasping && e.type !== 'touchmove') return;
-
+            overlay.classList.add('hidden');
+            
             const rect = canvas.getBoundingClientRect();
             const clientX = e.clientX || (e.touches && e.touches[0].clientX);
             const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-
-            // LÓGICA DE SCROLL PARA MÓVIL
-            if (e.type === 'touchmove') {
-                const deltaX = Math.abs(clientX - touchStartX);
-                const deltaY = Math.abs(clientY - touchStartY);
-
-                // Si el movimiento es muy vertical (deltaY >> deltaX), asumimos scroll y cancelamos el raspado
-                if (deltaY > deltaX + 10) { 
-                    isRasping = false; 
-                    return; 
-                }
-            }
-
-            overlay.classList.add('hidden');
+            
+            // Calculamos posición relativa al canvas
             const x = clientX - rect.left;
             const y = clientY - rect.top;
 
             ctx.globalCompositeOperation = 'destination-out';
-            ctx.globalAlpha = 0.6; 
-
             ctx.beginPath();
-            const raspSize = 65; 
-            const gradient = ctx.createRadialGradient(x, y, 0, x, y, raspSize);
+            const gradient = ctx.createRadialGradient(x, y, 0, x, y, 60);
             gradient.addColorStop(0, 'rgba(0, 0, 0, 1)');
-            gradient.addColorStop(0.4, 'rgba(0, 0, 0, 0.8)');
             gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-            
             ctx.fillStyle = gradient;
-            ctx.arc(x, y, raspSize, 0, Math.PI * 2);
+            ctx.arc(x, y, 60, 0, Math.PI * 2);
             ctx.fill();
-            ctx.globalAlpha = 1.0;
 
-            if(Math.random() > 0.4) createParticles(clientX, clientY);
+            if(Math.random() > 0.5) createParticles(clientX, clientY);
         }
 
         function createParticles(clientX, clientY) {
             const p = document.createElement('div');
             p.classList.add('particle');
-            const size = Math.random() * 4 + 2;
+            const size = Math.random() * 3 + 2;
             p.style.width = size + 'px'; 
             p.style.height = size + 'px';
             p.style.left = clientX + 'px'; 
             p.style.top = clientY + 'px';
             document.body.appendChild(p);
-
-            const dX = (Math.random() - 0.5) * 50;
-            const dY = (Math.random() - 0.5) * 50;
-
-            p.animate([
-                { opacity: 0, transform: 'translate(0,0)' },
-                { opacity: 1.0, offset: 0.15 },
-                { opacity: 0, transform: `translate(${dX}px, ${dY}px)` }
-            ], { duration: 1100, easing: 'ease-out' });
-
-            setTimeout(() => p.remove(), 1100);
+            p.animate([{ opacity: 1 }, { opacity: 0, transform: 'translateY(20px)' }], { duration: 800 });
+            setTimeout(() => p.remove(), 800);
         }
 
         function updatePanamaTime() {
             const timeSpan = document.getElementById('panama-time');
             const now = new Date().toLocaleTimeString('es-PA', {
-                timeZone: 'America/Panama',
-                hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+                timeZone: 'America/Panama', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
             });
-            if (timeSpan) timeSpan.innerText = `[ PTY: ${now} ]`;
+            timeSpan.innerText = `[ PTY: ${now} ]`;
         }
 
-        setInterval(updatePanamaTime, 1000);
-
-        // Eventos Mouse
-        canvas.addEventListener('mousedown', (e) => { isRasping = true; rasp(e); });
+        // EVENTOS CLAVE: Escuchamos en el touchLayer (el texto), no en el canvas
+        touchLayer.addEventListener('mousedown', (e) => { isRasping = true; handleMove(e); });
         window.addEventListener('mouseup', () => isRasping = false);
-        canvas.addEventListener('mousemove', rasp);
+        touchLayer.addEventListener('mousemove', handleMove);
 
-        // Eventos Touch Optimizados
-        canvas.addEventListener('touchstart', (e) => { 
-            isRasping = true; 
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-            rasp(e); 
+        // En móvil, permitimos que el navegador decida si es scroll o raspado
+        touchLayer.addEventListener('touchstart', (e) => { isRasping = true; handleMove(e); }, { passive: true });
+        touchLayer.addEventListener('touchmove', (e) => { 
+            // Si el usuario mueve el dedo, raspamos pero NO bloqueamos el scroll nativo
+            handleMove(e); 
         }, { passive: true });
-
-        canvas.addEventListener('touchmove', (e) => { 
-            rasp(e); 
-        }, { passive: true });
-
         window.addEventListener('touchend', () => isRasping = false);
 
+        setInterval(updatePanamaTime, 1000);
         window.onload = init;
         window.onresize = init;
     </script>
