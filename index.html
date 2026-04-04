@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="robots" content="noindex, nofollow">
     <title>Archivo | Recuerdos</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -15,7 +14,7 @@
             --text-dim: #94a3b8;
             --glass: rgba(255, 255, 255, 0.03);
             --border-glass: rgba(255, 255, 255, 0.12);
-            --spring-eas: cubic-bezier(0.23, 1, 0.32, 1); /* Curva de muelle más fluida */
+            --spring-eas: cubic-bezier(0.23, 1, 0.32, 1);
             --shadow: 0 10px 30px rgba(0,0,0,0.4);
             --accent-rgb: 250, 22, 90;
             --tape: transparent;
@@ -68,7 +67,7 @@
             margin: 0; padding: 0;
             overflow-x: hidden;
             display: flex; flex-direction: column; align-items: center;
-            transition: background-color 0.4s ease;
+            transition: background-color 0.4s ease, opacity 0.5s ease;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -80,6 +79,14 @@
 
         body.theme-light { background-image: none; }
 
+        /* --- EFECTO DE NAVEGACIÓN (ZOOM) --- */
+        body.navigating .grid, body.navigating header, body.navigating .navbar {
+            opacity: 0;
+            transform: translateY(-20px);
+            pointer-events: none;
+            transition: all 0.5s var(--spring-eas);
+        }
+
         /* --- NAVBAR --- */
         .navbar {
             position: fixed; top: 15px; width: 92%; max-width: 600px; height: 60px;
@@ -87,7 +94,8 @@
             border: 1px solid var(--border-glass); border-radius: 20px; z-index: 10000;
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 10px; box-shadow: var(--shadow);
-            transform: translateZ(0); /* Aceleración GPU */
+            transform: translateZ(0);
+            transition: all 0.5s var(--spring-eas);
         }
 
         .nav-left { display: flex; align-items: center; gap: 8px; }
@@ -98,8 +106,6 @@
             color: var(--text-main); font-size: 0.95rem; 
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
-        .nav-home:active, .theme-btn:active { transform: scale(0.85); }
 
         .system-status { display: flex; flex-direction: column; }
         .status-dot-wrapper { display: flex; align-items: center; gap: 5px; font-family: monospace; font-size: 0.55rem; font-weight: 700; opacity: 0.8; }
@@ -118,12 +124,13 @@
         header.reveal { opacity: 1; transform: translateY(0); }
 
         h1 { font-size: clamp(2.2rem, 10vw, 2.8rem); font-weight: 600; letter-spacing: -1.5px; margin: 0; }
-        #subtitulo { color: var(--text-dim); margin-top: 6px; font-weight: 300; font-size: 0.85rem; line-height: 1.4; }
+        #subtitulo { color: var(--text-dim); margin-top: 6px; font-weight: 300; font-size: 0.85rem; line-height: 1.4; transition: opacity 0.3s ease; }
 
         /* --- GRID --- */
         .grid {
             display: grid; grid-template-columns: 1fr; gap: 15px; width: 90%; max-width: 600px;
             margin-top: 25px; padding: 0 0 100px 0;
+            transition: all 0.5s var(--spring-eas);
         }
 
         @media (min-width: 500px) {
@@ -137,19 +144,29 @@
             position: relative; overflow: hidden; backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px); transform: translateY(20px) translateZ(0); opacity: 0;
             box-shadow: var(--shadow); 
-            transition: transform 0.5s var(--spring-eas), opacity 0.5s ease, background 0.3s ease;
+            transition: transform 0.5s var(--spring-eas), opacity 0.5s ease, background 0.3s ease, box-shadow 0.4s ease;
             will-change: transform, opacity;
         }
 
         .card.reveal { opacity: 1; transform: translateY(0) translateZ(0); }
-        .card:active { transform: scale(0.96) translateZ(0); background: rgba(var(--accent-rgb), 0.05); }
 
-        .card-refugio::before {
-            content: ""; position: absolute; top: -10px; left: 50%;
-            transform: translateX(-50%) rotate(-2deg);
-            width: 80px; height: 25px;
-            background: var(--tape); z-index: 10;
-            border: 1px solid rgba(var(--accent-rgb), 0.1);
+        /* --- EFECTO TARJETA NUEVA --- */
+        .card-new {
+            border: 1px solid var(--accent) !important;
+            background: linear-gradient(165deg, rgba(var(--accent-rgb), 0.12) 0%, var(--glass) 100%) !important;
+            animation: glowPulse 3s infinite ease-in-out;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.1); border-color: var(--accent); }
+            50% { box-shadow: 0 0 25px rgba(var(--accent-rgb), 0.3); border-color: #ffffff; }
+        }
+
+        .badge-new {
+            position: absolute; top: 0; left: 0; background: var(--accent); color: white;
+            font-size: 0.55rem; font-weight: 900; padding: 5px 12px;
+            border-bottom-right-radius: 15px; letter-spacing: 1.2px; z-index: 20;
+            text-transform: uppercase; box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
         }
 
         .tag-container { display: flex; margin-bottom: 12px; }
@@ -199,7 +216,7 @@
                 <div class="status-dot-wrapper">
                     <span class="dot"></span> SISTEMA_ACTIVO
                 </div>
-                <div style="font-size: 0.5rem; color: var(--text-dim); font-family: monospace; margin-left: 11px;">v2.4.0 / 7 ENTRADAS</div>
+                <div style="font-size: 0.5rem; color: var(--text-dim); font-family: monospace; margin-left: 11px;">v2.5.0 / LIVE_TRANSITIONS</div>
             </div>
         </div>
 
@@ -213,10 +230,17 @@
 
     <header id="mainHeader">
         <h1>Recuerdos</h1>
-        <p id="subtitulo">Un archivo digital para los momentos que merecen ser pausados.</p>
+        <p id="subtitulo">Sincronizando archivo digital...</p>
     </header>
 
     <main class="grid">
+        <a href="seccion7.html" class="card card-new">
+            <span class="badge-new">NEW</span>
+            <div class="tag-container"><span class="status-tag">Nota</span></div>
+            <h3>Carta 01</h3>
+            <p>...</p>
+        </a>
+
         <a href="seccion1.html" class="card">
             <div class="tag-container"><span class="status-tag">Archivo 01</span></div>
             <h3>27 / Marzo / 2026</h3>
@@ -232,7 +256,7 @@
         <a href="seccion3.html" class="card">
             <div class="tag-container"><span class="status-tag">Archivo 03</span></div>
             <h3>Me alegro!!!</h3>
-            <p>ME alegro!!!</p>
+            <p>Me alegro!!!</p>
         </a>
         
         <a href="seccion4.html" class="card">
@@ -244,19 +268,13 @@
         <a href="seccion5.html" id="seccion5" class="card card-refugio">
             <div class="tag-container"><span class="status-tag">Privado</span></div>
             <h3>Ábreme</h3>
-            <p>Este espacio es una constante, Entra cuando el ruido de afuera sea demasiado pesado</p>
+            <p>Este espacio estará aqui siempre. Entra cuando lo necesites</p>
         </a>
         
         <a href="seccion6.html" class="card">
             <div class="tag-container"><span class="status-tag">contador</span></div>
             <h3>Burn the ships</h3>
             <p>Ha estado ahí todo este tiempo</p>
-        </a>
-
-        <a href="seccion7.html" class="card">
-            <div class="tag-container"><span class="status-tag">Nota</span></div>
-            <h3>Nota 01</h3>
-            <p>Un mensaje no tan corto, pero con mucho peso</p>
         </a>
 
         <div class="card card-proximamente">
@@ -271,8 +289,8 @@
         <div class="popup-content">
             <span style="font-size: 0.6rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">Mensaje del Sistema</span>
             <div style="display: flex; flex-direction: column; gap: 4px;">
-                <span style="font-size: 0.82rem; color: var(--text-main); font-weight: 400; line-height: 1.3;">• tip: toca los botones de la barra de navegación, recomendado verlo en PC</span>
-                <span style="font-size: 0.82rem; color: var(--text-main); font-weight: 400; line-height: 1.3;">• el enlace anclado es un proyecto personal en etapas tempranas de desarrollo</span>
+                <span style="font-size: 0.82rem; color: var(--text-main); font-weight: 400; line-height: 1.3;">• tip: toca las tarjetas para expandirlas</span>
+                <span style="font-size: 0.82rem; color: var(--text-main); font-weight: 400; line-height: 1.3;">• sistema optimizado para Victoria</span>
             </div>
         </div>
         <button onclick="cerrarPopup()" style="background: rgba(var(--accent-rgb), 0.1); border: none; color: var(--text-main); min-width: 28px; height: 28px; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; margin-left: 15px;">&times;</button>
@@ -292,6 +310,23 @@
             }
         }
 
+        // --- SISTEMA DE MENSAJES POR HORA ---
+        function actualizarMensaje() {
+            const subtitulo = document.getElementById('subtitulo');
+            const hora = new Date().getHours();
+            let msg = "";
+
+            if (hora >= 6 && hora < 12) msg = "Buenos días, Vic. Un café y un recuerdo para empezar.";
+            else if (hora >= 12 && hora < 19) msg = "Pausa el día un momento. Aquí todo está tranquilo.";
+            else msg = "Antes de dormir, un vistazo a lo que nos hizo sonreír hoy.";
+
+            subtitulo.style.opacity = 0;
+            setTimeout(() => {
+                subtitulo.innerText = msg;
+                subtitulo.style.opacity = 1;
+            }, 300);
+        }
+
         let currentTheme = 0; 
         const themes = ['theme-dark', 'theme-midnight', 'theme-light'];
         const icons = ['💖', '🌙', '☀️'];
@@ -305,6 +340,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            actualizarMensaje();
+
             setTimeout(() => {
                 document.getElementById('mainHeader').classList.add('reveal');
             }, 100);
@@ -323,11 +360,28 @@
 
             cards.forEach(card => {
                 observer.observe(card);
-                card.addEventListener('click', function() {
-                    const titulo = this.querySelector('h3')?.innerText || "Tarjeta";
+                
+                card.addEventListener('click', function(e) {
                     const destino = this.getAttribute('href');
-                    if(destino) registrarEntrada(titulo, destino);
-                    if(navigator.vibrate) navigator.vibrate(5); 
+                    if(!destino || destino === "#" || this.classList.contains('card-proximamente')) return;
+
+                    e.preventDefault();
+                    const titulo = this.querySelector('h3')?.innerText || "Tarjeta";
+                    
+                    // Registro y vibración
+                    registrarEntrada(titulo, destino);
+                    if(navigator.vibrate) navigator.vibrate([10, 30]);
+
+                    // EFECTO ZOOM Y NAVEGACIÓN
+                    document.body.classList.add('navigating');
+                    this.style.zIndex = "15000";
+                    this.style.transform = "scale(1.08) translateZ(0)";
+                    this.style.boxShadow = "0 20px 50px rgba(var(--accent-rgb), 0.3)";
+                    this.style.borderColor = "white";
+
+                    setTimeout(() => {
+                        window.location.href = destino;
+                    }, 450);
                 });
             });
 
