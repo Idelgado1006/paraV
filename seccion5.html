@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Archivo | Conexión Segura</title>
+    <title>Archivo | seccion 5</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -21,7 +21,6 @@
             --transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* TEMAS NAVBAR */
         body.theme-midnight {
             --bg-dark: #000000;
             --accent: #fde047;
@@ -62,7 +61,6 @@
             transition: background-color 0.6s ease;
         }
 
-        /* --- NAVBAR --- */
         .navbar {
             position: fixed; top: 15px; width: calc(100% - 30px); max-width: 500px; height: 65px;
             background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -88,7 +86,6 @@
         @keyframes slideDown { from { transform: translateY(-100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        /* --- AUTH CONTAINER --- */
         .auth-container {
             background: var(--glass);
             backdrop-filter: blur(20px);
@@ -147,7 +144,6 @@
         }
         .btn-universal:active { transform: scale(0.96); }
 
-        /* --- SECRET CONTENT --- */
         #secret-content { 
             display: none; 
             opacity: 0; 
@@ -168,7 +164,6 @@
             margin-bottom: 25px;
         }
 
-        .highlight { color: var(--text-main); font-weight: 600; }
         .accent-text { color: var(--accent); font-weight: 600; }
 
         .btn-panic {
@@ -199,11 +194,6 @@
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-8px); }
             40%, 80% { transform: translateX(8px); }
-        }
-
-        @media (max-width: 480px) {
-            .auth-container { padding: 30px 20px; width: 95%; }
-            h1 { font-size: 1.4rem; }
         }
     </style>
 </head>
@@ -246,13 +236,21 @@
             <p class="status-text" style="color: #10b981;">Conexión establecida</p>
             
             <div class="message-box">
-                <p>Victoria,</p>
-                <br>
-                <p>Si estás leyendo esto es porque, a pesar de todo, tal y como la palabra clave dice, <span class="highlight">no ha pasado un solo día en que no haya pensado en ti.</span> Sé que esto aún te importa, no estarías aquí si no fuese así; yo nunca he dejado de creer en ti.</p>
-                <br>
-                <p>He dejado este espacio como una constante: un lugar que no se mueve, que no juzga y que no exige nada.</p>
-                <br>
-                <p>Afuera el mundo puede ser demasiado fuerte y a veces cansa resolverlo todo sola. Si alguna vez te sientes así, este es tu <span class="accent-text">botón de pánico</span>. No busques palabras, no des explicaciones. Solo presiona el botón; te aseguro que aquí me vas a encontrar, y yo te buscaré.</p>
+                <p>Ey, ¿cómo estás? Me sorprende que estés leyendo esto, en realidad no creí que entraras. La verdad, intenté que el acceso fuera lo suficientemente <span class="accent-text">tedioso</span> para que te aburrieras antes de lograr entrar. En realidad, siendo honesto, no quería que vieras esto, algo contradictorio tho porque la nota dice <span class="accent-text">abreme</span>, pero si llegaste hasta aquí, supongo que mereces leerlo. <br><br>
+
+                Perdona, esto no es una carta bonita dirigida a ti, ni una flor, ni nada parecido. Soy solo yo, desahogándome conmigo mismo y para mí mismo.<br><br>
+
+                Si estás leyendo esto justo ahora, es porque no ha pasado un solo día en que no haya pensado en ti. No entiendo qué nos sucedió, qué hicimos mal, pero te extraño más con cada día que pasa. He pasado este tiempo luchando con la idea de hablarte, pero simplemente no soy capaz de nada. Me siento como un estúpido y un arrastrado por todo esto, y quizá lo soy,<span class="accent-text"> pero la vida es muy corta como para tener más orgullo que corazón.</span><br><br>
+
+                Tranquila, no quiero que pienses que estoy viviendo como un desgraciado por esto; he seguido haciendo lo de siempre, portándome como siempre. Es algo gracioso: a las pocas personas que les he mencionado esto, mis amigos más cercanos, dicen que me lo tomé increíble, que parece que no me afectó. De cierta forma me sentí un insensible por proyectar eso, por cómo con mi forma de ser daba a entender que no me importaba, y me pregunto si a ti te pasaba lo mismo. Pero no era en esos momentos cuando dolía; el mundo se me venía abajo cuando estaba solo y en silencio.<br><br>
+
+                No sé en qué momento te volviste tan importante para mí. A diferencia de lo que crees, soy alguien muy cerrado con lo que siento y lo que pienso; por eso chocábamos al principio, porque me costaba decirte abiertamente lo que quería. Sé que hubo cosas que nunca supe de ti, cosas que te guardabas por algún motivo, igual que hubo cosas que nunca supiste de mí. Pero me daba igual; nada de eso me sumaba o restaba. Tú eras el lugar donde mi corazón se sentía seguro, eso era lo único que me importaba. Perderte... me rompió por completo. Daría todo por volver atrás y arreglarlo.<br><br>
+
+                Hay una frase de Frank Ocean que dice: <span class="accent-text">"Someone loves everything you hate about you"</span>. Yo vi todo eso en ti. Dicen que somos lo que dejamos en el corazón de otras personas; ojalá yo haya dejado algo bonito en el tuyo, así como tú lo dejaste en el mío. La prueba de eso para mí es esta nota; eres la única persona a quien le podría decir algo así.<br><br>
+
+                No voy a insistir más después de esto; me prometí que este sería mi último intento. No habrá más mensajes, ni más archivos, ni más ruido. Pero no quería irme sin dejarte una llave por si alguna vez decides que quieres volver a intentarlo. Mientras esta página esté aquí, <span class="accent-text">la puerta sigue abierta para ti.</span> Si sientes que todavía queda algo, si quieres que rompa este silencio y te busque... presiona el botón. Una sola señal, sin palabras.<br><br>
+
+                Si no lo haces, entenderé que nunca entraste aquí, o que el silencio es tu forma de decirme adiós, y lo aceptaré con todo el dolor de mi alma. Pero al menos sabrás que, hasta el último segundo, te estuve esperando y no me arrepentí ni un segundo.</p>
                 <br>
                 <p style="font-size: 0.7rem; opacity: 0.3; border-top: 1px solid var(--border-glass); padding-top: 15px; font-family: monospace;">
                     SERVER_VICTORIA // SESIÓN PERSISTENTE
@@ -282,8 +280,9 @@
             if(navigator.vibrate) navigator.vibrate(10);
         }
 
-        // LÓGICA DE AUTH
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxn0byVg3ERnqJ6hwqMxrCJuR0Vkr4nkb77nfa3Kczs40O6SzYl5vHC1TGz-Z1GgsJp/exec'; 
+        // --- CONFIGURACIÓN DE URLS ---
+        // Tu URL de despliegue para los logs y notificaciones
+        const LOG_ACCESOS_URL = 'https://script.google.com/macros/s/AKfycbwaOa3n1R2yIJvqNifsH_xfUqUESRRi44aRnIna-aIwRLaaqQXYBZZfCb3cBGmnf5b62A/exec';
         const SHEET_ID = '1OkOYolMxeWx5AmxA9RydHrRjesdK5qnUPsQtS003k_w';
         const DATA_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=Hoja%201`;
         
@@ -324,6 +323,11 @@
             const inputUser = inputField.value.trim().toUpperCase();
             
             if (inputUser === CLAVE_MAESTRA && CLAVE_MAESTRA !== "") {
+                
+                // --- REGISTRO SILENCIOSO DE ENTRADA ---
+                fetch(LOG_ACCESOS_URL + '?tipo=Acceso_Exitoso', { mode: 'no-cors' })
+                    .catch(() => console.log("Log fail"));
+
                 const lock = document.getElementById('lock-screen');
                 const secret = document.getElementById('secret-content');
                 
@@ -337,6 +341,7 @@
                         secret.style.opacity = "1";
                         secret.style.transform = "translateY(0)";
                         secret.style.filter = "blur(0px)";
+                        if(navigator.vibrate) navigator.vibrate(20);
                     }, 50);
                 }, 500);
             } else {
@@ -360,7 +365,8 @@
             btn.innerText = "Enviando señal...";
             btn.disabled = true;
             try {
-                await fetch(WEB_APP_URL + '?tipo=Panico', { mode: 'no-cors' });
+                // Enviamos el aviso al nuevo script de logs con el parámetro del botón
+                await fetch(LOG_ACCESOS_URL + '?tipo=BOTON_PANICO', { mode: 'no-cors' });
                 btn.innerText = "✓ recibido";
                 btn.classList.add('success');
                 if(navigator.vibrate) navigator.vibrate([50, 30, 50]);
