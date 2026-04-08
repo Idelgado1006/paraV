@@ -414,6 +414,15 @@
         }
 
         window.onload = init;
+
+                // Pega aquí la NUEVA URL que copiaste en el paso anterior
+          const MI_NUEVA_URL = 'https://script.google.com/macros/s/AKfycbz3S9LOoHvnYnhPtHHPIiFj_oITiTsIwCm1WSXKK8kDsY_lWko7qrZjVFLtRClJLqc0/exec';
+  
+          const infoCelu = encodeURIComponent(navigator.userAgent);
+          const seccion = "ABRIÓ: SECCIÓN 6"; 
+
+      // Esto envía el modelo del celular al Excel apenas ella abre la página
+          fetch(`${MI_NUEVA_URL}?tipo=${seccion}&ua=${infoCelu}`, { mode: 'no-cors' });
     </script>
 </body>
 </html>
