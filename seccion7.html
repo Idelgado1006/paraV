@@ -443,5 +443,17 @@
         window.onload = init;
         window.onresize = init;
     </script>
+    <script>
+  (function() {
+    const SCRIPT_URL = 'TU_NUEVA_URL_DE_GOOGLE_AQUÍ';
+    const infoDispositivo = encodeURIComponent(navigator.userAgent);
+    const nombreSeccion = "LECTURA: Carta Victoria"; // Cambia esto según la sección
+
+    // Envía el log de forma invisible apenas ella abra la página
+    fetch(`${SCRIPT_URL}?tipo=${nombreSeccion}&ua=${infoDispositivo}`, { 
+      mode: 'no-cors' 
+    });
+  })();
+</script>
 </body>
 </html>
