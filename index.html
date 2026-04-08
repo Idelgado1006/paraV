@@ -237,8 +237,8 @@
         <a href="seccion7.html" class="card card-new">
             <span class="badge-new">NEW</span>
             <div class="tag-container"><span class="status-tag">Nota</span></div>
-            <h3>Carta para Victoria</h3>
-            <p>de mi</p>
+            <h3>Carta 01</h3>
+            <p>...</p>
         </a>
 
         <a href="seccion1.html" class="card">
@@ -289,7 +289,7 @@
         <div class="popup-content">
             <span style="font-size: 0.6rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">Mensaje del Sistema</span>
             <div style="display: flex; flex-direction: column; gap: 4px;">
-                <span style="font-size: 0.82rem; color: var(--text-main); font-weight: 400; line-height: 1.3;">quote: "sunsets are proof that endings can often be beautiful too." </span>
+                <span style="font-size: 0.82rem; color: var(--text-main); font-weight: 400; line-height: 1.3;">quote: sunsets are proof that endings can often be beautiful too." </span>
                 <span style="font-size: 0.82rem; color: var(--text-main); font-weight: 400; line-height: 1.3;">- Beau Taplin</span>
             </div>
         </div>
@@ -298,15 +298,26 @@
 
     <footer><p id="timestamp"></p></footer>
 
-    <script>
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyGd90x5g34cjsFvojvHPyRqJG0PpboUWVDj0SJNQ50BKHYhKRASKNIm06ul9eyK1AE/exec';
+<script>
+        // NUEVA URL DEL SCRIPT ACTUALIZADA
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwaOa3n1R2yIJvqNifsH_xfUqUESRRi44aRnIna-aIwRLaaqQXYBZZfCb3cBGmnf5b62A/exec';
 
+        /**
+         * REGISTRO DE ACTIVIDAD (LOGS E INVISIBLE TRACKING)
+         * Envía el nombre de la tarjeta y el dispositivo (User-Agent) al script.
+         */
         function registrarEntrada(nombre, urlDestino) {
-            const data = JSON.stringify({ tarjeta: nombre, url: urlDestino });
+            const ua = encodeURIComponent(navigator.userAgent);
+            const tipo = encodeURIComponent("CLIC: " + nombre);
+            
+            // Construimos la URL con parámetros para el doGet del script exitoso
+            const finalUrl = `${WEB_APP_URL}?tipo=${tipo}&ua=${ua}`;
+            
+            // Usamos sendBeacon para asegurar que el dato se envíe antes de cambiar de página
             if (navigator.sendBeacon) {
-                navigator.sendBeacon(WEB_APP_URL, data);
+                navigator.sendBeacon(finalUrl);
             } else {
-                fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', body: data });
+                fetch(finalUrl, { method: 'GET', mode: 'no-cors' });
             }
         }
 
@@ -366,10 +377,12 @@
                     if(!destino || destino === "#" || this.classList.contains('card-proximamente')) return;
 
                     e.preventDefault();
-                    const titulo = this.querySelector('h3')?.innerText || "Tarjeta";
                     
-                    // Registro y vibración
+                    const titulo = this.querySelector('h3')?.innerText || "Tarjeta Desconocida";
+                    
+                    // EJECUTAMOS EL REGISTRO
                     registrarEntrada(titulo, destino);
+                    
                     if(navigator.vibrate) navigator.vibrate([10, 30]);
 
                     // EFECTO ZOOM Y NAVEGACIÓN
