@@ -195,6 +195,58 @@
             20%, 60% { transform: translateX(-8px); }
             40%, 80% { transform: translateX(8px); }
         }
+/* --- CAPA DE CENSURA RESPONSIVE --- */
+.content-locked #secret-content-inner {
+    filter: blur(25px) !important; 
+    opacity: 0.2 !important;
+    pointer-events: none !important;
+    user-select: none !important;
+    transition: all 0.5s ease;
+}
+
+.content-locked {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px; /* Asegura espacio para el cuadro */
+}
+
+/* El letrero del candado adaptativo */
+.content-locked::before {
+    content: '🔒 ACCESO RESTRINGIDO, entraste muy pronto, vuelve en la fecha establecida';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--accent);
+    color: white;
+    
+    /* Ajustes para móviles */
+    padding: 15px 20px;
+    width: 85%; /* Se estira en móviles */
+    max-width: 320px; /* No crece demasiado en PC */
+    
+    border-radius: 18px;
+    font-weight: 800;
+    font-size: 0.8rem; /* Tamaño base */
+    text-align: center;
+    z-index: 999;
+    letter-spacing: 1.5px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    border: 1.5px solid rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ajuste de fuente para pantallas un poco más grandes */
+@media (min-width: 480px) {
+    .content-locked::before {
+        font-size: 0.9rem;
+        padding: 20px 30px;
+    }
+}
     </style>
 </head>
 <body class="theme-dark fade-in-up">
@@ -231,7 +283,9 @@
             </button>
         </div>
 
-        <div id="secret-content">
+        <div id="secret-content" class="content-locked">
+
+            <div id="secret-content-inner">
             <h1>Refugio Activo</h1>
             <p class="status-text" style="color: #10b981;">Conexión establecida</p>
             
@@ -255,6 +309,7 @@
                 <p style="font-size: 0.7rem; opacity: 0.3; border-top: 1px solid var(--border-glass); padding-top: 15px; font-family: monospace;">
                     SERVER_VICTORIA // SESIÓN PERSISTENTE
                 </p>
+            </div>
             </div>
 
             <button id="btn-ping" class="btn-panic" onclick="confirmarLectura()">
@@ -377,15 +432,6 @@
         }
 
         window.onload = fetchAuth;
-
-                // Pega aquí la NUEVA URL que copiaste en el paso anterior
-          const MI_NUEVA_URL = 'https://script.google.com/macros/s/AKfycbz3S9LOoHvnYnhPtHHPIiFj_oITiTsIwCm1WSXKK8kDsY_lWko7qrZjVFLtRClJLqc0/exec';
-  
-          const infoCelu = encodeURIComponent(navigator.userAgent);
-          const seccion = "ABRIÓ: SECCIÓN 5"; 
-
-      // Esto envía el modelo del celular al Excel apenas ella abre la página
-          fetch(`${MI_NUEVA_URL}?tipo=${seccion}&ua=${infoCelu}`, { mode: 'no-cors' });
     </script>
 </body>
 </html>
